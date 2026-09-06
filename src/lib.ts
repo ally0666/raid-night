@@ -38,7 +38,7 @@ export function iconUrl(icon: string) {
 }
 
 export function itemById(id: number) {
-  return items.find((item) => item.id === id)
+  return items.find((item: Item) => item.id === id)
 }
 
 export function usableBy(item: Item, className: WowClass) {
