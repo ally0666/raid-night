@@ -572,9 +572,51 @@ ul {
   gap: 8px;
 }
 
+.roster-admin {
+  display: grid;
+  gap: 12px;
+}
+
+.roster-admin-head {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.roster-admin-head strong,
+.roster-admin-head small {
+  display: block;
+}
+
+.roster-admin-head strong {
+  color: var(--gold);
+}
+
+.roster-admin-head small {
+  margin-top: 3px;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.roster-admin-head .secondary {
+  width: auto;
+  flex: 0 0 auto;
+}
+
+.roster-form {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+
+.roster-form .primary {
+  grid-column: 1 / -1;
+}
+
 .raider {
   display: grid;
-  grid-template-columns: 14px 1fr auto;
+  grid-template-columns: 14px 1fr auto auto;
   gap: 12px;
   align-items: center;
 }
@@ -593,6 +635,17 @@ ul {
   color: var(--warn);
   font-style: normal;
   font-size: 0.82rem;
+}
+
+.remove-raider {
+  min-height: 34px;
+  border: 1px solid #9a4a3a;
+  border-radius: var(--radius);
+  background: rgba(80, 22, 16, 0.35);
+  color: #f0a090;
+  padding: 0 9px;
+  font-size: 0.78rem;
+  font-weight: 700;
 }
 
 .lead-actions {
@@ -800,5 +853,22 @@ ul {
   .ornament {
     width: 56px;
     height: 56px;
+  }
+
+  .roster-form {
+    grid-template-columns: 1fr;
+  }
+
+  .raider {
+    grid-template-columns: 14px 1fr auto;
+  }
+
+  .raider-picks {
+    grid-column: 2 / 3;
+  }
+
+  .remove-raider {
+    grid-column: 3 / 4;
+    grid-row: 1 / span 2;
   }
 }

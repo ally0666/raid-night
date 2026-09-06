@@ -469,6 +469,23 @@ export default function App() {
                 flash(err instanceof Error ? err.message : 'Could not reset.')
               }
             }}
+            onAddRoster={async (body) => {
+              try {
+                applyRaid(await api.addRosterMember(body))
+                flash(`${body.name} added to the roster.`)
+              } catch (err) {
+                flash(err instanceof Error ? err.message : 'Could not add raider.')
+                throw err
+              }
+            }}
+            onRemoveRoster={async (raider) => {
+              try {
+                applyRaid(await api.removeRosterMember(raider.id))
+                flash(`${raider.name} removed from the roster.`)
+              } catch (err) {
+                flash(err instanceof Error ? err.message : 'Could not remove raider.')
+              }
+            }}
           />
         )}
       </div>
@@ -1180,6 +1197,8 @@ function Lead({
   onCopyGargul,
   onCopyCsv,
   onReset,
+  onAddRoster,
+  onRemoveRoster,
   exportBox,
 }: {
   raid: typeof raidFallback
@@ -1193,10 +1212,35 @@ function Lead({
   onCopyGargul: () => void
   onCopyCsv: () => void
   onReset: () => void
+  onAddRoster: (body: { name: string; className: WowClass; spec: string; role: Role }) => Promise<void>
+  onRemoveRoster: (raider: Raider) => Promise<void>
   exportBox: string
 }) {
+  const [adding, setAdding] = useState(false)
+  const [name, setName] = useState('')
+  const [className, setClassName] = useState<WowClass>('Warrior')
+  const [spec, setSpec] = useState('')
+  const [role, setRole] = useState<Role>('dps')
   const signed = roster.filter((r) => r.signed)
   const unsigned = roster.filter((r) => !r.signed)
+
+  async function addRaider(event: React.FormEvent) {
+    event.preventDefault()
+    try {
+      await onAddRoster({ name, className, spec, role })
+      setName('')
+      setSpec('')
+      setRole('dps')
+      setAdding(false)
+    } catch {
+      // The parent has already shown the API error.
+    }
+  }
+
+  function removeRaider(raider: Raider) {
+    if (!window.confirm(`Remove ${raider.name} from this raid roster?`)) return
+    void onRemoveRoster(raider)
+  }
 
   return (
     <section className="screen lead">
@@ -1253,6 +1297,45 @@ function Lead({
         </button>
       </div>
 
+      <section className="card roster-admin">
+        <div className="roster-admin-head">
+          <span>
+            <strong>Roster controls</strong>
+            <small>Add a raider before they sign in, or remove a signup.</small>
+          </span>
+          <button type="button" className="secondary" onClick={() => setAdding((value) => !value)}>
+            {adding ? 'Cancel' : 'Add raider'}
+          </button>
+        </div>
+        {adding && (
+          <form className="roster-form" onSubmit={(event) => void addRaider(event)}>
+            <label className="field">
+              Character name
+              <input value={name} onChange={(event) => setName(event.target.value)} pattern="[A-Za-z]{2,12}" required />
+            </label>
+            <label className="field">
+              Class
+              <select value={className} onChange={(event) => setClassName(event.target.value as WowClass)}>
+                {wowClasses.map((value) => <option key={value}>{value}</option>)}
+              </select>
+            </label>
+            <label className="field">
+              Spec
+              <input value={spec} onChange={(event) => setSpec(event.target.value)} maxLength={32} required />
+            </label>
+            <label className="field">
+              Role
+              <select value={role} onChange={(event) => setRole(event.target.value as Role)}>
+                <option value="tank">Tank</option>
+                <option value="healer">Healer</option>
+                <option value="dps">Damage</option>
+              </select>
+            </label>
+            <button type="submit" className="primary">Add to roster</button>
+          </form>
+        )}
+      </section>
+
       <div className="card export">
         <p>
           Same path as softres.it. In WoW type <code>/gl sr</code>, paste, then Import. Gargul shows who reserved an item
@@ -1291,6 +1374,9 @@ function Lead({
                 ) : null
               })}
             </span>
+            <button type="button" className="remove-raider" onClick={() => removeRaider(raider)} aria-label={`Remove ${raider.name}`}>
+              Remove
+            </button>
           </li>
         ))}
       </ul>
@@ -1308,6 +1394,9 @@ function Lead({
                     {raider.spec} · {roleLabel[raider.role]}
                   </small>
                 </span>
+                <button type="button" className="remove-raider" onClick={() => removeRaider(raider)} aria-label={`Remove ${raider.name}`}>
+                  Remove
+                </button>
               </li>
             ))}
           </ul>

@@ -14,12 +14,14 @@ import {
 import { CLASS_BY_ID, demoPersonas, raidMeta, ROLES, WOW_CLASSES } from './seed.mjs'
 import {
   addCharacter,
+  addManualRaider,
   charactersFor,
   fail,
   findUserByProvider,
   publicUser,
   raidPayload,
   read,
+  removeRosterMember,
   update,
 } from './store.mjs'
 
@@ -533,6 +535,28 @@ app.post('/api/raid/reset', async (c) => {
   const raid = await update((next) => {
     next.raid.locked = false
     next.raid.signups = {}
+    return raidPayload(next, user.id)
+  })
+  return c.json(raid)
+})
+
+app.post('/api/raid/roster', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const data = read()
+  const user = requireLead(sessionUser(data, c))
+  const raid = await update((next) => {
+    addManualRaider(next, body)
+    return raidPayload(next, user.id)
+  })
+  return c.json(raid)
+})
+
+app.delete('/api/raid/roster/:id', async (c) => {
+  const id = c.req.param('id')
+  const data = read()
+  const user = requireLead(sessionUser(data, c))
+  const raid = await update((next) => {
+    removeRosterMember(next, id)
     return raidPayload(next, user.id)
   })
   return c.json(raid)

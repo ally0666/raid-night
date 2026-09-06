@@ -17,6 +17,7 @@ function emptyData() {
     raid: {
       locked: false,
       signups: {},
+      manualRoster: seedRoster,
     },
   }
 }
@@ -35,6 +36,9 @@ function loadFile() {
       raid: {
         locked: Boolean(parsed.raid?.locked),
         signups: parsed.raid?.signups || {},
+        // Existing deployments used the static seed roster. Preserve it as the
+        // starting point the first time a lead edits the roster.
+        manualRoster: Array.isArray(parsed.raid?.manualRoster) ? parsed.raid.manualRoster : seedRoster,
       },
     }
   } catch {
@@ -145,6 +149,50 @@ export function addCharacter(data, userId, input) {
   return character
 }
 
+export function addManualRaider(data, input) {
+  const name = String(input.name || '').trim()
+  if (!/^[A-Za-z]{2,12}$/.test(name)) {
+    throw fail(400, 'Character names are 2–12 letters, same as in WoW.')
+  }
+  const className = WOW_CLASSES.includes(input.className) ? input.className : null
+  if (!className) throw fail(400, 'Pick a class.')
+  const role = ROLES.includes(input.role) ? input.role : null
+  if (!role) throw fail(400, 'Pick tank, healer, or damage.')
+  const spec = String(input.spec || '').trim().slice(0, 32)
+  if (!spec) throw fail(400, 'Add a spec so the raid lead knows what they play.')
+
+  const roster = data.raid.manualRoster || (data.raid.manualRoster = [...seedRoster])
+  const alreadyListed = roster.some((r) => r.name.toLowerCase() === name.toLowerCase())
+  const alreadySigned = Object.values(data.raid.signups).some((signup) => {
+    const character = data.characters[signup.characterId]
+    return character?.name?.toLowerCase() === name.toLowerCase()
+  })
+  if (alreadyListed || alreadySigned) throw fail(409, `${name} is already on the roster.`)
+
+  const raider = {
+    id: `m_${randomUUID()}`,
+    name,
+    className,
+    spec,
+    role,
+    signed: false,
+    picks: [],
+  }
+  roster.push(raider)
+  return raider
+}
+
+export function removeRosterMember(data, id) {
+  const roster = data.raid.manualRoster || (data.raid.manualRoster = [...seedRoster])
+  const manualIndex = roster.findIndex((r) => r.id === id)
+  if (manualIndex >= 0) {
+    roster.splice(manualIndex, 1)
+    return
+  }
+  if (!data.raid.signups[id]) throw fail(404, 'Raider not found.')
+  delete data.raid.signups[id]
+}
+
 export function buildRoster(data, youId) {
   const fromSignups = Object.values(data.raid.signups)
     .map((signup) => {
@@ -167,7 +215,8 @@ export function buildRoster(data, youId) {
     .filter(Boolean)
 
   const used = new Set(fromSignups.map((r) => r.name.toLowerCase()))
-  const extras = seedRoster.filter((r) => !used.has(r.name.toLowerCase()))
+  const manualRoster = data.raid.manualRoster || seedRoster
+  const extras = manualRoster.filter((r) => !used.has(r.name.toLowerCase()))
   return [...extras, ...fromSignups]
 }
 
