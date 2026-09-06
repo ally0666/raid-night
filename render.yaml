@@ -1,0 +1,37 @@
+services:
+  - type: web
+    name: raid-night
+    runtime: node
+    plan: starter
+    buildCommand: npm ci && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    disk:
+      name: raid-data
+      mountPath: /data
+      sizeGB: 1
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: DATA_DIR
+        value: /data
+      - key: AUTH_DEMO
+        value: "0"
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: DISCORD_CLIENT_ID
+        sync: false
+      - key: DISCORD_CLIENT_SECRET
+        sync: false
+      - key: BATTLENET_CLIENT_ID
+        sync: false
+      - key: BATTLENET_CLIENT_SECRET
+        sync: false
+      - key: BATTLENET_REGION
+        value: us
+      - key: PUBLIC_URL
+        sync: false
+      - key: LEAD_DISCORD_IDS
+        sync: false
+      - key: LEAD_BATTLENET_IDS
+        sync: false
