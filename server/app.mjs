@@ -588,6 +588,18 @@ app.post('/api/raids/:id/reset', async (c) => {
   return c.json(raid)
 })
 
+app.delete('/api/raids/:id', async (c) => {
+  const data = read()
+  const user = requireUser(sessionUser(data, c))
+  await update((next) => {
+    const live = next.users[user.id]
+    const current = getRaid(next, c.req.param('id'))
+    if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
+    delete next.raids[current.id]
+  })
+  return c.json({ ok: true })
+})
+
 app.post('/api/raids/:id/roster', async (c) => {
   const body = await c.req.json().catch(() => ({}))
   const data = read()

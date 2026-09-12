@@ -145,6 +145,7 @@ export const api = {
   lock: (raidId: string, locked: boolean) =>
     req<RaidState>(`/api/raids/${raidId}/lock`, { method: 'POST', body: JSON.stringify({ locked }) }),
   reset: (raidId: string) => req<RaidState>(`/api/raids/${raidId}/reset`, { method: 'POST' }),
+  deleteRaid: (raidId: string) => req<{ ok: boolean }>(`/api/raids/${raidId}`, { method: 'DELETE' }),
   addRosterMember: (raidId: string, body: { name: string; className: WowClass; spec: string; role: Role }) =>
     req<RaidState>(`/api/raids/${raidId}/roster`, { method: 'POST', body: JSON.stringify(body) }),
   removeRosterMember: (raidId: string, id: string) =>

@@ -355,6 +355,23 @@ export default function App() {
     flash(ok ? 'Reserve link copied. Send that to pugs and guildies.' : `Copy this: ${url}`)
   }
 
+  async function deleteRaid(id: string, name: string) {
+    if (!window.confirm(`Delete ${name}? The reserve link will stop working.`)) return
+    try {
+      await api.deleteRaid(id)
+      setRaids((current) => current.filter((raid) => raid.id !== id))
+      if (raidId === id) {
+        setRaidId('')
+        setRoster([])
+        window.history.pushState({}, '', '/')
+        setView('home')
+      }
+      flash(`${name} deleted.`)
+    } catch (err) {
+      flash(err instanceof Error ? err.message : 'Could not delete that raid.')
+    }
+  }
+
   function goRaider() {
     setView(youSigned ? (picks.length ? 'done' : 'picks') : 'invite')
   }
@@ -393,6 +410,7 @@ export default function App() {
             signedIn={Boolean(user)}
             onOpen={(id) => void openRaid(id)}
             onCreate={() => needsAuth('create')}
+            onDelete={(id, name) => void deleteRaid(id, name)}
           />
         )}
         {view === 'create' && user && (
@@ -580,6 +598,7 @@ export default function App() {
                 flash(err instanceof Error ? err.message : 'Could not reset.')
               }
             }}
+            onDeleteRaid={() => void deleteRaid(raidId, raidInfo.name)}
             onAddRoster={async (body) => {
               try {
                 applyRaid(await api.addRosterMember(raidId, body))
@@ -652,11 +671,13 @@ function Home({
   signedIn,
   onOpen,
   onCreate,
+  onDelete,
 }: {
   raids: RaidSummary[]
   signedIn: boolean
   onOpen: (id: string) => void
   onCreate: () => void
+  onDelete: (id: string, name: string) => void
 }) {
   return (
     <section className="screen">
@@ -670,7 +691,7 @@ function Home({
       </header>
       <div className="raid-list">
         {raids.map((raid) => (
-          <button type="button" key={raid.id} className="raid-card" onClick={() => onOpen(raid.id)}>
+          <div key={raid.id} className="raid-card">
             <span className="raid-date">
               <strong>{raid.dateLabel || 'TBD'}</strong>
               <small>{raid.when}</small>
@@ -682,8 +703,15 @@ function Home({
                 {raid.locked ? ' · locked' : ''}
               </small>
             </span>
-            <em>Open</em>
-          </button>
+            <span className="raid-actions">
+              <button type="button" className="ghost" onClick={() => onOpen(raid.id)}>
+                Open
+              </button>
+              <button type="button" className="ghost danger" onClick={() => onDelete(raid.id, raid.name)}>
+                Delete
+              </button>
+            </span>
+          </div>
         ))}
       </div>
       {raids.length === 0 && (
@@ -1543,6 +1571,7 @@ function Lead({
   onCopyCsv,
   onCopyLink,
   onReset,
+  onDeleteRaid,
   onAddRoster,
   onRemoveRoster,
   exportBox,
@@ -1559,6 +1588,7 @@ function Lead({
   onCopyCsv: () => void
   onCopyLink: () => void
   onReset: () => void
+  onDeleteRaid: () => void
   onAddRoster: (body: { name: string; className: WowClass; spec: string; role: Role }) => Promise<void>
   onRemoveRoster: (raider: Raider) => Promise<void>
   exportBox: string
@@ -1755,6 +1785,9 @@ function Lead({
 
       <button type="button" className="ghost" onClick={onReset}>
         Clear signups
+      </button>
+      <button type="button" className="ghost danger" onClick={onDeleteRaid}>
+        Delete this raid
       </button>
     </section>
   )

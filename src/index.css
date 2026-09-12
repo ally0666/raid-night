@@ -926,10 +926,20 @@ ul {
   font-size: 0.82rem;
 }
 
-.raid-card em {
-  font-style: normal;
-  color: var(--gold);
-  font-weight: 650;
+.raid-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.raid-actions .ghost {
+  width: auto;
+  min-height: 34px;
+  padding: 0 8px;
+}
+
+.danger {
+  color: #f0a090 !important;
 }
 
 @media (max-width: 480px) {
