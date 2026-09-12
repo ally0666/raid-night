@@ -42,18 +42,23 @@ function defaultKara(signups = {}, locked = false, manualRoster = []) {
 export function ensureRaids(data) {
   if (!data.raids) data.raids = {}
   if (data.raid && Object.keys(data.raids).length === 0) {
-    data.raids['kara-night'] = defaultKara(
-      data.raid.signups || {},
-      Boolean(data.raid.locked),
-      Array.isArray(data.raid.manualRoster) ? data.raid.manualRoster : [],
-    )
+    const signups = data.raid.signups || {}
+    if (data.raid.createdBy || Object.keys(signups).length) {
+      data.raids['kara-night'] = defaultKara(
+        signups,
+        Boolean(data.raid.locked),
+        Array.isArray(data.raid.manualRoster) ? data.raid.manualRoster : [],
+      )
+    }
   }
-  if (Object.keys(data.raids).length === 0) {
-    data.raids['kara-night'] = defaultKara()
-  }
-  for (const raid of Object.values(data.raids)) {
+  for (const [id, raid] of Object.entries(data.raids)) {
     if (!Array.isArray(raid.manualRoster)) raid.manualRoster = []
     if (!raid.signups) raid.signups = {}
+    const empty =
+      !raid.createdBy &&
+      Object.keys(raid.signups).length === 0 &&
+      raid.manualRoster.length === 0
+    if (empty) delete data.raids[id]
   }
   return data
 }
@@ -74,7 +79,10 @@ function loadFile() {
       oauthStates: parsed.oauthStates || {},
       raids: parsed.raids || {},
     }
-    return ensureRaids(data)
+    const before = Object.keys(data.raids).length
+    ensureRaids(data)
+    if (Object.keys(data.raids).length !== before) saveFile(data)
+    return data
   } catch {
     return ensureRaids(emptyData())
   }

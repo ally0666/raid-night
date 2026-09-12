@@ -242,11 +242,13 @@ async function startOAuth(c, provider) {
   const state = randomUUID()
   await update((data) => {
     const current = sessionUser(data, c)
+    const next = c.req.query('next')
     data.oauthStates[state] = {
       provider,
       userId: current?.id || null,
       createdAt: Date.now(),
       origin,
+      next: next && next.startsWith('/') && !next.startsWith('//') && !next.startsWith('/api') ? next : '/',
     }
   })
   const url = provider === 'discord' ? discordAuthorize(state, origin) : battlenetAuthorize(state, origin)
@@ -282,7 +284,8 @@ async function oauthCallback(c, provider) {
       })
       createSession(data, c, linked.id)
     })
-    return c.redirect(`${redirectOrigin}/`)
+    const next = pending.next && pending.next.startsWith('/') ? pending.next : '/'
+    return c.redirect(`${redirectOrigin}${next}`)
   } catch (err) {
     return redirectAuthError(c, err.status ? err.message : 'Could not finish login.', origin)
   }
@@ -301,6 +304,7 @@ app.get('/api/raids', (c) => {
   const data = read()
   const user = sessionUser(data, c)
   const list = Object.values(data.raids)
+    .filter((raid) => user && canManage(user, raid))
     .map((raid) => raidSummary(data, raid, user))
     .sort((a, b) => a.name.localeCompare(b.name))
   return c.json({ raids: list })

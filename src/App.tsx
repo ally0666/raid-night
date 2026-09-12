@@ -33,6 +33,15 @@ import type { Character, Raider, Role, View, WowClass } from './types'
 const STORAGE = 'raid-night-v2'
 const NEXT_KEY = 'raid-night-next'
 
+function raidIdFromPath() {
+  const match = window.location.pathname.match(/^\/r\/([^/]+)\/?$/)
+  return match ? decodeURIComponent(match[1]) : null
+}
+
+function reserveUrl(id: string) {
+  return `${window.location.origin}/r/${id}`
+}
+
 type Saved = {
   view: View
   characterId: string
@@ -50,7 +59,7 @@ function load(): Saved | null {
 
 export default function App() {
   const saved = load()
-  const [view, setView] = useState<View>(saved?.view && saved.view !== 'invite' ? saved.view : 'home')
+  const [view, setView] = useState<View>(raidIdFromPath() ? 'invite' : 'home')
   const [characterId, setCharacterId] = useState(saved?.characterId ?? '')
   const [raidId, setRaidId] = useState(saved?.raidId ?? '')
   const [raids, setRaids] = useState<RaidSummary[]>([])
@@ -124,10 +133,16 @@ export default function App() {
     applyMe(me)
     setRaids(board.raids)
     setInstances(catalog.instances)
-    const chosen = saved?.raidId && board.raids.some((r) => r.id === saved.raidId) ? saved.raidId : board.raids[0]?.id
-    if (chosen) {
-      const raid = await api.raid(chosen)
-      applyRaid(raid)
+    const fromLink = raidIdFromPath()
+    if (fromLink) {
+      try {
+        applyRaid(await api.raid(fromLink))
+        setView((current) => (current === 'login' || current === 'character' ? current : 'invite'))
+      } catch {
+        window.history.replaceState({}, '', '/')
+        setView('home')
+        flash('This reserve list is gone or the link is wrong.')
+      }
     }
     return { me, raids: board.raids }
   }
@@ -161,6 +176,14 @@ export default function App() {
       })
       .catch((err) => setToast(err instanceof Error ? err.message : 'Could not load the raid board.'))
       .finally(() => setReady(true))
+
+    const onPop = () => {
+      const id = raidIdFromPath()
+      if (id) void openRaid(id)
+      else setView('home')
+    }
+    window.addEventListener('popstate', onPop)
+    return () => window.removeEventListener('popstate', onPop)
   }, [])
 
   function flash(message: string) {
@@ -318,10 +341,18 @@ export default function App() {
       applyRaid(await api.raid(id))
       setBoss('For you')
       setSearch('')
+      window.history.pushState({}, '', `/r/${id}`)
       setView('invite')
     } catch (err) {
       flash(err instanceof Error ? err.message : 'Could not open that raid.')
     }
+  }
+
+  async function copyReserveLink() {
+    if (!raidId) return
+    const url = reserveUrl(raidId)
+    const ok = await copyText(url)
+    flash(ok ? 'Reserve link copied. Send that to pugs and guildies.' : `Copy this: ${url}`)
   }
 
   function goRaider() {
@@ -372,8 +403,11 @@ export default function App() {
               const created = await api.createRaid(body)
               applyRaid(created)
               setRaids((await api.raids()).raids)
+              window.history.pushState({}, '', `/r/${created.id}`)
               setView('invite')
-              flash(`${created.name} is on the board.`)
+              const url = reserveUrl(created.id)
+              const ok = await copyText(url)
+              flash(ok ? `Posted. Reserve link copied — send it to the raid.` : `Posted. Link: ${url}`)
             }}
             flash={flash}
           />
@@ -382,9 +416,13 @@ export default function App() {
           <Invite
             raid={raidInfo}
             counts={counts}
-            onBack={() => setView('home')}
+            onBack={() => {
+              window.history.pushState({}, '', '/')
+              setView('home')
+            }}
             onJoin={() => needsAuth('confirm')}
             onLead={canManageRaid || user?.lead ? goLead : undefined}
+            onCopyLink={() => void copyReserveLink()}
           />
         )}
         {view === 'login' && (
@@ -392,9 +430,10 @@ export default function App() {
             providers={providers}
             linking={linking}
             onDemo={onDemo}
+            nextPath={raidIdFromPath() ? `/r/${raidIdFromPath()}` : '/'}
             onBack={() => {
               setLinking(false)
-              setView('home')
+              setView(raidIdFromPath() ? 'invite' : 'home')
             }}
           />
         )}
@@ -531,6 +570,7 @@ export default function App() {
                 flash('Clipboard blocked. The CSV is on the page — select it and copy.')
               }
             }}
+            onCopyLink={() => void copyReserveLink()}
             onReset={async () => {
               try {
                 applyRaid(await api.reset(raidId))
@@ -622,8 +662,11 @@ function Home({
     <section className="screen">
       <p className="eyebrow">Raid night</p>
       <header className="hero">
-        <h1>Upcoming raids</h1>
-        <p className="lede">Sign up and reserve loot on one board. Leads pick the instance, date, and pull time.</p>
+        <h1>Your raids</h1>
+        <p className="lede">
+          Schedule a night, then send the reserve link. Guild and pugs open that link to pick loot — they won&apos;t see
+          anyone else&apos;s raids.
+        </p>
       </header>
       <div className="raid-list">
         {raids.map((raid) => (
@@ -643,7 +686,13 @@ function Home({
           </button>
         ))}
       </div>
-      {raids.length === 0 && <p className="hint">Nothing scheduled yet.</p>}
+      {raids.length === 0 && (
+        <p className="hint">
+          {signedIn
+            ? 'Nothing scheduled yet. Post a raid and copy the link for the group.'
+            : 'Got a reserve link? Open it. Raid lead? Sign in to schedule a night.'}
+        </p>
+      )}
       <button type="button" className="primary" onClick={onCreate}>
         {signedIn ? 'Schedule a raid' : 'Sign in to schedule'}
       </button>
@@ -814,6 +863,7 @@ function Invite({
   onBack,
   onJoin,
   onLead,
+  onCopyLink,
 }: {
   raid: {
     name: string
@@ -828,6 +878,7 @@ function Invite({
   onBack: () => void
   onJoin: () => void
   onLead?: () => void
+  onCopyLink: () => void
 }) {
   return (
     <section className="screen">
@@ -864,11 +915,14 @@ function Invite({
       </div>
 
       <button type="button" className="primary" onClick={onJoin}>
-        I&apos;m in
+        I&apos;m in — pick reserves
+      </button>
+      <button type="button" className="secondary" onClick={onCopyLink}>
+        Copy reserve link
       </button>
       {onLead && (
         <button type="button" className="ghost lead-entry" onClick={onLead}>
-          I&apos;m running this raid
+          Raid lead tools
         </button>
       )}
     </section>
@@ -880,11 +934,13 @@ function Login({
   linking,
   onDemo,
   onBack,
+  nextPath,
 }: {
   providers: Providers
   linking: boolean
   onDemo: (provider: 'discord' | 'battlenet', persona: 'nyx' | 'officer') => void
   onBack: () => void
+  nextPath: string
 }) {
   const [pick, setPick] = useState<'discord' | 'battlenet' | null>(null)
 
@@ -893,7 +949,7 @@ function Login({
       setPick(provider)
       return
     }
-    window.location.href = `/api/auth/${provider}`
+    window.location.href = `/api/auth/${provider}?next=${encodeURIComponent(nextPath || '/')}`
   }
 
   if (pick) {
@@ -1485,6 +1541,7 @@ function Lead({
   onNudge,
   onCopyGargul,
   onCopyCsv,
+  onCopyLink,
   onReset,
   onAddRoster,
   onRemoveRoster,
@@ -1500,6 +1557,7 @@ function Lead({
   onNudge: () => void
   onCopyGargul: () => void
   onCopyCsv: () => void
+  onCopyLink: () => void
   onReset: () => void
   onAddRoster: (body: { name: string; className: WowClass; spec: string; role: Role }) => Promise<void>
   onRemoveRoster: (raider: Raider) => Promise<void>
@@ -1581,6 +1639,9 @@ function Lead({
             Lock picks
           </button>
         )}
+        <button type="button" className="secondary" onClick={onCopyLink}>
+          Copy reserve link
+        </button>
         <button type="button" className="primary" onClick={onCopyGargul}>
           Copy for Gargul
         </button>
