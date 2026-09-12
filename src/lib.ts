@@ -59,6 +59,38 @@ export function missingPicks(roster: Raider[], limit: number) {
   return roster.filter((raider) => raider.signed && raider.picks.length < limit)
 }
 
+export function pad2(n: number) {
+  return String(n).padStart(2, '0')
+}
+
+export function nextRaidDate() {
+  const d = new Date()
+  const add = (2 - d.getDay() + 7) % 7 || 7
+  d.setDate(d.getDate() + add)
+  return `${d.getFullYear()}-${pad2(d.getMonth() + 1)}-${pad2(d.getDate())}`
+}
+
+export function formatRaidWhen(date: string, time: string) {
+  const d = new Date(`${date}T${time}:00`)
+  if (Number.isNaN(d.getTime())) return time
+  return d.toLocaleString(undefined, { weekday: 'long', hour: 'numeric', minute: '2-digit' })
+}
+
+export function formatRaidDate(date: string) {
+  const d = new Date(`${date}T12:00:00`)
+  if (Number.isNaN(d.getTime())) return date
+  return d.toLocaleDateString(undefined, { weekday: 'short', month: 'short', day: 'numeric' })
+}
+
+export function lockLabelFrom(time: string) {
+  const [h, m] = time.split(':').map(Number)
+  if (!Number.isFinite(h) || !Number.isFinite(m)) return 'Start'
+  const total = (((h * 60 + m - 15) % (24 * 60)) + 24 * 60) % (24 * 60)
+  const d = new Date()
+  d.setHours(Math.floor(total / 60), total % 60, 0, 0)
+  return d.toLocaleTimeString(undefined, { hour: 'numeric', minute: '2-digit' })
+}
+
 export function composition(roster: Raider[]) {
   const signed = roster.filter((r) => r.signed)
   return {

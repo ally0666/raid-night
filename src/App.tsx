@@ -15,10 +15,14 @@ import {
   bossesFor,
   classColor,
   composition,
+  formatRaidDate,
+  formatRaidWhen,
   iconUrl,
   itemById,
   itemsForRaid,
+  lockLabelFrom,
   missingPicks,
+  nextRaidDate,
   pickCount,
   roleLabel,
   usableBy,
@@ -345,10 +349,6 @@ export default function App() {
   return (
     <div className={`app ${demoLead ? 'lead-mode' : ''} ${canManageRaid || user?.lead ? 'has-switcher' : ''}`}>
       <div className="frame">
-        <span className="ornament tl" aria-hidden="true" />
-        <span className="ornament tr" aria-hidden="true" />
-        <span className="ornament bl" aria-hidden="true" />
-        <span className="ornament br" aria-hidden="true" />
         {view !== 'login' && (
           <SessionBar
             user={user}
@@ -620,20 +620,22 @@ function Home({
 }) {
   return (
     <section className="screen">
-      <p className="eyebrow">Raid board</p>
+      <p className="eyebrow">Raid night</p>
       <header className="hero">
-        <h1>Tonight&apos;s raids</h1>
-        <p className="lede">Pick the night you&apos;re coming. Signup and loot reserves live on the same sheet.</p>
+        <h1>Upcoming raids</h1>
+        <p className="lede">Sign up and reserve loot on one board. Leads pick the instance, date, and pull time.</p>
       </header>
-      <div className="stack">
+      <div className="raid-list">
         {raids.map((raid) => (
-          <button type="button" key={raid.id} className="card char-card" onClick={() => onOpen(raid.id)}>
-            <span className="dot" style={{ background: 'var(--gold)' }} />
-            <span>
+          <button type="button" key={raid.id} className="raid-card" onClick={() => onOpen(raid.id)}>
+            <span className="raid-date">
+              <strong>{raid.dateLabel || 'TBD'}</strong>
+              <small>{raid.when}</small>
+            </span>
+            <span className="raid-copy">
               <strong>{raid.name}</strong>
               <small>
-                {raid.instanceName} · {raid.when}
-                {raid.dateLabel ? ` · ${raid.dateLabel}` : ''} · {raid.signed}/{raid.size} signed
+                {raid.instanceName} · {raid.signed}/{raid.size} signed
                 {raid.locked ? ' · locked' : ''}
               </small>
             </span>
@@ -641,11 +643,58 @@ function Home({
           </button>
         ))}
       </div>
-      {raids.length === 0 && <p className="hint">Nothing posted yet. Create the first raid.</p>}
+      {raids.length === 0 && <p className="hint">Nothing scheduled yet.</p>}
       <button type="button" className="primary" onClick={onCreate}>
-        {signedIn ? 'Post a raid' : 'Sign in to post a raid'}
+        {signedIn ? 'Schedule a raid' : 'Sign in to schedule'}
       </button>
     </section>
+  )
+}
+
+function MonthCal({ value, onChange }: { value: string; onChange: (next: string) => void }) {
+  const selected = value ? new Date(`${value}T12:00:00`) : new Date()
+  const [cursor, setCursor] = useState(() => new Date(selected.getFullYear(), selected.getMonth(), 1))
+  const year = cursor.getFullYear()
+  const month = cursor.getMonth()
+  const blanks = new Date(year, month, 1).getDay()
+  const days = new Date(year, month + 1, 0).getDate()
+  const cells = [...Array(blanks).fill(null), ...Array.from({ length: days }, (_, i) => i + 1)]
+  const today = new Date()
+  const todayStamp = `${today.getFullYear()}-${String(today.getMonth() + 1).padStart(2, '0')}-${String(today.getDate()).padStart(2, '0')}`
+
+  return (
+    <div className="cal">
+      <div className="cal-head">
+        <button type="button" className="ghost" onClick={() => setCursor(new Date(year, month - 1, 1))}>
+          ‹
+        </button>
+        <strong>{cursor.toLocaleDateString(undefined, { month: 'long', year: 'numeric' })}</strong>
+        <button type="button" className="ghost" onClick={() => setCursor(new Date(year, month + 1, 1))}>
+          ›
+        </button>
+      </div>
+      <div className="cal-week">
+        {['S', 'M', 'T', 'W', 'T', 'F', 'S'].map((d, i) => (
+          <span key={`${d}-${i}`}>{d}</span>
+        ))}
+      </div>
+      <div className="cal-grid">
+        {cells.map((day, i) => {
+          if (!day) return <span key={`b-${i}`} />
+          const stamp = `${year}-${String(month + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`
+          return (
+            <button
+              type="button"
+              key={stamp}
+              className={`${stamp === value ? 'on' : ''} ${stamp === todayStamp ? 'today' : ''}`}
+              onClick={() => onChange(stamp)}
+            >
+              {day}
+            </button>
+          )
+        })}
+      </div>
+    </div>
   )
 }
 
@@ -671,79 +720,86 @@ function CreateRaid({
   const [instanceId, setInstanceId] = useState(instances[0]?.id || 'karazhan')
   const picked = instances.find((row) => row.id === instanceId)
   const [name, setName] = useState(picked?.name || 'Karazhan')
-  const [when, setWhen] = useState('Tuesday, 8:00 PM')
-  const [dateLabel, setDateLabel] = useState('')
+  const [date, setDate] = useState(nextRaidDate)
+  const [time, setTime] = useState('20:00')
   const [size, setSize] = useState(picked?.size || 10)
   const [pickLimit, setPickLimit] = useState(picked?.pickLimit || 2)
-  const [lockLabel, setLockLabel] = useState('7:45 PM')
 
   return (
     <section className="screen">
       <button type="button" className="back" onClick={onBack}>
-        ← Back
+        ← Board
       </button>
       <p className="eyebrow">Raid lead</p>
-      <h1>Post a raid</h1>
-      <p className="lede">Pick the instance. Raiders will sign up and reserve drops on this sheet.</p>
-      <label className="field">
-        <span>Instance</span>
-        <select
-          value={instanceId}
-          onChange={(e) => {
-            const next = e.target.value
-            setInstanceId(next)
-            const row = instances.find((item) => item.id === next)
-            if (row) {
+      <h1>Schedule a raid</h1>
+      <p className="lede">Choose the instance, then pick the night and pull time. Raiders sign up on this sheet.</p>
+
+      <p className="field-label">Instance</p>
+      <div className="instance-grid">
+        {instances.map((row) => (
+          <button
+            type="button"
+            key={row.id}
+            className={`instance-chip ${instanceId === row.id ? 'on' : ''}`}
+            onClick={() => {
+              setInstanceId(row.id)
               setName(row.name)
               setSize(row.size)
               setPickLimit(row.pickLimit)
-            }
-          }}
-        >
-          {instances.map((row) => (
-            <option key={row.id} value={row.id}>
-              {row.name}
-            </option>
-          ))}
-        </select>
-      </label>
+            }}
+          >
+            <strong>{row.name}</strong>
+            <small>{row.size}-man</small>
+          </button>
+        ))}
+      </div>
+
       <label className="field">
         <span>Title</span>
         <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Karazhan" />
       </label>
-      <label className="field">
-        <span>When</span>
-        <input value={when} onChange={(e) => setWhen(e.target.value)} placeholder="Tuesday, 8:00 PM" />
-      </label>
-      <label className="field">
-        <span>Date label</span>
-        <input value={dateLabel} onChange={(e) => setDateLabel(e.target.value)} placeholder="Tue, Sep 8" />
-      </label>
-      <label className="field">
-        <span>Raid size</span>
-        <input type="number" min={10} max={40} value={size} onChange={(e) => setSize(Number(e.target.value) || 10)} />
-      </label>
-      <label className="field">
-        <span>Item picks each</span>
-        <input
-          type="number"
-          min={1}
-          max={4}
-          value={pickLimit}
-          onChange={(e) => setPickLimit(Number(e.target.value) || 2)}
-        />
-      </label>
-      <label className="field">
-        <span>Change until</span>
-        <input value={lockLabel} onChange={(e) => setLockLabel(e.target.value)} placeholder="7:45 PM" />
-      </label>
+
+      <p className="field-label">Date</p>
+      <MonthCal value={date} onChange={setDate} />
+
+      <div className="when-row">
+        <label className="field">
+          <span>Pull time</span>
+          <input type="time" value={time} onChange={(e) => setTime(e.target.value)} />
+        </label>
+        <label className="field">
+          <span>Size</span>
+          <input type="number" min={10} max={40} value={size} onChange={(e) => setSize(Number(e.target.value) || 10)} />
+        </label>
+        <label className="field">
+          <span>Reserves</span>
+          <input
+            type="number"
+            min={1}
+            max={4}
+            value={pickLimit}
+            onChange={(e) => setPickLimit(Number(e.target.value) || 2)}
+          />
+        </label>
+      </div>
+
+      <p className="hint">
+        {formatRaidDate(date)} · {formatRaidWhen(date, time)}. Picks lock at {lockLabelFrom(time)}.
+      </p>
+
       <button
         type="button"
         className="primary"
         onClick={() => {
-          onSave({ instanceId, name, when, dateLabel, size, pickLimit, lockLabel }).catch((err) =>
-            flash(err instanceof Error ? err.message : 'Could not post the raid.'),
-          )
+          onSave({
+            instanceId,
+            name,
+            when: formatRaidWhen(date, time),
+            dateLabel: formatRaidDate(date),
+            size,
+            pickLimit,
+            lockLabel: lockLabelFrom(time),
+          }).catch((err) => flash(err instanceof Error ? err.message : 'Could not schedule the raid.'))
         }}
       >
         Post raid
