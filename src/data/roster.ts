@@ -108,7 +108,7 @@ export const seedRoster: Raider[] = [
 
 export const raid = {
   name: 'Karazhan',
-  when: 'Tuesday · 8:00 PM',
+  when: 'Tuesday, 8:00 PM',
   dateLabel: 'Tue, Sep 1',
   size: 10,
   pickLimit: 2,

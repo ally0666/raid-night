@@ -21,7 +21,17 @@ export type SavedCharacter = Character & {
   lastPicks: number[]
 }
 
-export type RaidState = {
+export type RaidInstance = {
+  id: string
+  name: string
+  size: number
+  pickLimit: number
+}
+
+export type RaidSummary = {
+  id: string
+  instanceId: string
+  instanceName: string
   name: string
   when: string
   dateLabel: string
@@ -29,6 +39,22 @@ export type RaidState = {
   pickLimit: number
   lockLabel: string
   locked: boolean
+  signed: number
+  canManage: boolean
+}
+
+export type RaidState = {
+  id: string
+  instanceId: string
+  instanceName: string
+  name: string
+  when: string
+  dateLabel: string
+  size: number
+  pickLimit: number
+  lockLabel: string
+  locked: boolean
+  canManage: boolean
   roster: Raider[]
 }
 
@@ -78,7 +104,18 @@ async function req<T>(path: string, init?: RequestInit): Promise<T> {
 export const api = {
   me: () =>
     req<{ user: PublicUser | null; characters: SavedCharacter[]; providers: Providers }>('/api/me'),
-  raid: () => req<RaidState>('/api/raid'),
+  instances: () => req<{ instances: RaidInstance[] }>('/api/instances'),
+  raids: () => req<{ raids: RaidSummary[] }>('/api/raids'),
+  raid: (id?: string) => req<RaidState>(id ? `/api/raids/${id}` : '/api/raid'),
+  createRaid: (body: {
+    instanceId: string
+    name?: string
+    when?: string
+    dateLabel?: string
+    size?: number
+    pickLimit?: number
+    lockLabel?: string
+  }) => req<RaidState>('/api/raids', { method: 'POST', body: JSON.stringify(body) }),
   demoLogin: (provider: 'discord' | 'battlenet', persona: 'nyx' | 'officer') =>
     req<{ user: PublicUser | null; characters: SavedCharacter[]; providers: Providers }>(
       '/api/auth/demo',
@@ -103,12 +140,13 @@ export const api = {
       method: 'POST',
       body: JSON.stringify({ characters }),
     }),
-  signup: (body: { characterId: string; picks: number[] }) =>
-    req<RaidState>('/api/raid/signup', { method: 'POST', body: JSON.stringify(body) }),
-  lock: (locked: boolean) =>
-    req<RaidState>('/api/raid/lock', { method: 'POST', body: JSON.stringify({ locked }) }),
-  reset: () => req<RaidState>('/api/raid/reset', { method: 'POST' }),
-  addRosterMember: (body: { name: string; className: WowClass; spec: string; role: Role }) =>
-    req<RaidState>('/api/raid/roster', { method: 'POST', body: JSON.stringify(body) }),
-  removeRosterMember: (id: string) => req<RaidState>(`/api/raid/roster/${encodeURIComponent(id)}`, { method: 'DELETE' }),
+  signup: (raidId: string, body: { characterId: string; picks: number[] }) =>
+    req<RaidState>(`/api/raids/${raidId}/signup`, { method: 'POST', body: JSON.stringify(body) }),
+  lock: (raidId: string, locked: boolean) =>
+    req<RaidState>(`/api/raids/${raidId}/lock`, { method: 'POST', body: JSON.stringify({ locked }) }),
+  reset: (raidId: string) => req<RaidState>(`/api/raids/${raidId}/reset`, { method: 'POST' }),
+  addRosterMember: (raidId: string, body: { name: string; className: WowClass; spec: string; role: Role }) =>
+    req<RaidState>(`/api/raids/${raidId}/roster`, { method: 'POST', body: JSON.stringify(body) }),
+  removeRosterMember: (raidId: string, id: string) =>
+    req<RaidState>(`/api/raids/${raidId}/roster/${encodeURIComponent(id)}`, { method: 'DELETE' }),
 }

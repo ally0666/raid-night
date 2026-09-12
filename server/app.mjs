@@ -11,15 +11,19 @@ import {
   originFromRequest,
   providers,
 } from './env.mjs'
-import { CLASS_BY_ID, demoPersonas, raidMeta, ROLES, WOW_CLASSES } from './seed.mjs'
+import { CLASS_BY_ID, demoPersonas, INSTANCES, ROLES, WOW_CLASSES } from './seed.mjs'
 import {
   addCharacter,
   addManualRaider,
+  canManage,
   charactersFor,
+  createRaid,
   fail,
   findUserByProvider,
+  getRaid,
   publicUser,
   raidPayload,
+  raidSummary,
   read,
   removeRosterMember,
   update,
@@ -291,10 +295,43 @@ app.get('/api/me', (c) => {
   return c.json(mePayload(data, sessionUser(data, c)))
 })
 
+app.get('/api/instances', (c) => c.json({ instances: INSTANCES }))
+
+app.get('/api/raids', (c) => {
+  const data = read()
+  const user = sessionUser(data, c)
+  const list = Object.values(data.raids)
+    .map((raid) => raidSummary(data, raid, user))
+    .sort((a, b) => a.name.localeCompare(b.name))
+  return c.json({ raids: list })
+})
+
+app.get('/api/raids/:id', (c) => {
+  const data = read()
+  const user = sessionUser(data, c)
+  const raid = getRaid(data, c.req.param('id'))
+  return c.json(raidPayload(data, raid, user?.id, user))
+})
+
+app.post('/api/raids', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const data = read()
+  const user = requireUser(sessionUser(data, c))
+  const raid = await update((next) => {
+    const live = next.users[user.id]
+    if (!live) throw fail(401, 'Sign in again.')
+    const created = createRaid(next, live, body)
+    return raidPayload(next, created, live.id, live)
+  })
+  return c.json(raid)
+})
+
 app.get('/api/raid', (c) => {
   const data = read()
   const user = sessionUser(data, c)
-  return c.json(raidPayload(data, user?.id))
+  const id = c.req.query('id') || Object.keys(data.raids)[0]
+  const raid = getRaid(data, id)
+  return c.json(raidPayload(data, raid, user?.id, user))
 })
 
 app.get('/api/auth/discord', (c) => startOAuth(c, 'discord'))
@@ -490,74 +527,86 @@ app.post('/api/wow/import', async (c) => {
   return c.json({ characters: added })
 })
 
-app.post('/api/raid/signup', async (c) => {
+app.post('/api/raids/:id/signup', async (c) => {
   const body = await c.req.json().catch(() => ({}))
   const data = read()
   const user = requireUser(sessionUser(data, c))
   const raid = await update((next) => {
     const live = next.users[user.id]
     if (!live) throw fail(401, 'Sign in again.')
+    const current = getRaid(next, c.req.param('id'))
     const character = next.characters[body.characterId]
     if (!character || character.userId !== live.id) throw fail(400, 'Pick one of your characters.')
-    const existing = next.raid.signups[live.id]
-    if (next.raid.locked && !existing) throw fail(403, 'Signups are locked for tonight.')
-    if (next.raid.locked && existing) throw fail(403, 'Picks are locked for tonight.')
+    const existing = current.signups[live.id]
+    if (current.locked && !existing) throw fail(403, 'Signups are locked for tonight.')
+    if (current.locked && existing) throw fail(403, 'Picks are locked for tonight.')
     let picks = Array.isArray(body.picks)
-      ? body.picks.filter((n) => Number.isInteger(n)).slice(0, raidMeta.pickLimit)
+      ? body.picks.filter((n) => Number.isInteger(n)).slice(0, current.pickLimit)
       : existing?.picks || []
     const previous = existing ? next.characters[existing.characterId] : null
     if (previous && previous.className !== character.className) picks = Array.isArray(body.picks) ? picks : []
-    next.raid.signups[live.id] = {
+    current.signups[live.id] = {
       userId: live.id,
       characterId: character.id,
       picks,
     }
     character.lastPicks = picks
-    return raidPayload(next, live.id)
+    return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)
 })
 
-app.post('/api/raid/lock', async (c) => {
+app.post('/api/raids/:id/lock', async (c) => {
   const body = await c.req.json().catch(() => ({}))
   const data = read()
-  const user = requireLead(sessionUser(data, c))
+  const user = requireUser(sessionUser(data, c))
   const raid = await update((next) => {
-    next.raid.locked = Boolean(body.locked)
-    return raidPayload(next, user.id)
+    const live = next.users[user.id]
+    const current = getRaid(next, c.req.param('id'))
+    if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
+    current.locked = Boolean(body.locked)
+    return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)
 })
 
-app.post('/api/raid/reset', async (c) => {
+app.post('/api/raids/:id/reset', async (c) => {
   const data = read()
-  const user = requireLead(sessionUser(data, c))
+  const user = requireUser(sessionUser(data, c))
   const raid = await update((next) => {
-    next.raid.locked = false
-    next.raid.signups = {}
-    return raidPayload(next, user.id)
+    const live = next.users[user.id]
+    const current = getRaid(next, c.req.param('id'))
+    if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
+    current.locked = false
+    current.signups = {}
+    return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)
 })
 
-app.post('/api/raid/roster', async (c) => {
+app.post('/api/raids/:id/roster', async (c) => {
   const body = await c.req.json().catch(() => ({}))
   const data = read()
-  const user = requireLead(sessionUser(data, c))
+  const user = requireUser(sessionUser(data, c))
   const raid = await update((next) => {
-    addManualRaider(next, body)
-    return raidPayload(next, user.id)
+    const live = next.users[user.id]
+    const current = getRaid(next, c.req.param('id'))
+    if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
+    addManualRaider(next, current, body)
+    return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)
 })
 
-app.delete('/api/raid/roster/:id', async (c) => {
-  const id = c.req.param('id')
+app.delete('/api/raids/:id/roster/:memberId', async (c) => {
   const data = read()
-  const user = requireLead(sessionUser(data, c))
+  const user = requireUser(sessionUser(data, c))
   const raid = await update((next) => {
-    removeRosterMember(next, id)
-    return raidPayload(next, user.id)
+    const live = next.users[user.id]
+    const current = getRaid(next, c.req.param('id'))
+    if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
+    removeRosterMember(next, current, c.req.param('memberId'))
+    return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)
 })

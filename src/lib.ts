@@ -31,7 +31,13 @@ export const wowClasses: WowClass[] = [
   'Druid',
 ]
 
-export const bosses = ['Attumen', 'Moroes', 'Maiden', 'Opera', 'Curator', 'Illhoof', 'Aran', 'Netherspite', 'Chess', 'Prince', 'Nightbane']
+export function itemsForRaid(instanceId: string) {
+  return items.filter((item) => (item.raidId || 'karazhan') === instanceId)
+}
+
+export function bossesFor(instanceId: string) {
+  return [...new Set(itemsForRaid(instanceId).map((item) => item.boss))]
+}
 
 export function iconUrl(icon: string) {
   return `https://wow.zamimg.com/images/wow/icons/large/${icon}.jpg`

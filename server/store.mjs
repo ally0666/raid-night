@@ -2,7 +2,7 @@ import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
 import { rootDir } from './env.mjs'
-import { raidMeta, ROLES, seedRoster, WOW_CLASSES } from './seed.mjs'
+import { INSTANCES, raidMeta, ROLES, WOW_CLASSES } from './seed.mjs'
 
 const dataDir = process.env.DATA_DIR || join(rootDir, 'data')
 const storePath = join(dataDir, 'store.json')
@@ -14,35 +14,69 @@ function emptyData() {
     characters: {},
     sessions: {},
     oauthStates: {},
-    raid: {
-      locked: false,
-      signups: {},
-      manualRoster: seedRoster,
-    },
+    raids: {},
   }
 }
 
+export function instanceById(id) {
+  return INSTANCES.find((row) => row.id === id) || null
+}
+
+function defaultKara(signups = {}, locked = false, manualRoster = []) {
+  return {
+    id: 'kara-night',
+    instanceId: 'karazhan',
+    name: raidMeta.name,
+    when: raidMeta.when,
+    dateLabel: raidMeta.dateLabel,
+    size: raidMeta.size,
+    pickLimit: raidMeta.pickLimit,
+    lockLabel: raidMeta.lockLabel,
+    locked,
+    signups,
+    manualRoster,
+    createdBy: null,
+  }
+}
+
+export function ensureRaids(data) {
+  if (!data.raids) data.raids = {}
+  if (data.raid && Object.keys(data.raids).length === 0) {
+    data.raids['kara-night'] = defaultKara(
+      data.raid.signups || {},
+      Boolean(data.raid.locked),
+      Array.isArray(data.raid.manualRoster) ? data.raid.manualRoster : [],
+    )
+  }
+  if (Object.keys(data.raids).length === 0) {
+    data.raids['kara-night'] = defaultKara()
+  }
+  for (const raid of Object.values(data.raids)) {
+    if (!Array.isArray(raid.manualRoster)) raid.manualRoster = []
+    if (!raid.signups) raid.signups = {}
+  }
+  return data
+}
+
 function loadFile() {
-  if (!existsSync(storePath)) return emptyData()
+  if (!existsSync(storePath)) {
+    const data = emptyData()
+    return ensureRaids(data)
+  }
   try {
     const parsed = JSON.parse(readFileSync(storePath, 'utf8'))
-    return {
+    const data = {
       ...emptyData(),
       ...parsed,
       users: parsed.users || {},
       characters: parsed.characters || {},
       sessions: parsed.sessions || {},
       oauthStates: parsed.oauthStates || {},
-      raid: {
-        locked: Boolean(parsed.raid?.locked),
-        signups: parsed.raid?.signups || {},
-        // Existing deployments used the static seed roster. Preserve it as the
-        // starting point the first time a lead edits the roster.
-        manualRoster: Array.isArray(parsed.raid?.manualRoster) ? parsed.raid.manualRoster : seedRoster,
-      },
+      raids: parsed.raids || {},
     }
+    return ensureRaids(data)
   } catch {
-    return emptyData()
+    return ensureRaids(emptyData())
   }
 }
 
@@ -149,7 +183,20 @@ export function addCharacter(data, userId, input) {
   return character
 }
 
-export function addManualRaider(data, input) {
+export function getRaid(data, id) {
+  ensureRaids(data)
+  const raid = data.raids[id]
+  if (!raid) throw fail(404, 'That raid is not on the board.')
+  return raid
+}
+
+export function canManage(user, raid) {
+  if (!user) return false
+  if (user.lead) return true
+  return Boolean(raid.createdBy && raid.createdBy === user.id)
+}
+
+export function addManualRaider(data, raid, input) {
   const name = String(input.name || '').trim()
   if (!/^[A-Za-z]{2,12}$/.test(name)) {
     throw fail(400, 'Character names are 2–12 letters, same as in WoW.')
@@ -161,9 +208,9 @@ export function addManualRaider(data, input) {
   const spec = String(input.spec || '').trim().slice(0, 32)
   if (!spec) throw fail(400, 'Add a spec so the raid lead knows what they play.')
 
-  const roster = data.raid.manualRoster || (data.raid.manualRoster = [...seedRoster])
+  const roster = raid.manualRoster || (raid.manualRoster = [])
   const alreadyListed = roster.some((r) => r.name.toLowerCase() === name.toLowerCase())
-  const alreadySigned = Object.values(data.raid.signups).some((signup) => {
+  const alreadySigned = Object.values(raid.signups || {}).some((signup) => {
     const character = data.characters[signup.characterId]
     return character?.name?.toLowerCase() === name.toLowerCase()
   })
@@ -182,19 +229,19 @@ export function addManualRaider(data, input) {
   return raider
 }
 
-export function removeRosterMember(data, id) {
-  const roster = data.raid.manualRoster || (data.raid.manualRoster = [...seedRoster])
+export function removeRosterMember(data, raid, id) {
+  const roster = raid.manualRoster || (raid.manualRoster = [])
   const manualIndex = roster.findIndex((r) => r.id === id)
   if (manualIndex >= 0) {
     roster.splice(manualIndex, 1)
     return
   }
-  if (!data.raid.signups[id]) throw fail(404, 'Raider not found.')
-  delete data.raid.signups[id]
+  if (!raid.signups?.[id]) throw fail(404, 'Raider not found.')
+  delete raid.signups[id]
 }
 
-export function buildRoster(data, youId) {
-  const fromSignups = Object.values(data.raid.signups)
+export function buildRoster(data, raid, youId) {
+  const fromSignups = Object.values(raid.signups || {})
     .map((signup) => {
       const character = data.characters[signup.characterId]
       const user = data.users[signup.userId]
@@ -215,16 +262,66 @@ export function buildRoster(data, youId) {
     .filter(Boolean)
 
   const used = new Set(fromSignups.map((r) => r.name.toLowerCase()))
-  const manualRoster = data.raid.manualRoster || seedRoster
-  const extras = manualRoster.filter((r) => !used.has(r.name.toLowerCase()))
+  const extras = (raid.manualRoster || []).filter((r) => !used.has(r.name.toLowerCase()))
   return [...extras, ...fromSignups]
 }
 
-export function raidPayload(data, youId) {
+export function raidPayload(data, raid, youId, user = null) {
+  const instance = instanceById(raid.instanceId)
   return {
-    ...raidMeta,
-    locked: Boolean(data.raid.locked),
-    roster: buildRoster(data, youId),
+    id: raid.id,
+    instanceId: raid.instanceId,
+    instanceName: instance?.name || raid.name,
+    name: raid.name,
+    when: raid.when,
+    dateLabel: raid.dateLabel,
+    size: raid.size,
+    pickLimit: raid.pickLimit,
+    lockLabel: raid.lockLabel,
+    locked: Boolean(raid.locked),
+    canManage: canManage(user, raid),
+    roster: buildRoster(data, raid, youId),
+  }
+}
+
+export function createRaid(data, user, body) {
+  const instance = instanceById(body.instanceId)
+  if (!instance) throw fail(400, 'Pick a raid instance.')
+  const id = `r_${randomUUID()}`
+  const raid = {
+    id,
+    instanceId: instance.id,
+    name: String(body.name || instance.name).trim().slice(0, 48) || instance.name,
+    when: String(body.when || '').trim().slice(0, 48) || 'Tonight',
+    dateLabel: String(body.dateLabel || '').trim().slice(0, 32) || '',
+    size: Number(body.size) > 0 ? Math.min(40, Number(body.size)) : instance.size,
+    pickLimit: Number(body.pickLimit) > 0 ? Math.min(4, Number(body.pickLimit)) : instance.pickLimit,
+    lockLabel: String(body.lockLabel || '').trim().slice(0, 32) || 'Start',
+    locked: false,
+    signups: {},
+    manualRoster: [],
+    createdBy: user.id,
+  }
+  data.raids[id] = raid
+  return raid
+}
+
+export function raidSummary(data, raid, user) {
+  const instance = instanceById(raid.instanceId)
+  const signed = Object.keys(raid.signups || {}).length
+  return {
+    id: raid.id,
+    instanceId: raid.instanceId,
+    instanceName: instance?.name || raid.name,
+    name: raid.name,
+    when: raid.when,
+    dateLabel: raid.dateLabel,
+    size: raid.size,
+    pickLimit: raid.pickLimit,
+    lockLabel: raid.lockLabel,
+    locked: Boolean(raid.locked),
+    signed,
+    canManage: canManage(user, raid),
   }
 }
 

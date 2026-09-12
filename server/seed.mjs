@@ -24,9 +24,22 @@ export const CLASS_BY_ID = {
   11: 'Druid',
 }
 
+export const INSTANCES = [
+  { id: 'karazhan', name: 'Karazhan', size: 10, pickLimit: 2 },
+  { id: 'gruul', name: "Gruul's Lair", size: 25, pickLimit: 2 },
+  { id: 'magtheridon', name: "Magtheridon's Lair", size: 25, pickLimit: 2 },
+  { id: 'ssc', name: 'Serpentshrine Cavern', size: 25, pickLimit: 2 },
+  { id: 'tk', name: 'The Eye', size: 25, pickLimit: 2 },
+  { id: 'hyjal', name: 'Hyjal Summit', size: 25, pickLimit: 2 },
+  { id: 'bt', name: 'Black Temple', size: 25, pickLimit: 2 },
+  { id: 'za', name: "Zul'Aman", size: 10, pickLimit: 2 },
+  { id: 'swp', name: 'Sunwell Plateau', size: 25, pickLimit: 2 },
+]
+
 export const raidMeta = {
   name: 'Karazhan',
-  when: 'Tuesday · 8:00 PM',
+  instanceId: 'karazhan',
+  when: 'Tuesday, 8:00 PM',
   dateLabel: 'Tue, Sep 8',
   size: 10,
   pickLimit: 2,

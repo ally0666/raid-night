@@ -11,7 +11,17 @@ export type WowClass =
 
 export type Role = 'tank' | 'healer' | 'dps'
 
-export type View = 'invite' | 'login' | 'account' | 'character' | 'confirm' | 'picks' | 'done' | 'lead'
+export type View =
+  | 'home'
+  | 'create'
+  | 'invite'
+  | 'login'
+  | 'account'
+  | 'character'
+  | 'confirm'
+  | 'picks'
+  | 'done'
+  | 'lead'
 
 export type Item = {
   id: number
@@ -20,6 +30,7 @@ export type Item = {
   slot: string
   boss: string
   classes: WowClass[]
+  raidId?: string
 }
 
 export type Character = {

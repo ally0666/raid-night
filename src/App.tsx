@@ -1,14 +1,23 @@
 import { useEffect, useMemo, useState } from 'react'
-import { api, type Providers, type PublicUser, type RaidState, type SavedCharacter, type WowImport } from './api'
-import { items } from './data/items'
+import {
+  api,
+  type Providers,
+  type PublicUser,
+  type RaidInstance,
+  type RaidState,
+  type RaidSummary,
+  type SavedCharacter,
+  type WowImport,
+} from './api'
 import { raid as raidFallback } from './data/roster'
 import { copyText, gargulCsv, gargulExportString, playersForGargul } from './gargul'
 import {
-  bosses,
+  bossesFor,
   classColor,
   composition,
   iconUrl,
   itemById,
+  itemsForRaid,
   missingPicks,
   pickCount,
   roleLabel,
@@ -23,6 +32,7 @@ const NEXT_KEY = 'raid-night-next'
 type Saved = {
   view: View
   characterId: string
+  raidId: string
 }
 
 function load(): Saved | null {
@@ -36,12 +46,22 @@ function load(): Saved | null {
 
 export default function App() {
   const saved = load()
-  const [view, setView] = useState<View>(saved?.view ?? 'invite')
+  const [view, setView] = useState<View>(saved?.view && saved.view !== 'invite' ? saved.view : 'home')
   const [characterId, setCharacterId] = useState(saved?.characterId ?? '')
+  const [raidId, setRaidId] = useState(saved?.raidId ?? '')
+  const [raids, setRaids] = useState<RaidSummary[]>([])
+  const [instances, setInstances] = useState<RaidInstance[]>([])
   const [roster, setRoster] = useState<Raider[]>([])
   const [locked, setLocked] = useState(false)
+  const [canManageRaid, setCanManageRaid] = useState(false)
   const [picks, setPicks] = useState<number[]>([])
-  const [raidInfo, setRaidInfo] = useState(raidFallback)
+  const [raidInfo, setRaidInfo] = useState({
+    ...raidFallback,
+    id: '',
+    instanceId: 'karazhan',
+    instanceName: 'Karazhan',
+    canManage: false,
+  })
   const [user, setUser] = useState<PublicUser | null>(null)
   const [characters, setCharacters] = useState<SavedCharacter[]>([])
   const [providers, setProviders] = useState<Providers>({
@@ -74,31 +94,44 @@ export default function App() {
   }
 
   function applyRaid(next: RaidState) {
+    setRaidId(next.id)
+    setCanManageRaid(Boolean(next.canManage))
     setRaidInfo({
+      id: next.id,
+      instanceId: next.instanceId,
+      instanceName: next.instanceName,
       name: next.name,
       when: next.when,
       dateLabel: next.dateLabel,
       size: next.size,
       pickLimit: next.pickLimit,
       lockLabel: next.lockLabel,
+      canManage: next.canManage,
     })
     setRoster(next.roster)
     setLocked(next.locked)
     const mine = next.roster.find((r) => r.you)
     if (mine) setPicks(mine.picks)
+    else setPicks([])
   }
 
   async function refresh() {
-    const [me, raid] = await Promise.all([api.me(), api.raid()])
+    const [me, board, catalog] = await Promise.all([api.me(), api.raids(), api.instances()])
     applyMe(me)
-    applyRaid(raid)
-    return { me, raid }
+    setRaids(board.raids)
+    setInstances(catalog.instances)
+    const chosen = saved?.raidId && board.raids.some((r) => r.id === saved.raidId) ? saved.raidId : board.raids[0]?.id
+    if (chosen) {
+      const raid = await api.raid(chosen)
+      applyRaid(raid)
+    }
+    return { me, raids: board.raids }
   }
 
   useEffect(() => {
-    const data: Saved = { view, characterId }
+    const data: Saved = { view, characterId, raidId }
     localStorage.setItem(STORAGE, JSON.stringify(data))
-  }, [view, characterId])
+  }, [view, characterId, raidId])
 
   useEffect(() => {
     if (!toast) return
@@ -131,9 +164,9 @@ export default function App() {
   }
 
   function goAfterAuth(nextUser: PublicUser, nextCharacters: SavedCharacter[], next: View) {
-    if (next === 'lead' && !nextUser.lead) {
-      flash('This login is not a raid lead. Sign in as Officer, or add your Discord / Battle.net id to LEAD_* in .env.')
-      setView('invite')
+    if (next === 'lead' && !nextUser.lead && !canManageRaid) {
+      flash('You can still sign up. To run a raid, create one from the board.')
+      setView('home')
       return
     }
     if ((next === 'confirm' || next === 'picks' || next === 'done') && nextCharacters.length === 0) {
@@ -155,7 +188,8 @@ export default function App() {
   }
 
   async function signUpWith(nextCharacter: SavedCharacter, nextPicks: number[]) {
-    const raid = await api.signup({ characterId: nextCharacter.id, picks: nextPicks })
+    if (!raidId) throw new Error('Pick a raid first.')
+    const raid = await api.signup(raidId, { characterId: nextCharacter.id, picks: nextPicks })
     applyRaid(raid)
   }
 
@@ -202,6 +236,11 @@ export default function App() {
     setPicks(nextPicks)
     try {
       await signUpWith(next, nextPicks)
+      if (itemsForRaid(raidInfo.instanceId).length === 0) {
+        setView('done')
+        flash('You are signed. Loot reserves for this instance are not on the sheet yet.')
+        return
+      }
       setView('picks')
     } catch (err) {
       flash(err instanceof Error ? err.message : 'Could not sign up.')
@@ -222,10 +261,9 @@ export default function App() {
     try {
       const me = await api.demoLogin(provider, persona)
       applyMe(me)
-      const raid = await api.raid()
-      applyRaid(raid)
+      if (raidId) applyRaid(await api.raid(raidId))
       setToast(null)
-      const next = (sessionStorage.getItem(NEXT_KEY) as View | null) || (linking ? 'account' : 'invite')
+      const next = (sessionStorage.getItem(NEXT_KEY) as View | null) || (linking ? 'account' : 'home')
       sessionStorage.removeItem(NEXT_KEY)
       setLinking(false)
       if (me.user) goAfterAuth(me.user, me.characters, next)
@@ -240,9 +278,8 @@ export default function App() {
     setCharacters([])
     setPicks([])
     setCharacterId('')
-    const raid = await api.raid()
-    applyRaid(raid)
-    setView('invite')
+    if (raidId) applyRaid(await api.raid(raidId))
+    setView('home')
     flash('Signed out.')
   }
 
@@ -272,6 +309,17 @@ export default function App() {
     flash(`${created.name} is on your account.`)
   }
 
+  async function openRaid(id: string) {
+    try {
+      applyRaid(await api.raid(id))
+      setBoss('For you')
+      setSearch('')
+      setView('invite')
+    } catch (err) {
+      flash(err instanceof Error ? err.message : 'Could not open that raid.')
+    }
+  }
+
   function goRaider() {
     setView(youSigned ? (picks.length ? 'done' : 'picks') : 'invite')
   }
@@ -285,7 +333,7 @@ export default function App() {
       <div className="app">
         <div className="frame">
           <section className="screen">
-            <p className="eyebrow">Karazhan</p>
+            <p className="eyebrow">Raid night</p>
             <h1>Loading…</h1>
             <p className="lede">Pulling the raid board.</p>
           </section>
@@ -295,7 +343,7 @@ export default function App() {
   }
 
   return (
-    <div className={`app ${demoLead ? 'lead-mode' : ''} ${user?.lead ? 'has-switcher' : ''}`}>
+    <div className={`app ${demoLead ? 'lead-mode' : ''} ${canManageRaid || user?.lead ? 'has-switcher' : ''}`}>
       <div className="frame">
         <span className="ornament tl" aria-hidden="true" />
         <span className="ornament tr" aria-hidden="true" />
@@ -305,15 +353,38 @@ export default function App() {
           <SessionBar
             user={user}
             onAccount={() => (user ? setView('account') : needsAuth('account'))}
-            onLogin={() => needsAuth('invite')}
+            onLogin={() => needsAuth('home')}
+          />
+        )}
+        {view === 'home' && (
+          <Home
+            raids={raids}
+            signedIn={Boolean(user)}
+            onOpen={(id) => void openRaid(id)}
+            onCreate={() => needsAuth('create')}
+          />
+        )}
+        {view === 'create' && user && (
+          <CreateRaid
+            instances={instances}
+            onBack={() => setView('home')}
+            onSave={async (body) => {
+              const created = await api.createRaid(body)
+              applyRaid(created)
+              setRaids((await api.raids()).raids)
+              setView('invite')
+              flash(`${created.name} is on the board.`)
+            }}
+            flash={flash}
           />
         )}
         {view === 'invite' && (
           <Invite
             raid={raidInfo}
             counts={counts}
+            onBack={() => setView('home')}
             onJoin={() => needsAuth('confirm')}
-            onLead={goLead}
+            onLead={canManageRaid || user?.lead ? goLead : undefined}
           />
         )}
         {view === 'login' && (
@@ -323,7 +394,7 @@ export default function App() {
             onDemo={onDemo}
             onBack={() => {
               setLinking(false)
-              setView('invite')
+              setView('home')
             }}
           />
         )}
@@ -332,7 +403,7 @@ export default function App() {
             user={user}
             characters={characters}
             providers={providers}
-            onBack={() => setView(youSigned ? 'done' : 'invite')}
+            onBack={() => setView(youSigned ? 'done' : 'home')}
             onLogin={() => {
               setLinking(true)
               sessionStorage.setItem(NEXT_KEY, 'account')
@@ -350,7 +421,7 @@ export default function App() {
         )}
         {view === 'character' && user && (
           <CharacterForm
-            onBack={() => setView(characters.length ? 'account' : 'invite')}
+            onBack={() => setView(characters.length ? 'account' : 'home')}
             onSave={(body) => onAddCharacter(body)}
             flash={flash}
           />
@@ -406,7 +477,7 @@ export default function App() {
             counts={counts}
             onLock={async () => {
               try {
-                applyRaid(await api.lock(true))
+                applyRaid(await api.lock(raidId, true))
                 flash('Sheet locked. Picks are frozen.')
               } catch (err) {
                 flash(err instanceof Error ? err.message : 'Could not lock.')
@@ -414,7 +485,7 @@ export default function App() {
             }}
             onUnlock={async () => {
               try {
-                applyRaid(await api.lock(false))
+                applyRaid(await api.lock(raidId, false))
                 flash('Sheet unlocked. People can change picks again.')
               } catch (err) {
                 flash(err instanceof Error ? err.message : 'Could not unlock.')
@@ -462,7 +533,7 @@ export default function App() {
             }}
             onReset={async () => {
               try {
-                applyRaid(await api.reset())
+                applyRaid(await api.reset(raidId))
                 setPicks([])
                 flash('Signups cleared. Accounts stay linked.')
               } catch (err) {
@@ -471,7 +542,7 @@ export default function App() {
             }}
             onAddRoster={async (body) => {
               try {
-                applyRaid(await api.addRosterMember(body))
+                applyRaid(await api.addRosterMember(raidId, body))
                 flash(`${body.name} added to the roster.`)
               } catch (err) {
                 flash(err instanceof Error ? err.message : 'Could not add raider.')
@@ -480,7 +551,7 @@ export default function App() {
             }}
             onRemoveRoster={async (raider) => {
               try {
-                applyRaid(await api.removeRosterMember(raider.id))
+                applyRaid(await api.removeRosterMember(raidId, raider.id))
                 flash(`${raider.name} removed from the roster.`)
               } catch (err) {
                 flash(err instanceof Error ? err.message : 'Could not remove raider.')
@@ -490,7 +561,7 @@ export default function App() {
         )}
       </div>
 
-      {(user?.lead || view === 'lead') && (
+      {(canManageRaid || user?.lead || view === 'lead') && (
         <nav className="switcher">
           <button type="button" className={!demoLead ? 'on' : ''} onClick={goRaider}>
             Raider
@@ -536,24 +607,182 @@ function SessionBar({
   )
 }
 
-function Invite({
-  raid,
-  counts,
-  onJoin,
-  onLead,
+function Home({
+  raids,
+  signedIn,
+  onOpen,
+  onCreate,
 }: {
-  raid: typeof raidFallback
-  counts: ReturnType<typeof composition>
-  onJoin: () => void
-  onLead: () => void
+  raids: RaidSummary[]
+  signedIn: boolean
+  onOpen: (id: string) => void
+  onCreate: () => void
 }) {
   return (
     <section className="screen">
-      <p className="eyebrow">Karazhan loot + signup</p>
+      <p className="eyebrow">Raid board</p>
+      <header className="hero">
+        <h1>Tonight&apos;s raids</h1>
+        <p className="lede">Pick the night you&apos;re coming. Signup and loot reserves live on the same sheet.</p>
+      </header>
+      <div className="stack">
+        {raids.map((raid) => (
+          <button type="button" key={raid.id} className="card char-card" onClick={() => onOpen(raid.id)}>
+            <span className="dot" style={{ background: 'var(--gold)' }} />
+            <span>
+              <strong>{raid.name}</strong>
+              <small>
+                {raid.instanceName} · {raid.when}
+                {raid.dateLabel ? ` · ${raid.dateLabel}` : ''} · {raid.signed}/{raid.size} signed
+                {raid.locked ? ' · locked' : ''}
+              </small>
+            </span>
+            <em>Open</em>
+          </button>
+        ))}
+      </div>
+      {raids.length === 0 && <p className="hint">Nothing posted yet. Create the first raid.</p>}
+      <button type="button" className="primary" onClick={onCreate}>
+        {signedIn ? 'Post a raid' : 'Sign in to post a raid'}
+      </button>
+    </section>
+  )
+}
+
+function CreateRaid({
+  instances,
+  onBack,
+  onSave,
+  flash,
+}: {
+  instances: RaidInstance[]
+  onBack: () => void
+  onSave: (body: {
+    instanceId: string
+    name: string
+    when: string
+    dateLabel: string
+    size: number
+    pickLimit: number
+    lockLabel: string
+  }) => Promise<void>
+  flash: (message: string) => void
+}) {
+  const [instanceId, setInstanceId] = useState(instances[0]?.id || 'karazhan')
+  const picked = instances.find((row) => row.id === instanceId)
+  const [name, setName] = useState(picked?.name || 'Karazhan')
+  const [when, setWhen] = useState('Tuesday, 8:00 PM')
+  const [dateLabel, setDateLabel] = useState('')
+  const [size, setSize] = useState(picked?.size || 10)
+  const [pickLimit, setPickLimit] = useState(picked?.pickLimit || 2)
+  const [lockLabel, setLockLabel] = useState('7:45 PM')
+
+  return (
+    <section className="screen">
+      <button type="button" className="back" onClick={onBack}>
+        ← Back
+      </button>
+      <p className="eyebrow">Raid lead</p>
+      <h1>Post a raid</h1>
+      <p className="lede">Pick the instance. Raiders will sign up and reserve drops on this sheet.</p>
+      <label className="field">
+        <span>Instance</span>
+        <select
+          value={instanceId}
+          onChange={(e) => {
+            const next = e.target.value
+            setInstanceId(next)
+            const row = instances.find((item) => item.id === next)
+            if (row) {
+              setName(row.name)
+              setSize(row.size)
+              setPickLimit(row.pickLimit)
+            }
+          }}
+        >
+          {instances.map((row) => (
+            <option key={row.id} value={row.id}>
+              {row.name}
+            </option>
+          ))}
+        </select>
+      </label>
+      <label className="field">
+        <span>Title</span>
+        <input value={name} onChange={(e) => setName(e.target.value)} placeholder="Karazhan" />
+      </label>
+      <label className="field">
+        <span>When</span>
+        <input value={when} onChange={(e) => setWhen(e.target.value)} placeholder="Tuesday, 8:00 PM" />
+      </label>
+      <label className="field">
+        <span>Date label</span>
+        <input value={dateLabel} onChange={(e) => setDateLabel(e.target.value)} placeholder="Tue, Sep 8" />
+      </label>
+      <label className="field">
+        <span>Raid size</span>
+        <input type="number" min={10} max={40} value={size} onChange={(e) => setSize(Number(e.target.value) || 10)} />
+      </label>
+      <label className="field">
+        <span>Item picks each</span>
+        <input
+          type="number"
+          min={1}
+          max={4}
+          value={pickLimit}
+          onChange={(e) => setPickLimit(Number(e.target.value) || 2)}
+        />
+      </label>
+      <label className="field">
+        <span>Change until</span>
+        <input value={lockLabel} onChange={(e) => setLockLabel(e.target.value)} placeholder="7:45 PM" />
+      </label>
+      <button
+        type="button"
+        className="primary"
+        onClick={() => {
+          onSave({ instanceId, name, when, dateLabel, size, pickLimit, lockLabel }).catch((err) =>
+            flash(err instanceof Error ? err.message : 'Could not post the raid.'),
+          )
+        }}
+      >
+        Post raid
+      </button>
+    </section>
+  )
+}
+
+function Invite({
+  raid,
+  counts,
+  onBack,
+  onJoin,
+  onLead,
+}: {
+  raid: {
+    name: string
+    when: string
+    dateLabel: string
+    size: number
+    pickLimit: number
+    lockLabel: string
+    instanceName?: string
+  }
+  counts: ReturnType<typeof composition>
+  onBack: () => void
+  onJoin: () => void
+  onLead?: () => void
+}) {
+  return (
+    <section className="screen">
+      <button type="button" className="back" onClick={onBack}>
+        ← Board
+      </button>
+      <p className="eyebrow">{raid.instanceName || 'Raid'} loot + signup</p>
       <header className="hero">
         <p className="kicker">{raid.dateLabel}</p>
         <h1>{raid.name}</h1>
-        <p className="lede">One place to say you&apos;re coming and pick your reserves. Sign in with Discord or Battle.net.</p>
+        <p className="lede">Say you&apos;re coming and pick your reserves. Same sheet for the raid lead.</p>
       </header>
 
       <div className="card invite-card">
@@ -581,9 +810,11 @@ function Invite({
       <button type="button" className="primary" onClick={onJoin}>
         I&apos;m in
       </button>
-      <button type="button" className="ghost lead-entry" onClick={onLead}>
-        I&apos;m running this raid
-      </button>
+      {onLead && (
+        <button type="button" className="ghost lead-entry" onClick={onLead}>
+          I&apos;m running this raid
+        </button>
+      )}
     </section>
   )
 }
@@ -994,7 +1225,7 @@ function Picker({
   onBack,
   onSave,
 }: {
-  raid: typeof raidFallback
+  raid: { pickLimit: number; lockLabel: string; instanceId?: string }
   character: Character
   picks: number[]
   roster: Raider[]
@@ -1009,15 +1240,17 @@ function Picker({
   onBack: () => void
   onSave: () => void
 }) {
+  const instanceId = raid.instanceId || 'karazhan'
+  const bosses = bossesFor(instanceId)
   const visible = useMemo(() => {
     const q = search.trim().toLowerCase()
-    return items.filter((item) => {
+    return itemsForRaid(instanceId).filter((item) => {
       if (!showAll && !usableBy(item, character.className)) return false
       if (boss !== 'For you' && item.boss !== boss) return false
       if (q && !`${item.name} ${item.slot} ${item.boss}`.toLowerCase().includes(q)) return false
       return true
     })
-  }, [character.className, search, boss, showAll])
+  }, [character.className, search, boss, showAll, instanceId])
 
   return (
     <section className="screen picker">
