@@ -765,13 +765,24 @@ ul {
 }
 
 .field input,
-.field select {
+.field select,
+.field textarea {
   width: 100%;
   min-height: var(--tap);
   border-radius: var(--radius);
   border: 1px solid var(--gold-dim);
   background: rgba(0, 0, 0, 0.45);
   padding: 0 14px;
+}
+
+.field textarea {
+  min-height: 140px;
+  padding: 12px 14px;
+  resize: vertical;
+}
+
+.lede a {
+  color: var(--gold);
 }
 
 .wow-import {
@@ -976,4 +987,42 @@ ul {
     grid-column: 3 / 4;
     grid-row: 1 / span 2;
   }
+}
+
+.site-links {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 16px;
+}
+
+.site-links .ghost {
+  width: auto;
+  min-height: 36px;
+  padding: 0 10px;
+}
+
+.mail-btn {
+  display: grid;
+  place-items: center;
+  text-decoration: none;
+}
+
+.mail-btn.is-disabled {
+  opacity: 0.4;
+  pointer-events: none;
+}
+
+.donate-card {
+  display: grid;
+  place-items: center;
+  padding: 18px;
+  background: #fff;
+  border-radius: 18px;
+}
+
+.donate-qr {
+  width: min(100%, 280px);
+  height: auto;
+  border-radius: 8px;
 }

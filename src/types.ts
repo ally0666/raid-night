@@ -22,6 +22,8 @@ export type View =
   | 'picks'
   | 'done'
   | 'lead'
+  | 'feedback'
+  | 'donate'
 
 export type Item = {
   id: number

@@ -336,6 +336,18 @@ export default function App() {
     flash(`${created.name} is on your account.`)
   }
 
+  function goMeta(next: 'feedback' | 'donate') {
+    sessionStorage.setItem('raid-night-from', view)
+    setView(next)
+  }
+
+  function backMeta() {
+    const from = sessionStorage.getItem('raid-night-from') as View | null
+    sessionStorage.removeItem('raid-night-from')
+    if (from && from !== 'feedback' && from !== 'donate') setView(from)
+    else setView('home')
+  }
+
   async function openRaid(id: string) {
     try {
       applyRaid(await api.raid(id))
@@ -525,6 +537,8 @@ export default function App() {
             onEditCharacter={() => setView('confirm')}
           />
         )}
+        {view === 'feedback' && <Feedback onBack={backMeta} />}
+        {view === 'donate' && <Donate onBack={backMeta} />}
         {view === 'lead' && (
           <Lead
             raid={raidInfo}
@@ -620,6 +634,17 @@ export default function App() {
         )}
       </div>
 
+      {view !== 'login' && (
+        <nav className="site-links">
+          <button type="button" className="ghost" onClick={() => goMeta('feedback')}>
+            Feedback
+          </button>
+          <button type="button" className="ghost" onClick={() => goMeta('donate')}>
+            Donate
+          </button>
+        </nav>
+      )}
+
       {(canManageRaid || user?.lead || view === 'lead') && (
         <nav className="switcher">
           <button type="button" className={!demoLead ? 'on' : ''} onClick={goRaider}>
@@ -663,6 +688,54 @@ function SessionBar({
         <small>{linked}</small>
       </button>
     </div>
+  )
+}
+
+function Feedback({ onBack }: { onBack: () => void }) {
+  const [name, setName] = useState('')
+  const [message, setMessage] = useState('')
+  const ready = message.trim().length > 0
+  const subject = name.trim() ? `Raid Night feedback from ${name.trim()}` : 'Raid Night feedback'
+  const href = `mailto:squirt@hey.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(message.trim())}`
+
+  return (
+    <section className="screen">
+      <button type="button" className="back" onClick={onBack}>
+        ← Back
+      </button>
+      <p className="eyebrow">Feedback</p>
+      <h1>Tell me what to fix</h1>
+      <p className="lede">
+        This opens an email to <a href="mailto:squirt@hey.com">squirt@hey.com</a>. Nothing is stored on the site.
+      </p>
+      <label className="field">
+        <span>Your name (optional)</span>
+        <input value={name} onChange={(e) => setName(e.target.value)} />
+      </label>
+      <label className="field">
+        <span>Message</span>
+        <textarea rows={6} value={message} onChange={(e) => setMessage(e.target.value)} />
+      </label>
+      <a className={`primary mail-btn ${ready ? '' : 'is-disabled'}`} href={ready ? href : undefined} aria-disabled={!ready}>
+        Send to squirt@hey.com
+      </a>
+    </section>
+  )
+}
+
+function Donate({ onBack }: { onBack: () => void }) {
+  return (
+    <section className="screen">
+      <button type="button" className="back" onClick={onBack}>
+        ← Back
+      </button>
+      <p className="eyebrow">Donate</p>
+      <h1>Buy the raid a flask</h1>
+      <p className="lede">Scan this code with your phone to send a tip. Totally optional.</p>
+      <div className="donate-card">
+        <img src="/ui/donate-qr.png" alt="Donation QR code" className="donate-qr" />
+      </div>
+    </section>
   )
 }
 
@@ -775,6 +848,47 @@ function MonthCal({ value, onChange }: { value: string; onChange: (next: string)
   )
 }
 
+function NumericField({
+  value,
+  onChange,
+  min,
+  max,
+  fallback,
+}: {
+  value: number
+  onChange: (n: number) => void
+  min: number
+  max: number
+  fallback: number
+}) {
+  const [text, setText] = useState(String(value))
+  useEffect(() => {
+    setText(String(value))
+  }, [value])
+
+  function commit() {
+    const parsed = Number.parseInt(text, 10)
+    const next = Number.isFinite(parsed) ? Math.min(max, Math.max(min, parsed)) : fallback
+    setText(String(next))
+    if (next !== value) onChange(next)
+  }
+
+  return (
+    <input
+      type="text"
+      inputMode="numeric"
+      pattern="[0-9]*"
+      autoComplete="off"
+      value={text}
+      onChange={(e) => setText(e.target.value.replace(/[^\d]/g, '').slice(0, String(max).length))}
+      onBlur={commit}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter') e.currentTarget.blur()
+      }}
+    />
+  )
+}
+
 function CreateRaid({
   instances,
   onBack,
@@ -846,17 +960,11 @@ function CreateRaid({
         </label>
         <label className="field">
           <span>Size</span>
-          <input type="number" min={10} max={40} value={size} onChange={(e) => setSize(Number(e.target.value) || 10)} />
+          <NumericField value={size} min={10} max={40} fallback={10} onChange={setSize} />
         </label>
         <label className="field">
           <span>Reserves</span>
-          <input
-            type="number"
-            min={1}
-            max={4}
-            value={pickLimit}
-            onChange={(e) => setPickLimit(Number(e.target.value) || 2)}
-          />
+          <NumericField value={pickLimit} min={1} max={10} fallback={2} onChange={setPickLimit} />
         </label>
       </div>
 
@@ -1381,16 +1489,18 @@ function Picker({
   onSave: () => void
 }) {
   const instanceId = raid.instanceId || 'karazhan'
+  const catalog = useMemo(() => itemsForRaid(instanceId), [instanceId])
   const bosses = bossesFor(instanceId)
+  const activeBoss = bosses.includes(boss) ? boss : 'For you'
   const visible = useMemo(() => {
     const q = search.trim().toLowerCase()
-    return itemsForRaid(instanceId).filter((item) => {
+    return catalog.filter((item) => {
       if (!showAll && !usableBy(item, character.className)) return false
-      if (boss !== 'For you' && item.boss !== boss) return false
+      if (activeBoss !== 'For you' && item.boss !== activeBoss) return false
       if (q && !`${item.name} ${item.slot} ${item.boss}`.toLowerCase().includes(q)) return false
       return true
     })
-  }, [character.className, search, boss, showAll, instanceId])
+  }, [character.className, search, activeBoss, showAll, catalog])
 
   return (
     <section className="screen picker">
@@ -1435,11 +1545,11 @@ function Picker({
       </label>
 
       <div className="chips">
-        <button type="button" className={boss === 'For you' ? 'on' : ''} onClick={() => onBoss('For you')}>
+        <button type="button" className={activeBoss === 'For you' ? 'on' : ''} onClick={() => onBoss('For you')}>
           All bosses
         </button>
         {bosses.map((name) => (
-          <button type="button" key={name} className={boss === name ? 'on' : ''} onClick={() => onBoss(name)}>
+          <button type="button" key={name} className={activeBoss === name ? 'on' : ''} onClick={() => onBoss(name)}>
             {name}
           </button>
         ))}
@@ -1476,16 +1586,21 @@ function Picker({
             </li>
           )
         })}
-        {visible.length === 0 && <li className="empty">Nothing matches. Try another boss or clear search.</li>}
+        {catalog.length === 0 && <li className="empty">Loot for this instance is not on the sheet yet.</li>}
+        {catalog.length > 0 && visible.length === 0 && (
+          <li className="empty">Nothing matches. Try another boss or clear search.</li>
+        )}
       </ul>
 
       <div className="sticky">
-        <button type="button" className="primary" onClick={onSave} disabled={picks.length === 0}>
-          {picks.length === raid.pickLimit
-            ? 'Save my picks'
-            : picks.length === 1
-              ? 'Save 1 pick for now'
-              : 'Pick at least one item'}
+        <button type="button" className="primary" onClick={onSave} disabled={catalog.length > 0 && picks.length === 0}>
+          {catalog.length === 0
+            ? 'Continue without picks'
+            : picks.length === raid.pickLimit
+              ? 'Save my picks'
+              : picks.length === 1
+                ? 'Save 1 pick for now'
+                : 'Pick at least one item'}
         </button>
       </div>
     </section>
@@ -1500,7 +1615,7 @@ function Done({
   onEditPicks,
   onEditCharacter,
 }: {
-  raid: typeof raidFallback
+  raid: typeof raidFallback & { instanceName?: string }
   character: Character
   picks: number[]
   locked: boolean
@@ -1510,7 +1625,7 @@ function Done({
   return (
     <section className="screen">
       <p className="eyebrow ok">You&apos;re in</p>
-      <h1>See you in Karazhan.</h1>
+      <h1>See you in {raid.instanceName || raid.name}.</h1>
       <p className="lede">
         {character.name} · {character.spec} {character.className}.{' '}
         {locked ? 'Picks are locked.' : `You can change this until ${raid.lockLabel}.`}

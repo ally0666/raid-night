@@ -303,7 +303,7 @@ export function createRaid(data, user, body) {
     when: String(body.when || '').trim().slice(0, 48) || 'Tonight',
     dateLabel: String(body.dateLabel || '').trim().slice(0, 32) || '',
     size: Number(body.size) > 0 ? Math.min(40, Number(body.size)) : instance.size,
-    pickLimit: Number(body.pickLimit) > 0 ? Math.min(4, Number(body.pickLimit)) : instance.pickLimit,
+    pickLimit: Number(body.pickLimit) > 0 ? Math.min(10, Number(body.pickLimit)) : instance.pickLimit,
     lockLabel: String(body.lockLabel || '').trim().slice(0, 32) || 'Start',
     locked: false,
     signups: {},

@@ -3,3 +3,4 @@ dist
 /data
 .env
 *.local
+scripts/.tooltip-cache.json
