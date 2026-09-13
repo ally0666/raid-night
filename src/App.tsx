@@ -34,8 +34,8 @@ const STORAGE = 'raid-night-v2'
 const NEXT_KEY = 'raid-night-next'
 
 function raidIdFromPath() {
-  const match = window.location.pathname.match(/^\/r\/([^/]+)\/?$/)
-  return match ? decodeURIComponent(match[1]) : null
+  const match = window.location.pathname.match(/^\/r\/([A-Za-z0-9_-]{3,80})\/?$/)
+  return match ? match[1] : null
 }
 
 function reserveUrl(id: string) {
@@ -162,7 +162,7 @@ export default function App() {
     const params = new URLSearchParams(window.location.search)
     const err = params.get('auth_error')
     if (err) {
-      setToast(err)
+      setToast(err.slice(0, 160))
       window.history.replaceState({}, '', window.location.pathname)
     }
 

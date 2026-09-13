@@ -1,8 +1,12 @@
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
 import { join } from 'node:path'
 import { randomUUID } from 'node:crypto'
-import { rootDir } from './env.mjs'
+import { demoEnabled, leadBattlenetIds, leadDiscordIds, rootDir } from './env.mjs'
 import { INSTANCES, raidMeta, ROLES, WOW_CLASSES } from './seed.mjs'
+
+const MAX_CHARACTERS = 24
+const MAX_RAIDS = 40
+const MAX_ROSTER = 80
 
 const dataDir = process.env.DATA_DIR || join(rootDir, 'data')
 const storePath = join(dataDir, 'store.json')
@@ -88,7 +92,18 @@ function loadFile() {
   }
 }
 
+function prune(data) {
+  const now = Date.now()
+  for (const [id, session] of Object.entries(data.sessions || {})) {
+    if (!session || session.expiresAt < now) delete data.sessions[id]
+  }
+  for (const [id, state] of Object.entries(data.oauthStates || {})) {
+    if (!state || now - state.createdAt > 15 * 60 * 1000) delete data.oauthStates[id]
+  }
+}
+
 function saveFile(data) {
+  prune(data)
   mkdirSync(dataDir, { recursive: true })
   writeFileSync(storePath, JSON.stringify(data, null, 2))
 }
@@ -122,11 +137,21 @@ export function sessionSecret() {
   return secret
 }
 
+export function isLead(user) {
+  if (!user) return false
+  if (user.discord && leadDiscordIds().includes(user.discord.id)) return true
+  if (user.battlenet && leadBattlenetIds().includes(String(user.battlenet.id))) return true
+  if (process.env.NODE_ENV !== 'production' && (demoEnabled('discord') || demoEnabled('battlenet'))) {
+    return Boolean(user.lead)
+  }
+  return false
+}
+
 export function publicUser(user) {
   if (!user) return null
   return {
     id: user.id,
-    lead: Boolean(user.lead),
+    lead: isLead(user),
     displayName:
       user.discord?.globalName ||
       user.discord?.username ||
@@ -159,6 +184,9 @@ export function findUserByProvider(data, provider, id) {
 }
 
 export function addCharacter(data, userId, input) {
+  if (charactersFor(data, userId).length >= MAX_CHARACTERS) {
+    throw fail(400, 'That account already has the maximum number of characters.')
+  }
   const name = String(input.name || '').trim()
   if (!/^[A-Za-z]{2,12}$/.test(name)) {
     throw fail(400, 'Character names are 2–12 letters, same as in WoW.')
@@ -184,7 +212,7 @@ export function addCharacter(data, userId, input) {
     realm,
     source: input.source === 'battlenet' ? 'battlenet' : 'manual',
     lastPicks: Array.isArray(input.lastPicks)
-      ? input.lastPicks.filter((n) => Number.isInteger(n)).slice(0, 4)
+      ? input.lastPicks.filter((n) => Number.isInteger(n) && n > 0 && n < 1e7).slice(0, 10)
       : [],
   }
   data.characters[character.id] = character
@@ -200,7 +228,7 @@ export function getRaid(data, id) {
 
 export function canManage(user, raid) {
   if (!user) return false
-  if (user.lead) return true
+  if (isLead(user)) return true
   return Boolean(raid.createdBy && raid.createdBy === user.id)
 }
 
@@ -217,6 +245,7 @@ export function addManualRaider(data, raid, input) {
   if (!spec) throw fail(400, 'Add a spec so the raid lead knows what they play.')
 
   const roster = raid.manualRoster || (raid.manualRoster = [])
+  if (roster.length >= MAX_ROSTER) throw fail(400, 'This roster is full.')
   const alreadyListed = roster.some((r) => r.name.toLowerCase() === name.toLowerCase())
   const alreadySigned = Object.values(raid.signups || {}).some((signup) => {
     const character = data.characters[signup.characterId]
@@ -293,6 +322,8 @@ export function raidPayload(data, raid, youId, user = null) {
 }
 
 export function createRaid(data, user, body) {
+  const owned = Object.values(data.raids || {}).filter((raid) => raid.createdBy === user.id).length
+  if (owned >= MAX_RAIDS) throw fail(400, 'Delete an old raid before posting another.')
   const instance = instanceById(body.instanceId)
   if (!instance) throw fail(400, 'Pick a raid instance.')
   const id = `r_${randomUUID()}`

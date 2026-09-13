@@ -1,17 +1,18 @@
-import { randomUUID } from 'node:crypto'
+import { randomBytes, randomUUID } from 'node:crypto'
 import { Hono } from 'hono'
+import { bodyLimit } from 'hono/body-limit'
 import { deleteCookie, getCookie, setCookie } from 'hono/cookie'
+import { secureHeaders } from 'hono/secure-headers'
 import {
   battlenetConfigured,
   demoEnabled,
   discordConfigured,
-  leadBattlenetIds,
-  leadDiscordIds,
   loadEnv,
   originFromRequest,
   providers,
 } from './env.mjs'
 import { CLASS_BY_ID, demoPersonas, INSTANCES, ROLES, WOW_CLASSES } from './seed.mjs'
+import { rateLimit, safeNextPath, safeRaidId, sameOriginMutations } from './security.mjs'
 import {
   addCharacter,
   addManualRaider,
@@ -21,6 +22,7 @@ import {
   fail,
   findUserByProvider,
   getRaid,
+  isLead,
   publicUser,
   raidPayload,
   raidSummary,
@@ -33,8 +35,40 @@ loadEnv()
 
 const COOKIE = 'raid_night_sid'
 const MONTH = 60 * 60 * 24 * 30
+const isProd = process.env.NODE_ENV === 'production'
 
 export const app = new Hono()
+
+app.use(
+  '*',
+  secureHeaders({
+    xFrameOptions: 'DENY',
+    referrerPolicy: 'strict-origin-when-cross-origin',
+    contentSecurityPolicy: {
+      defaultSrc: ["'self'"],
+      baseUri: ["'self'"],
+      objectSrc: ["'none'"],
+      frameAncestors: ["'none'"],
+      formAction: ["'self'"],
+      scriptSrc: isProd ? ["'self'"] : ["'self'", "'unsafe-inline'", "'unsafe-eval'"],
+      styleSrc: ["'self'", "'unsafe-inline'", 'https://fonts.googleapis.com'],
+      fontSrc: ["'self'", 'https://fonts.gstatic.com', 'data:'],
+      imgSrc: ["'self'", 'data:', 'https://wow.zamimg.com'],
+      connectSrc: ["'self'"],
+      ...(isProd ? { upgradeInsecureRequests: [] } : {}),
+    },
+    permissionsPolicy: {
+      camera: [],
+      microphone: [],
+      geolocation: [],
+      payment: [],
+      usb: [],
+    },
+  }),
+)
+app.use('/api/*', bodyLimit({ maxSize: 32 * 1024, onError: (c) => c.json({ error: 'Request too large.' }, 413) }))
+app.use('/api/*', sameOriginMutations)
+app.use('/api/*', rateLimit({ name: 'api', windowMs: 60_000, max: 120 }))
 
 app.onError((err, c) => {
   const status = err.status || 500
@@ -55,7 +89,7 @@ function cookieOpts(c) {
 
 function sessionUser(data, c) {
   const sid = getCookie(c, COOKIE)
-  if (!sid) return null
+  if (!sid || !/^[A-Za-z0-9_-]{20,128}$/.test(sid)) return null
   const session = data.sessions[sid]
   if (!session || session.expiresAt < Date.now()) return null
   return data.users[session.userId] || null
@@ -66,15 +100,14 @@ function requireUser(user) {
   return user
 }
 
-function requireLead(user) {
-  requireUser(user)
-  if (!user.lead) throw fail(403, 'Only a raid lead can do that.')
-  return user
+function applyLeadFlags(user) {
+  user.lead = isLead({ ...user, lead: user.lead })
 }
 
-function applyLeadFlags(user) {
-  if (user.discord && leadDiscordIds().includes(user.discord.id)) user.lead = true
-  if (user.battlenet && leadBattlenetIds().includes(String(user.battlenet.id))) user.lead = true
+function raidIdParam(c) {
+  const id = safeRaidId(c.req.param('id'))
+  if (!id) throw fail(404, 'That raid is not on the board.')
+  return id
 }
 
 function seedCharactersIfEmpty(data, user, list) {
@@ -126,7 +159,12 @@ function loginOrLink(data, { provider, identity, currentUserId, seed, lead }) {
 }
 
 function createSession(data, c, userId) {
-  const sid = randomUUID()
+  const sid = randomBytes(32).toString('base64url')
+  const mine = Object.entries(data.sessions).filter(([, session]) => session.userId === userId)
+  mine.sort((a, b) => a[1].createdAt - b[1].createdAt)
+  while (mine.length >= 8) {
+    delete data.sessions[mine.shift()[0]]
+  }
   data.sessions[sid] = {
     userId,
     createdAt: Date.now(),
@@ -239,16 +277,15 @@ async function startOAuth(c, provider) {
     )
   }
   const origin = originFromRequest(c)
-  const state = randomUUID()
+  const state = randomBytes(24).toString('base64url')
   await update((data) => {
     const current = sessionUser(data, c)
-    const next = c.req.query('next')
     data.oauthStates[state] = {
       provider,
       userId: current?.id || null,
       createdAt: Date.now(),
       origin,
-      next: next && next.startsWith('/') && !next.startsWith('//') && !next.startsWith('/api') ? next : '/',
+      next: safeNextPath(c.req.query('next')),
     }
   })
   const url = provider === 'discord' ? discordAuthorize(state, origin) : battlenetAuthorize(state, origin)
@@ -284,8 +321,7 @@ async function oauthCallback(c, provider) {
       })
       createSession(data, c, linked.id)
     })
-    const next = pending.next && pending.next.startsWith('/') ? pending.next : '/'
-    return c.redirect(`${redirectOrigin}${next}`)
+    return c.redirect(`${redirectOrigin}${safeNextPath(pending.next)}`)
   } catch (err) {
     return redirectAuthError(c, err.status ? err.message : 'Could not finish login.', origin)
   }
@@ -313,11 +349,11 @@ app.get('/api/raids', (c) => {
 app.get('/api/raids/:id', (c) => {
   const data = read()
   const user = sessionUser(data, c)
-  const raid = getRaid(data, c.req.param('id'))
+  const raid = getRaid(data, raidIdParam(c))
   return c.json(raidPayload(data, raid, user?.id, user))
 })
 
-app.post('/api/raids', async (c) => {
+app.post('/api/raids', rateLimit({ name: 'create', windowMs: 60 * 60_000, max: 20 }), async (c) => {
   const body = await c.req.json().catch(() => ({}))
   const data = read()
   const user = requireUser(sessionUser(data, c))
@@ -333,17 +369,22 @@ app.post('/api/raids', async (c) => {
 app.get('/api/raid', (c) => {
   const data = read()
   const user = sessionUser(data, c)
-  const id = c.req.query('id') || Object.keys(data.raids)[0]
+  const id = safeRaidId(c.req.query('id'))
+  if (!id) throw fail(404, 'That raid is not on the board.')
   const raid = getRaid(data, id)
   return c.json(raidPayload(data, raid, user?.id, user))
 })
 
-app.get('/api/auth/discord', (c) => startOAuth(c, 'discord'))
-app.get('/api/auth/battlenet', (c) => startOAuth(c, 'battlenet'))
+app.get('/api/auth/discord', rateLimit({ name: 'oauth', windowMs: 10 * 60_000, max: 20 }), (c) =>
+  startOAuth(c, 'discord'),
+)
+app.get('/api/auth/battlenet', rateLimit({ name: 'oauth', windowMs: 10 * 60_000, max: 20 }), (c) =>
+  startOAuth(c, 'battlenet'),
+)
 app.get('/api/auth/discord/callback', (c) => oauthCallback(c, 'discord'))
 app.get('/api/auth/battlenet/callback', (c) => oauthCallback(c, 'battlenet'))
 
-app.post('/api/auth/demo', async (c) => {
+app.post('/api/auth/demo', rateLimit({ name: 'demo', windowMs: 10 * 60_000, max: 30 }), async (c) => {
   const body = await c.req.json().catch(() => ({}))
   const provider = body.provider === 'battlenet' ? 'battlenet' : body.provider === 'discord' ? 'discord' : null
   const persona = body.persona === 'officer' ? 'officer' : body.persona === 'nyx' ? 'nyx' : null
@@ -375,7 +416,12 @@ app.post('/api/auth/logout', async (c) => {
       delete data.sessions[sid]
     })
   }
-  deleteCookie(c, COOKIE, { path: '/' })
+  const origin = originFromRequest(c)
+  deleteCookie(c, COOKIE, {
+    path: '/',
+    sameSite: 'Lax',
+    secure: origin.startsWith('https'),
+  })
   return c.json({ ok: true })
 })
 
@@ -407,7 +453,8 @@ app.post('/api/characters', async (c) => {
 })
 
 app.patch('/api/characters/:id', async (c) => {
-  const id = c.req.param('id')
+  const id = safeRaidId(c.req.param('id'))
+  if (!id) throw fail(404, 'Character not found.')
   const body = await c.req.json().catch(() => ({}))
   const data = read()
   const user = requireUser(sessionUser(data, c))
@@ -423,8 +470,10 @@ app.patch('/api/characters/:id', async (c) => {
       if (!WOW_CLASSES.includes(body.className)) throw fail(400, 'Pick a class.')
       if (body.className !== ch.className) {
         ch.lastPicks = []
-        const signup = next.raid.signups[user.id]
-        if (signup?.characterId === ch.id) signup.picks = []
+        for (const raid of Object.values(next.raids || {})) {
+          const signup = raid.signups?.[user.id]
+          if (signup?.characterId === ch.id) signup.picks = []
+        }
       }
       ch.className = body.className
     }
@@ -440,14 +489,17 @@ app.patch('/api/characters/:id', async (c) => {
 })
 
 app.delete('/api/characters/:id', async (c) => {
-  const id = c.req.param('id')
+  const id = safeRaidId(c.req.param('id'))
+  if (!id) throw fail(404, 'Character not found.')
   const data = read()
   const user = requireUser(sessionUser(data, c))
   await update((next) => {
     const ch = next.characters[id]
     if (!ch || ch.userId !== user.id) throw fail(404, 'Character not found.')
-    const signup = next.raid.signups[user.id]
-    if (signup?.characterId === id) delete next.raid.signups[user.id]
+    for (const raid of Object.values(next.raids || {})) {
+      const signup = raid.signups?.[user.id]
+      if (signup?.characterId === id) delete raid.signups[user.id]
+    }
     delete next.characters[id]
   })
   return c.json({ ok: true })
@@ -505,7 +557,7 @@ app.get('/api/wow/characters', async (c) => {
 
 app.post('/api/wow/import', async (c) => {
   const body = await c.req.json().catch(() => ({}))
-  const list = Array.isArray(body.characters) ? body.characters : []
+  const list = Array.isArray(body.characters) ? body.characters.slice(0, 24) : []
   const data = read()
   const user = requireUser(sessionUser(data, c))
   const added = await update((next) => {
@@ -538,14 +590,17 @@ app.post('/api/raids/:id/signup', async (c) => {
   const raid = await update((next) => {
     const live = next.users[user.id]
     if (!live) throw fail(401, 'Sign in again.')
-    const current = getRaid(next, c.req.param('id'))
+    const current = getRaid(next, raidIdParam(c))
     const character = next.characters[body.characterId]
     if (!character || character.userId !== live.id) throw fail(400, 'Pick one of your characters.')
     const existing = current.signups[live.id]
     if (current.locked && !existing) throw fail(403, 'Signups are locked for tonight.')
     if (current.locked && existing) throw fail(403, 'Picks are locked for tonight.')
     let picks = Array.isArray(body.picks)
-      ? body.picks.filter((n) => Number.isInteger(n)).slice(0, current.pickLimit)
+      ? [...new Set(body.picks.filter((n) => Number.isInteger(n) && n > 0 && n < 1e7))].slice(
+          0,
+          current.pickLimit,
+        )
       : existing?.picks || []
     const previous = existing ? next.characters[existing.characterId] : null
     if (previous && previous.className !== character.className) picks = Array.isArray(body.picks) ? picks : []
@@ -566,7 +621,7 @@ app.post('/api/raids/:id/lock', async (c) => {
   const user = requireUser(sessionUser(data, c))
   const raid = await update((next) => {
     const live = next.users[user.id]
-    const current = getRaid(next, c.req.param('id'))
+    const current = getRaid(next, raidIdParam(c))
     if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
     current.locked = Boolean(body.locked)
     return raidPayload(next, current, live.id, live)
@@ -579,7 +634,7 @@ app.post('/api/raids/:id/reset', async (c) => {
   const user = requireUser(sessionUser(data, c))
   const raid = await update((next) => {
     const live = next.users[user.id]
-    const current = getRaid(next, c.req.param('id'))
+    const current = getRaid(next, raidIdParam(c))
     if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
     current.locked = false
     current.signups = {}
@@ -593,7 +648,7 @@ app.delete('/api/raids/:id', async (c) => {
   const user = requireUser(sessionUser(data, c))
   await update((next) => {
     const live = next.users[user.id]
-    const current = getRaid(next, c.req.param('id'))
+    const current = getRaid(next, raidIdParam(c))
     if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
     delete next.raids[current.id]
   })
@@ -606,7 +661,7 @@ app.post('/api/raids/:id/roster', async (c) => {
   const user = requireUser(sessionUser(data, c))
   const raid = await update((next) => {
     const live = next.users[user.id]
-    const current = getRaid(next, c.req.param('id'))
+    const current = getRaid(next, raidIdParam(c))
     if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
     addManualRaider(next, current, body)
     return raidPayload(next, current, live.id, live)
@@ -619,9 +674,13 @@ app.delete('/api/raids/:id/roster/:memberId', async (c) => {
   const user = requireUser(sessionUser(data, c))
   const raid = await update((next) => {
     const live = next.users[user.id]
-    const current = getRaid(next, c.req.param('id'))
+    const current = getRaid(next, raidIdParam(c))
     if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
-    removeRosterMember(next, current, c.req.param('memberId'))
+    const memberId = safeRaidId(c.req.param('memberId')) || c.req.param('memberId')
+    if (typeof memberId !== 'string' || !/^[A-Za-z0-9_-]{3,80}$/.test(memberId)) {
+      throw fail(404, 'Raider not found.')
+    }
+    removeRosterMember(next, current, memberId)
     return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)
