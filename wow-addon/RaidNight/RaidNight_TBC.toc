@@ -1,0 +1,11 @@
+## Interface: 20506
+## Title: Raid Night
+## Notes: Soft reserves for TBC raids. Same loot sheet as the Raid Night website.
+## Author: Squirt
+## Version: 1.0.0
+## SavedVariables: RaidNightDB
+## X-Website: https://raid-night.onrender.com
+## X-Category: Raid
+
+Data.lua
+RaidNight.lua
