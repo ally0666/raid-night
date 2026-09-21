@@ -316,6 +316,7 @@ export function raidPayload(data, raid, youId, user = null) {
     pickLimit: raid.pickLimit,
     lockLabel: raid.lockLabel,
     locked: Boolean(raid.locked),
+    discordUrl: raid.discordUrl || '',
     canManage: canManage(user, raid),
     roster: buildRoster(data, raid, youId),
   }
@@ -337,6 +338,7 @@ export function createRaid(data, user, body) {
     pickLimit: Number(body.pickLimit) > 0 ? Math.min(10, Number(body.pickLimit)) : instance.pickLimit,
     lockLabel: String(body.lockLabel || '').trim().slice(0, 32) || 'Start',
     locked: false,
+    discordUrl: normalizeDiscordUrl(body.discordUrl),
     signups: {},
     manualRoster: [],
     createdBy: user.id,
@@ -368,4 +370,34 @@ export function fail(status, message) {
   const err = new Error(message)
   err.status = status
   return err
+}
+
+export function normalizeDiscordUrl(input) {
+  const raw = String(input || '').trim()
+  if (!raw) return ''
+  const withProtocol = /^[a-z][a-z0-9+.-]*:/i.test(raw) ? raw : `https://${raw}`
+  let parsed
+  try {
+    parsed = new URL(withProtocol)
+  } catch {
+    throw fail(400, 'That Discord link is not valid.')
+  }
+  if (parsed.protocol !== 'https:') throw fail(400, 'Use an https Discord link.')
+  if (parsed.username || parsed.password) throw fail(400, 'That Discord link is not valid.')
+  const host = parsed.hostname.toLowerCase()
+  const allowed = new Set([
+    'discord.gg',
+    'discord.com',
+    'www.discord.com',
+    'ptb.discord.com',
+    'canary.discord.com',
+    'discordapp.com',
+    'www.discordapp.com',
+  ])
+  if (!allowed.has(host)) throw fail(400, 'Paste a discord.gg or discord.com link.')
+  parsed.hash = ''
+  parsed.search = host === 'discord.gg' ? '' : parsed.search
+  const href = parsed.toString()
+  if (href.length > 200) throw fail(400, 'That Discord link is too long.')
+  return href
 }

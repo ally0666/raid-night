@@ -73,6 +73,7 @@ export default function App() {
     id: '',
     instanceId: 'karazhan',
     instanceName: 'Karazhan',
+    discordUrl: '',
     canManage: false,
   })
   const [user, setUser] = useState<PublicUser | null>(null)
@@ -119,6 +120,7 @@ export default function App() {
       size: next.size,
       pickLimit: next.pickLimit,
       lockLabel: next.lockLabel,
+      discordUrl: next.discordUrl || '',
       canManage: next.canManage,
     })
     setRoster(next.roster)
@@ -603,6 +605,15 @@ export default function App() {
               }
             }}
             onCopyLink={() => void copyReserveLink()}
+            onSaveDiscord={async (discordUrl) => {
+              try {
+                applyRaid(await api.setDiscordUrl(raidId, discordUrl))
+                flash(discordUrl.trim() ? 'Discord link is on the reserve page.' : 'Discord link removed.')
+              } catch (err) {
+                flash(err instanceof Error ? err.message : 'Could not save the Discord link.')
+                throw err
+              }
+            }}
             onReset={async () => {
               try {
                 applyRaid(await api.reset(raidId))
@@ -905,6 +916,7 @@ function CreateRaid({
     size: number
     pickLimit: number
     lockLabel: string
+    discordUrl: string
   }) => Promise<void>
   flash: (message: string) => void
 }) {
@@ -915,6 +927,7 @@ function CreateRaid({
   const [time, setTime] = useState('20:00')
   const [size, setSize] = useState(picked?.size || 10)
   const [pickLimit, setPickLimit] = useState(picked?.pickLimit || 2)
+  const [discordUrl, setDiscordUrl] = useState('')
 
   return (
     <section className="screen">
@@ -968,8 +981,20 @@ function CreateRaid({
         </label>
       </div>
 
+      <label className="field">
+        <span>Discord link</span>
+        <input
+          value={discordUrl}
+          onChange={(e) => setDiscordUrl(e.target.value)}
+          placeholder="https://discord.gg/your-raid"
+          inputMode="url"
+          autoComplete="off"
+        />
+      </label>
+
       <p className="hint">
-        {formatRaidDate(date)} · {formatRaidWhen(date, time)}. Picks lock at {lockLabelFrom(time)}.
+        {formatRaidDate(date)} · {formatRaidWhen(date, time)}. Picks lock at {lockLabelFrom(time)}. Anyone with the
+        reserve link can open this Discord from the page.
       </p>
 
       <button
@@ -984,12 +1009,22 @@ function CreateRaid({
             size,
             pickLimit,
             lockLabel: lockLabelFrom(time),
+            discordUrl,
           }).catch((err) => flash(err instanceof Error ? err.message : 'Could not schedule the raid.'))
         }}
       >
         Post raid
       </button>
     </section>
+  )
+}
+
+function DiscordJoin({ url }: { url?: string }) {
+  if (!url) return null
+  return (
+    <a className="secondary mail-btn discord-btn" href={url} target="_blank" rel="noopener noreferrer">
+      Join the Discord
+    </a>
   )
 }
 
@@ -1009,6 +1044,7 @@ function Invite({
     pickLimit: number
     lockLabel: string
     instanceName?: string
+    discordUrl?: string
   }
   counts: ReturnType<typeof composition>
   onBack: () => void
@@ -1049,6 +1085,8 @@ function Invite({
         </div>
         <p className="hint">If an item drops, only the people who picked it roll. No other form.</p>
       </div>
+
+      <DiscordJoin url={raid.discordUrl} />
 
       <button type="button" className="primary" onClick={onJoin}>
         I&apos;m in — pick reserves
@@ -1615,7 +1653,7 @@ function Done({
   onEditPicks,
   onEditCharacter,
 }: {
-  raid: typeof raidFallback & { instanceName?: string }
+  raid: typeof raidFallback & { instanceName?: string; discordUrl?: string }
   character: Character
   picks: number[]
   locked: boolean
@@ -1659,6 +1697,8 @@ function Done({
         })}
       </ul>
 
+      <DiscordJoin url={raid.discordUrl} />
+
       {!locked && (
         <div className="stack">
           <button type="button" className="secondary" onClick={onEditPicks}>
@@ -1685,13 +1725,14 @@ function Lead({
   onCopyGargul,
   onCopyCsv,
   onCopyLink,
+  onSaveDiscord,
   onReset,
   onDeleteRaid,
   onAddRoster,
   onRemoveRoster,
   exportBox,
 }: {
-  raid: typeof raidFallback
+  raid: typeof raidFallback & { discordUrl?: string }
   roster: Raider[]
   locked: boolean
   missing: Raider[]
@@ -1702,6 +1743,7 @@ function Lead({
   onCopyGargul: () => void
   onCopyCsv: () => void
   onCopyLink: () => void
+  onSaveDiscord: (discordUrl: string) => Promise<void>
   onReset: () => void
   onDeleteRaid: () => void
   onAddRoster: (body: { name: string; className: WowClass; spec: string; role: Role }) => Promise<void>
@@ -1713,6 +1755,11 @@ function Lead({
   const [className, setClassName] = useState<WowClass>('Warrior')
   const [spec, setSpec] = useState('')
   const [role, setRole] = useState<Role>('dps')
+  const [discordUrl, setDiscordUrl] = useState(raid.discordUrl || '')
+
+  useEffect(() => {
+    setDiscordUrl(raid.discordUrl || '')
+  }, [raid.discordUrl])
   const signed = roster.filter((r) => r.signed)
   const unsigned = roster.filter((r) => !r.signed)
 
@@ -1773,6 +1820,28 @@ function Lead({
           </button>
         </div>
       )}
+
+      <div className="card discord-admin">
+        <label className="field">
+          <span>Discord link on the reserve page</span>
+          <input
+            value={discordUrl}
+            onChange={(event) => setDiscordUrl(event.target.value)}
+            placeholder="https://discord.gg/your-raid"
+            inputMode="url"
+            autoComplete="off"
+          />
+        </label>
+        <button
+          type="button"
+          className="secondary"
+          onClick={() => {
+            void onSaveDiscord(discordUrl).catch(() => undefined)
+          }}
+        >
+          Save Discord link
+        </button>
+      </div>
 
       <div className="lead-actions">
         {locked ? (

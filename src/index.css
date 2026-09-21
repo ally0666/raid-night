@@ -600,6 +600,21 @@ ul {
   font-weight: 700;
 }
 
+.discord-admin {
+  display: grid;
+  gap: 10px;
+}
+
+.discord-admin .secondary {
+  width: auto;
+  justify-self: start;
+}
+
+.discord-btn {
+  border-color: #5865f2;
+  color: #cdd2ff;
+}
+
 .lead-actions {
   display: grid;
   gap: 8px;

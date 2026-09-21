@@ -23,6 +23,7 @@ import {
   findUserByProvider,
   getRaid,
   isLead,
+  normalizeDiscordUrl,
   publicUser,
   raidPayload,
   raidSummary,
@@ -610,6 +611,20 @@ app.post('/api/raids/:id/signup', async (c) => {
       picks,
     }
     character.lastPicks = picks
+    return raidPayload(next, current, live.id, live)
+  })
+  return c.json(raid)
+})
+
+app.post('/api/raids/:id/discord', async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const data = read()
+  const user = requireUser(sessionUser(data, c))
+  const raid = await update((next) => {
+    const live = next.users[user.id]
+    const current = getRaid(next, raidIdParam(c))
+    if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
+    current.discordUrl = normalizeDiscordUrl(body.discordUrl)
     return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)

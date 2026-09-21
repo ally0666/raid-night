@@ -54,6 +54,7 @@ export type RaidState = {
   pickLimit: number
   lockLabel: string
   locked: boolean
+  discordUrl: string
   canManage: boolean
   roster: Raider[]
 }
@@ -115,7 +116,10 @@ export const api = {
     size?: number
     pickLimit?: number
     lockLabel?: string
+    discordUrl?: string
   }) => req<RaidState>('/api/raids', { method: 'POST', body: JSON.stringify(body) }),
+  setDiscordUrl: (raidId: string, discordUrl: string) =>
+    req<RaidState>(`/api/raids/${raidId}/discord`, { method: 'POST', body: JSON.stringify({ discordUrl }) }),
   demoLogin: (provider: 'discord' | 'battlenet', persona: 'nyx' | 'officer') =>
     req<{ user: PublicUser | null; characters: SavedCharacter[]; providers: Providers }>(
       '/api/auth/demo',

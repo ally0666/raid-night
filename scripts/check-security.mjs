@@ -1,5 +1,6 @@
 import { app } from '../server/app.mjs'
 import { safeNextPath, safeRaidId } from '../server/security.mjs'
+import { normalizeDiscordUrl } from '../server/store.mjs'
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg)
@@ -12,6 +13,16 @@ assert(safeNextPath('/api/raids') === '/', 'api next')
 assert(safeNextPath('/r/r_abc-def') === '/r/r_abc-def', 'good raid path')
 assert(safeRaidId('../etc/passwd') === null, 'path id')
 assert(safeRaidId('r_123') === 'r_123', 'ok id')
+assert(normalizeDiscordUrl('discord.gg/raidnight') === 'https://discord.gg/raidnight', 'gg short')
+assert(normalizeDiscordUrl('https://discord.com/invite/raidnight').includes('discord.com/invite/raidnight'), 'invite')
+assert(normalizeDiscordUrl('') === '', 'empty discord')
+let discordBlocked = false
+try {
+  normalizeDiscordUrl('https://evil.example/discord')
+} catch (err) {
+  discordBlocked = err.status === 400
+}
+assert(discordBlocked, 'block non-discord')
 
 const leak = await app.request('/api/raid')
 assert(leak.status === 404, `raid leak ${leak.status}`)
