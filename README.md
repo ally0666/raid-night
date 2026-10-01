@@ -49,6 +49,21 @@ TBC Classic names are often missing from Blizzard's profile API. After Battle.ne
 
 Until Discord and Battle.net are configured, a public site will not offer those logins. Local Nyx/Officer demo logins stay on your machine only.
 
+## Discord bot
+
+The site can post a raid in a Discord channel with **Sign up / Tentative / Absent** buttons, the way Raid-Helper does. Signing up in Discord and on the site is the same roster, and the post updates itself.
+
+It uses the same Discord application as the login:
+
+1. [Developer Portal](https://discord.com/developers/applications) → your app → **Bot** → **Reset Token**. Put it in `DISCORD_BOT_TOKEN`.
+2. **General Information** → copy **Public Key** into `DISCORD_PUBLIC_KEY`. Deploy with both set.
+3. Back in **General Information**, set **Interactions Endpoint URL** to `https://YOUR-SITE/api/discord/interactions` and save. Discord checks it on the spot, so the deploy has to be live first.
+4. Invite the bot with the link the server prints at startup (`Discord bot ready. Invite it: …`).
+
+In Discord, `/raid create` schedules a raid and posts it; `/raid post` posts one you already scheduled on the site. Both are limited to members with **Manage Events** until a server admin changes that under Server Settings → Integrations.
+
+`node scripts/check-discord.mjs` runs the whole flow against a fake Discord.
+
 ## Run production on this PC
 
 ```

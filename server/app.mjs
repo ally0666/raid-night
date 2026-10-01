@@ -11,6 +11,14 @@ import {
   originFromRequest,
   providers,
 } from './env.mjs'
+import {
+  botConfigured,
+  cancelRaidPosts,
+  handleInteraction,
+  INTERACTIONS_PATH,
+  syncRaidPosts,
+  validSignature,
+} from './discord.mjs'
 import { CLASS_BY_ID, demoPersonas, INSTANCES, ROLES, WOW_CLASSES } from './seed.mjs'
 import { rateLimit, safeNextPath, safeRaidId, sameOriginMutations } from './security.mjs'
 import {
@@ -69,7 +77,13 @@ app.use(
 )
 app.use('/api/*', bodyLimit({ maxSize: 32 * 1024, onError: (c) => c.json({ error: 'Request too large.' }, 413) }))
 app.use('/api/*', sameOriginMutations)
-app.use('/api/*', rateLimit({ name: 'api', windowMs: 60_000, max: 120 }))
+const apiLimit = rateLimit({ name: 'api', windowMs: 60_000, max: 120 })
+// Discord signs its requests and sends a whole server's clicks from a few IPs.
+app.use('/api/*', (c, next) => (c.req.path === INTERACTIONS_PATH ? next() : apiLimit(c, next)))
+app.use('/api/*', async (c, next) => {
+  await next()
+  if (!/^(GET|HEAD|OPTIONS)$/.test(c.req.method) && c.req.path !== INTERACTIONS_PATH) void syncRaidPosts()
+})
 
 app.onError((err, c) => {
   const status = err.status || 500
@@ -329,6 +343,15 @@ async function oauthCallback(c, provider) {
 }
 
 app.get('/api/health', (c) => c.json({ ok: true }))
+
+app.post(INTERACTIONS_PATH, async (c) => {
+  if (!botConfigured()) return c.json({ error: 'The Discord bot is not configured.' }, 404)
+  const body = await c.req.text()
+  if (!validSignature(body, c.req.header('x-signature-ed25519'), c.req.header('x-signature-timestamp'))) {
+    return c.json({ error: 'Bad signature.' }, 401)
+  }
+  return c.json(await handleInteraction(JSON.parse(body)))
+})
 
 app.get('/api/me', (c) => {
   const data = read()
@@ -611,6 +634,7 @@ app.post('/api/raids/:id/signup', async (c) => {
       picks,
     }
     character.lastPicks = picks
+    if (current.rsvp) delete current.rsvp[live.id]
     return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)
@@ -653,6 +677,7 @@ app.post('/api/raids/:id/reset', async (c) => {
     if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
     current.locked = false
     current.signups = {}
+    current.rsvp = {}
     return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)
@@ -661,12 +686,14 @@ app.post('/api/raids/:id/reset', async (c) => {
 app.delete('/api/raids/:id', async (c) => {
   const data = read()
   const user = requireUser(sessionUser(data, c))
-  await update((next) => {
+  const removed = await update((next) => {
     const live = next.users[user.id]
     const current = getRaid(next, raidIdParam(c))
     if (!canManage(live, current)) throw fail(403, 'Only the raid lead can do that.')
     delete next.raids[current.id]
+    return current
   })
+  void cancelRaidPosts(removed)
   return c.json({ ok: true })
 })
 
