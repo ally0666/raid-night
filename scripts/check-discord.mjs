@@ -118,7 +118,7 @@ try {
   const patches = calls.filter((call) => call.method === 'PATCH')
   assert(patches.length === patchesBefore + 1, 'post edited once')
   const tanks = patches.at(-1).body.embeds[0].fields[0]
-  assert(tanks.name === '🛡️ Tanks (1)' && tanks.value.includes('Thistlepaw') && tanks.value.includes('0/2'), 'roster shows tank')
+  assert(tanks.name === '🛡️ Tanks (1)' && tanks.value.includes('Thistlepaw') && !tanks.value.includes('0/2'), 'roster shows tank')
   await syncRaidPosts()
   assert(calls.filter((call) => call.method === 'PATCH').length === patchesBefore + 1, 'unchanged post not re-sent')
 
@@ -142,7 +142,7 @@ try {
   assert(uploads.length === 37 && uploads[0].body.image.startsWith('data:image/jpeg;base64,'), 'class and spec icons uploaded')
   await syncRaidPosts()
   const withIcons = calls.filter((call) => call.method === 'PATCH').at(-1).body.embeds[0].fields[0].value
-  assert(/^<:rn_druid:\d+><:rn_druid_bear:\d+> \*\*Thistlepaw\*\* · Feral · 0\/2$/.test(withIcons), `icon line: ${withIcons}`)
+  assert(/^<:rn_druid:\d+><:rn_druid_bear:\d+> \*\*Thistlepaw\*\* · Feral\n/.test(withIcons), `icon line: ${withIcons}`)
 
   console.log('discord checks ok')
 } finally {

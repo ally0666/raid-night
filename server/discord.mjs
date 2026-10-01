@@ -17,6 +17,8 @@ import {
 export const INTERACTIONS_PATH = '/api/discord/interactions'
 
 const API = 'https://discord.com/api/v10'
+// Reserves are picked in game with the addon, so Discord sends raiders there instead of the site.
+const ADDON_URL = 'https://www.curseforge.com/wow/addons/raid-night'
 const EPHEMERAL = 64
 const MAX_POSTS = 5
 const MANAGE_EVENTS = String(1n << 33n)
@@ -258,23 +260,22 @@ function raidUrl(raid) {
 }
 
 // One section of the roster. Icon markup is long, so a big section spills into continuation fields.
-function roleFields(label, raiders, pickLimit) {
+function roleFields(label, raiders) {
   const lines = [...raiders]
     .sort((a, b) => WOW_CLASSES.indexOf(a.className) - WOW_CLASSES.indexOf(b.className) || a.name.localeCompare(b.name))
     .map((r) => {
       const icons = mention(classEmoji(r.className)) + mention(specEmoji(r))
-      const who = icons ? `${icons} **${esc(r.name)}** · ${esc(r.spec)}` : `${r.className} (${esc(r.spec)}) · **${esc(r.name)}**`
-      return `${who} · ${r.picks.length}/${pickLimit}`
+      return icons ? `${icons} **${esc(r.name)}** · ${esc(r.spec)}` : `${r.className} (${esc(r.spec)}) · **${esc(r.name)}**`
     })
   const chunks = ['']
   for (const line of lines) {
-    if (chunks.at(-1).length + line.length > 1000) chunks.push('')
-    chunks[chunks.length - 1] += `${line}
-`
+    if (chunks.at(-1).length + line.length > 990) chunks.push('')
+    chunks[chunks.length - 1] += `${line}\n`
   }
   return chunks.map((value, i) => ({
     name: i ? `${label} (cont.)` : `${label} (${raiders.length})`,
-    value: value.trim() || '—',
+    // The trailing blank line keeps the rows of sections apart.
+    value: `${value.trim() || '—'}\n​`,
     inline: true,
   }))
 }
@@ -297,7 +298,6 @@ export function raidMessage(data, raid) {
     roleFields(
       label,
       roster.filter((r) => section(r) === key),
-      raid.pickLimit,
     ),
   )
   // Discord fits three inline fields per row; blanks fill out the last one.
@@ -313,15 +313,15 @@ export function raidMessage(data, raid) {
     embeds: [
       {
         title: raid.name,
-        url: raidUrl(raid),
         color: locked ? 0x6b6b6b : 0xc79c6e,
         description: [
           `📅 **${esc(when)}**`,
-          `👥 **${roster.length}/${raid.size}** signed · ${raid.pickLimit} soft reserves each`,
-          locked ? '🔒 **Signups and picks are locked.**' : `🔒 Picks lock at ${esc(raid.lockLabel)}`,
-        ].join('\n'),
+          `👥 **${roster.length}/${raid.size}** signed`,
+          locked ? '🔒 **Signups are locked.**' : `🔒 Signups close at ${esc(raid.lockLabel)}`,
+          `🎁 ${raid.pickLimit} soft reserves each, picked in game with the Raid Night addon\n​`,
+        ].join('\n\n'),
         fields,
-        footer: { text: 'Raid night · the number after each name is reserves picked' },
+        footer: { text: 'Raid Night · get the addon below, then type /rn in the raid to pick reserves' },
       },
     ],
     components: [
@@ -331,7 +331,7 @@ export function raidMessage(data, raid) {
           { type: 2, style: 3, label: 'Attending', custom_id: `rn:join:${raid.id}`, disabled: locked },
           { type: 2, style: 2, label: 'Tentative', custom_id: `rn:tentative:${raid.id}`, disabled: locked },
           { type: 2, style: 4, label: 'Not attending', custom_id: `rn:absent:${raid.id}`, disabled: locked },
-          { type: 2, style: 5, label: 'Pick reserves', url: raidUrl(raid) },
+          { type: 2, style: 5, label: 'Get the addon', url: ADDON_URL },
         ],
       },
     ],
@@ -456,12 +456,7 @@ function signUp(data, raid, user, character) {
     picks: keep ? existing.picks || [] : [],
   }
   if (raid.rsvp) delete raid.rsvp[user.id]
-  const have = raid.signups[user.id].picks.length
-  const picks =
-    have >= raid.pickLimit
-      ? `Your ${have} reserves are in — [change them](${raidUrl(raid)})`
-      : `Now [pick your ${raid.pickLimit} reserves](${raidUrl(raid)})`
-  return `✅ Signed up as **${character.name}** (${esc(character.spec)} ${character.className}). ${picks} — same Discord login.`
+  return `✅ Signed up as **${character.name}** (${esc(character.spec)} ${character.className}). Reserves are picked in game: [get the Raid Night addon](${ADDON_URL}), then type /rn once you are in the raid.`
 }
 
 function specFrom(classIndex, specIndex) {
