@@ -20,6 +20,7 @@ import {
   validSignature,
 } from './discord.mjs'
 import { CLASS_BY_ID, demoPersonas, INSTANCES, ROLES, WOW_CLASSES } from './seed.mjs'
+import { sheetPage } from './sheet.mjs'
 import { rateLimit, safeNextPath, safeRaidId, sameOriginMutations } from './security.mjs'
 import {
   addCharacter,
@@ -343,6 +344,13 @@ async function oauthCallback(c, provider) {
 }
 
 app.get('/api/health', (c) => c.json({ ok: true }))
+
+app.get('/sheet/:id', rateLimit({ name: 'sheet', windowMs: 60_000, max: 60 }), (c) => {
+  const data = read()
+  const raid = data.raids[safeRaidId(c.req.param('id')) || '']
+  if (!raid) return c.text('That raid is not on the board.', 404)
+  return c.html(sheetPage(data, raid))
+})
 
 app.post(INTERACTIONS_PATH, async (c) => {
   if (!botConfigured()) return c.json({ error: 'The Discord bot is not configured.' }, 404)

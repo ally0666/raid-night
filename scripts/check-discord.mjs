@@ -147,6 +147,14 @@ try {
   const withIcons = calls.filter((call) => call.method === 'PATCH').at(-1).body.embeds[0].fields[0].value
   assert(/^<:rn_druid:\d+><:rn_druid_bear:\d+> \*\*Thistlepaw\*\* · Feral\n/.test(withIcons), `icon line: ${withIcons}`)
 
+  const share = posted.body.components[0].components.at(-1)
+  assert(share.label === 'Share sheet' && share.url === `https://raid.test/sheet/${raid.id}`, 'share button')
+  const sheet = await app.request(`/sheet/${raid.id}`)
+  const page = await sheet.text()
+  assert(sheet.status === 200 && page.includes('<b>Thistlepaw</b>') && page.includes('ability_racial_bearform'), 'sheet page')
+  assert(page.includes('1/10 signed') && !page.includes(raider.id), 'sheet shows counts, not Discord ids')
+  assert((await app.request('/sheet/r_missing')).status === 404, 'unknown sheet')
+
   console.log('discord checks ok')
 } finally {
   rmSync(dataDir, { recursive: true, force: true })

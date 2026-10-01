@@ -13,7 +13,7 @@ export default defineConfig({
         const { app } = await import('./server/app.mjs')
         const listener = getRequestListener(app.fetch)
         server.middlewares.use((req: IncomingMessage, res: ServerResponse, next: () => void) => {
-          if (req.url?.startsWith('/api')) {
+          if (req.url?.startsWith('/api') || req.url?.startsWith('/sheet/')) {
             listener(req, res)
             return
           }

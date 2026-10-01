@@ -18,7 +18,7 @@ export const INTERACTIONS_PATH = '/api/discord/interactions'
 
 const API = 'https://discord.com/api/v10'
 // Reserves are picked in game with the addon, so Discord sends raiders there instead of the site.
-const ADDON_URL = 'https://www.curseforge.com/wow/addons/raid-night'
+export const ADDON_URL = 'https://www.curseforge.com/wow/addons/raid-night'
 const EPHEMERAL = 64
 const MAX_POSTS = 5
 const MANAGE_EVENTS = String(1n << 33n)
@@ -74,7 +74,7 @@ const SPECS = {
   ],
 }
 
-const SECTIONS = [
+export const SECTIONS = [
   ['tank', '🛡️ Tanks'],
   ['healer', '💚 Healers'],
   ['melee', '⚔️ Melee'],
@@ -84,7 +84,7 @@ const SECTIONS = [
 const BLANK_FIELD = { name: '​', value: '​', inline: true }
 
 // Spec is free text on the site, so melee is decided by class first.
-function section(raider) {
+export function section(raider) {
   if (raider.role !== 'dps') return raider.role
   const spec = String(raider.spec || '')
   if (raider.className === 'Hunter') return 'hunter'
@@ -180,7 +180,7 @@ function classEmoji(className) {
 }
 
 // Spec is free text on the site ("Resto", "prot"), so match on how the tree name starts.
-function specEmoji(raider) {
+function specTree(raider) {
   const trees = Object.keys(SPEC_ICONS[raider.className] || {})
   const typed = String(raider.spec || '').trim().toLowerCase()
   if (!typed) return null
@@ -189,7 +189,22 @@ function specEmoji(raider) {
     trees.find((name) => name.toLowerCase() === typed) ||
     trees.find((name) => name.toLowerCase().startsWith(typed.slice(0, 3)))
   if (raider.className === 'Druid' && (/bear/.test(typed) || (tree === 'Feral' && raider.role === 'tank'))) tree = 'Bear'
-  return trees.includes(tree) ? emojis[emojiName(raider.className, tree)] : null
+  return trees.includes(tree) ? tree : null
+}
+
+function specEmoji(raider) {
+  const tree = specTree(raider)
+  return tree ? emojis[emojiName(raider.className, tree)] : null
+}
+
+// Icon file names for the shareable sheet page, which shows the same roster outside Discord.
+export function raiderIcons(raider) {
+  const tree = specTree(raider)
+  return [`classicon_${raider.className.toLowerCase()}`, ...(tree ? [SPEC_ICONS[raider.className][tree]] : [])]
+}
+
+export function sheetUrl(raid) {
+  return `${publicUrl()}/sheet/${raid.id}`
 }
 
 // Uploads any missing class and spec icons to the application once; after that this only reads their ids.
@@ -321,6 +336,7 @@ export function raidMessage(data, raid) {
           { type: 2, style: 2, label: 'Tentative', custom_id: `rn:tentative:${raid.id}`, disabled: locked },
           { type: 2, style: 4, label: 'Not attending', custom_id: `rn:absent:${raid.id}`, disabled: locked },
           { type: 2, style: 5, label: 'Get the addon', url: ADDON_URL },
+          { type: 2, style: 5, label: 'Share sheet', url: sheetUrl(raid) },
         ],
       },
     ],
