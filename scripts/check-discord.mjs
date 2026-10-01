@@ -54,26 +54,29 @@ try {
   assert((await send({ type: 1 }, { forge: true })).status === 401, 'forged signature rejected')
   assert((await send({ type: 1 })).json.type === 1, 'ping')
 
-  const created = await send({
+  const form = await send({
     type: 2,
     ...base,
     member: { user: lead },
-    data: {
-      name: 'raid',
-      options: [
-        {
-          name: 'create',
-          options: [
-            { name: 'instance', value: 'karazhan' },
-            { name: 'date', value: '2026-10-06' },
-          ],
-        },
-      ],
-    },
+    data: { name: 'raid', options: [{ name: 'create' }] },
   })
+  let menus = form.json.data.components
+  assert(form.json.data.flags === 64 && menus.length === 4, 'create opens a private form')
+  assert(menus[1].components[0].options.length === 25 && menus[2].components[0].options.length === 24, 'day and time menus')
+  const early = await click(lead, 'rn:new:go', undefined, { message: { id: '5', components: menus } })
+  assert(early.json.data.content.startsWith('Pick the raid'), 'form needs every choice')
+  const day = menus[1].components[0].options[5]
+  for (const [key, value] of [
+    ['instance', 'karazhan'],
+    ['date', day.value],
+  ]) {
+    menus = (await click(lead, `rn:new:${key}`, [value], { message: { id: '5', components: menus } })).json.data.components
+  }
+  const created = await click(lead, 'rn:new:go', undefined, { message: { id: '5', components: menus } })
   assert(created.json.data.content.startsWith('Scheduled and posted'), `create: ${created.json.data.content}`)
   const raid = Object.values(read().raids)[0]
-  assert(raid.when === 'Tuesday, 8:00 PM' && raid.dateLabel === 'Tue, Oct 6' && raid.lockLabel === '7:45 PM', 'labels')
+  assert(raid.instanceId === 'karazhan' && raid.when.endsWith(', 8:00 PM') && raid.lockLabel === '7:45 PM', 'labels')
+  assert(day.label.startsWith(raid.when.split(',')[0]), 'picked day is the raid day')
   assert(raid.discordPosts?.[0]?.messageId === '9001', 'post saved')
   const posted = calls.find((call) => call.method === 'POST')
   assert(posted.url.endsWith('/channels/400000000000000001/messages'), 'posted to channel')

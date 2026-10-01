@@ -112,17 +112,6 @@ const COMMANDS = [
         type: 1,
         name: 'create',
         description: 'Schedule a raid and post it in this channel',
-        options: [
-          {
-            type: 3,
-            name: 'instance',
-            description: 'Which raid instance',
-            required: true,
-            choices: INSTANCES.map((row) => ({ name: row.name, value: row.id })),
-          },
-          { type: 3, name: 'date', description: 'Raid date, YYYY-MM-DD', required: true },
-          { type: 3, name: 'time', description: 'Start in server time, 24h HH:MM (default 20:00)' },
-        ],
       },
     ],
   },
@@ -470,6 +459,8 @@ async function component(interaction, who) {
   const [, action, raidId, classIndex, specIndex] = String(interaction.data.custom_id || '').split(':')
   const value = interaction.data.values?.[0]
 
+  if (action === 'new') return newRaid(interaction, who, raidId, value)
+
   if (action === 'join') {
     const [content, components] = await update((data) => {
       const raid = getRaid(data, raidId)
@@ -636,21 +627,79 @@ async function command(interaction, who) {
     return ephemeral(`Posted **${esc(raid.name)}**. The post updates itself as people sign up here or on the site.`)
   }
 
-  if (sub.name === 'create') {
-    const labels = raidLabels(String(option(sub.options, 'date') || '').trim(), String(option(sub.options, 'time') || '20:00').trim())
-    const raid = await update((data) =>
-      createRaid(data, siteUser(data, who), { instanceId: option(sub.options, 'instance'), ...labels }),
-    )
-    try {
-      await postRaid(raid.id, interaction.channel_id)
-    } catch (err) {
-      if (!err.status) throw err
-      return ephemeral(`Scheduled **${esc(raid.name)}**, but it is not posted yet: ${err.message} Then run /raid post.`)
-    }
-    return ephemeral(`Scheduled and posted **${esc(raid.name)}**. Lead tools (lock, Gargul export): ${raidUrl(raid)}`)
-  }
+  if (sub.name === 'create') return ephemeral(NEW_RAID_PROMPT, newRaidForm({ time: '20:00' }))
 
   throw fail(400, 'Unknown command.')
+}
+
+const NEW_RAID_PROMPT = 'Pick the raid, the day and the start time (server time), then post it.'
+
+// Discord has no calendar control, so the day is a menu of the next 25 dates.
+function dateOptions() {
+  const today = new Date()
+  return Array.from({ length: 25 }, (_, i) => {
+    const day = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate() + i))
+    return {
+      label: day.toLocaleDateString('en-US', { weekday: 'long', month: 'short', day: 'numeric', timeZone: 'UTC' }),
+      value: day.toISOString().slice(0, 10),
+      ...(i < 2 ? { description: i ? 'Tomorrow' : 'Today' } : {}),
+    }
+  })
+}
+
+// Half hours from noon to 11:30 PM
+function timeOptions() {
+  return Array.from({ length: 24 }, (_, i) => {
+    const hour = 12 + Math.floor(i / 2)
+    const minutes = i % 2 ? '30' : '00'
+    return { label: `${hour === 12 ? 12 : hour - 12}:${minutes} PM`, value: `${hour}:${minutes}` }
+  })
+}
+
+function newRaidForm(state) {
+  const menu = (key, placeholder, options) =>
+    select(
+      `rn:new:${key}`,
+      placeholder,
+      options.map((row) => ({ ...row, default: row.value === state[key] })),
+    )
+  return [
+    menu(
+      'instance',
+      'Which raid?',
+      INSTANCES.map((row) => ({ label: row.name, value: row.id, description: `${row.size}-player` })),
+    ),
+    menu('date', 'Which day?', dateOptions()),
+    menu('time', 'Start time (server time)', timeOptions()),
+    { type: 1, components: [{ type: 2, style: 3, label: 'Post raid', custom_id: 'rn:new:go' }] },
+  ]
+}
+
+// The form keeps its own state: each menu's chosen option comes back marked as default.
+function newRaidState(message) {
+  const state = {}
+  for (const row of message?.components || []) {
+    for (const part of row.components || []) {
+      const picked = part.options?.find((row) => row.default)
+      if (picked) state[String(part.custom_id).split(':')[2]] = picked.value
+    }
+  }
+  return state
+}
+
+async function newRaid(interaction, who, key, value) {
+  const state = newRaidState(interaction.message)
+  if (key !== 'go') return swap(NEW_RAID_PROMPT, newRaidForm({ ...state, [key]: value }))
+  if (!state.instance || !state.date || !state.time) throw fail(400, 'Pick the raid, the day and the time first.')
+  const labels = raidLabels(state.date, state.time)
+  const raid = await update((data) => createRaid(data, siteUser(data, who), { instanceId: state.instance, ...labels }))
+  try {
+    await postRaid(raid.id, interaction.channel_id)
+  } catch (err) {
+    if (!err.status) throw err
+    return swap(`Scheduled **${esc(raid.name)}**, but it is not posted yet: ${err.message} Then run /raid post.`)
+  }
+  return swap(`Scheduled and posted **${esc(raid.name)}**. Lead tools (lock, remove raiders): ${raidUrl(raid)}`)
 }
 
 function autocomplete(interaction, who) {
