@@ -51,7 +51,7 @@ Until Discord and Battle.net are configured, a public site will not offer those 
 
 ## Discord bot
 
-The site can post a raid in a Discord channel with **Attending / Tentative / Not attending** buttons and the roster split into tanks, healers, melee and casters, the way Raid-Helper does. Signing up in Discord and on the site is the same roster, and the post updates itself.
+The site can post a raid in a Discord channel with **Attending / Tentative / Not attending** buttons and the roster split into tanks, healers, melee, casters and hunters, the way Raid-Helper does. Signing up in Discord and on the site is the same roster, and the post updates itself.
 
 It uses the same Discord application as the login:
 

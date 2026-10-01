@@ -76,7 +76,8 @@ const SECTIONS = [
   ['tank', '🛡️ Tanks'],
   ['healer', '💚 Healers'],
   ['melee', '⚔️ Melee'],
-  ['caster', '🔮 Casters & Ranged'],
+  ['caster', '🔮 Casters'],
+  ['hunter', '🏹 Hunters'],
 ]
 const BLANK_FIELD = { name: '​', value: '​', inline: true }
 
@@ -84,6 +85,7 @@ const BLANK_FIELD = { name: '​', value: '​', inline: true }
 function section(raider) {
   if (raider.role !== 'dps') return raider.role
   const spec = String(raider.spec || '')
+  if (raider.className === 'Hunter') return 'hunter'
   if (['Warrior', 'Rogue', 'Paladin'].includes(raider.className)) return 'melee'
   if (raider.className === 'Shaman' && /enh/i.test(spec)) return 'melee'
   if (raider.className === 'Druid' && /feral|cat/i.test(spec)) return 'melee'
@@ -218,8 +220,7 @@ export function raidMessage(data, raid) {
       raid.pickLimit,
     ),
   )
-  // Discord fits three inline fields per row; a blank third keeps the sections two by two.
-  fields.splice(2, 0, BLANK_FIELD)
+  // Discord fits three inline fields per row; a blank one fills out the second row.
   fields.push(BLANK_FIELD)
   for (const [status, label] of [
     ['tentative', '❔ Tentative'],
