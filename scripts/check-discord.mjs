@@ -12,18 +12,48 @@ process.env.DISCORD_BOT_TOKEN = 'test-token'
 process.env.DISCORD_PUBLIC_KEY = publicKey.export({ format: 'der', type: 'spki' }).subarray(-32).toString('hex')
 process.env.PUBLIC_URL = 'https://raid.test'
 
+// A server where the lead has Manage Events through a role and #officers is hidden from everyone.
+const G = '300000000000000001'
+const discordGets = {
+  '/users/@me/guilds': [{ id: G, name: 'Guild' }],
+  [`/guilds/${G}`]: {
+    id: G,
+    owner_id: '1',
+    roles: [
+      { id: G, permissions: String((1n << 10n) | (1n << 11n) | (1n << 14n)) },
+      { id: '77', permissions: String(1n << 33n) },
+    ],
+  },
+  [`/guilds/${G}/channels`]: [
+    { id: '400000000000000009', type: 4, name: 'Raids' },
+    { id: '400000000000000001', type: 0, name: 'signups', position: 1, parent_id: '400000000000000009' },
+    {
+      id: '400000000000000002',
+      type: 0,
+      name: 'officers',
+      position: 2,
+      permission_overwrites: [{ id: G, type: 0, allow: '0', deny: String(1n << 10n) }],
+    },
+  ],
+  [`/guilds/${G}/members/200000000000000001`]: { roles: ['77'] },
+  [`/guilds/${G}/members/111111111111111111`]: { roles: [] },
+  [`/guilds/${G}/members/200000000000000002`]: null,
+}
+
 const calls = []
 let nextMessage = 9000
 globalThis.fetch = async (url, init = {}) => {
   const body = init.body ? JSON.parse(init.body) : null
   calls.push({ method: init.method, url: String(url), body })
   if (init.method === 'POST') return Response.json({ id: String((nextMessage += 1)) })
+  const path = String(url).replace('https://discord.com/api/v10', '')
+  if (path in discordGets) return discordGets[path] ? Response.json(discordGets[path]) : Response.json({}, { status: 404 })
   return Response.json({})
 }
 
 const { app } = await import('../server/app.mjs')
 const { loadEmojis, registerCommands, syncRaidPosts } = await import('../server/discord.mjs')
-const { read } = await import('../server/store.mjs')
+const { read, update } = await import('../server/store.mjs')
 
 function assert(cond, msg) {
   if (!cond) throw new Error(msg)
@@ -155,6 +185,28 @@ try {
   assert(sheet.status === 200 && page.includes('<b>Thistlepaw</b>') && page.includes('ability_racial_bearform'), 'sheet page')
   assert(page.includes('1/10 signed') && !page.includes(raider.id), 'sheet shows counts, not Discord ids')
   assert((await app.request('/sheet/r_missing')).status === 404, 'unknown sheet')
+
+  const signIn = async (discordId) => {
+    const sid = `session-for-${discordId}-padding`
+    await update((data) => {
+      const user = Object.values(data.users).find((row) => row.discord?.id === discordId)
+      data.sessions[sid] = { userId: user.id, createdAt: Date.now(), expiresAt: Date.now() + 60_000 }
+    })
+    return { cookie: `raid_night_sid=${sid}`, 'content-type': 'application/json' }
+  }
+  const postFromSite = (headers, channelId) =>
+    app.request(`/api/raids/${raid.id}/post`, { method: 'POST', headers, body: JSON.stringify({ channelId }) })
+  const asLead = await signIn(lead.id)
+  const asRaider = await signIn(raider.id)
+  assert((await app.request('/api/discord/channels')).status === 401, 'channel list needs a login')
+  const list = await (await app.request('/api/discord/channels', { headers: asLead })).json()
+  assert(list.servers.length === 1 && list.servers[0].channels.length === 1, 'lead sees one postable channel')
+  assert(list.servers[0].channels[0].name === 'signups' && list.servers[0].channels[0].category === 'Raids', 'hidden channel left out')
+  assert((await (await app.request('/api/discord/channels', { headers: asRaider })).json()).servers.length === 0, 'non-members see no servers')
+  assert((await postFromSite(asLead, '400000000000000002')).status === 403, 'cannot post to a hidden channel')
+  assert((await postFromSite(asRaider, '400000000000000001')).status === 403, 'raiders cannot post a lead raid')
+  const sitePost = await postFromSite(asLead, '400000000000000001')
+  assert(sitePost.status === 200 && read().raids[raid.id].discordPosts.length === 2, 'lead posts from the site')
 
   const strangerDelete = await click(raider, `rn:delete:${raid.id}`)
   assert(strangerDelete.json.data.content.startsWith('Pick one of your raids') && read().raids[raid.id], 'raiders cannot delete')

@@ -59,6 +59,12 @@ export type RaidState = {
   roster: Raider[]
 }
 
+export type DiscordServer = {
+  id: string
+  name: string
+  channels: { id: string; name: string; category: string }[]
+}
+
 export type WowImport = {
   name: string
   realm: string
@@ -120,6 +126,12 @@ export const api = {
   }) => req<RaidState>('/api/raids', { method: 'POST', body: JSON.stringify(body) }),
   setDiscordUrl: (raidId: string, discordUrl: string) =>
     req<RaidState>(`/api/raids/${raidId}/discord`, { method: 'POST', body: JSON.stringify({ discordUrl }) }),
+  discordChannels: () => req<{ servers: DiscordServer[]; inviteUrl: string }>('/api/discord/channels'),
+  postToDiscord: (raidId: string, channelId: string) =>
+    req<{ ok: boolean; channel: string }>(`/api/raids/${raidId}/post`, {
+      method: 'POST',
+      body: JSON.stringify({ channelId }),
+    }),
   demoLogin: (provider: 'discord' | 'battlenet', persona: 'nyx' | 'officer') =>
     req<{ user: PublicUser | null; characters: SavedCharacter[]; providers: Providers }>(
       '/api/auth/demo',

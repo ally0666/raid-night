@@ -13,9 +13,12 @@ import {
 } from './env.mjs'
 import {
   botConfigured,
+  botInviteUrl,
   cancelRaidPosts,
   handleInteraction,
   INTERACTIONS_PATH,
+  postableChannels,
+  postRaidFromSite,
   syncRaidPosts,
   validSignature,
 } from './discord.mjs'
@@ -660,6 +663,27 @@ app.post('/api/raids/:id/discord', async (c) => {
     return raidPayload(next, current, live.id, live)
   })
   return c.json(raid)
+})
+
+function discordLead(c) {
+  const user = requireUser(sessionUser(read(), c))
+  if (!botConfigured()) throw fail(400, 'The Discord bot is not set up on this site.')
+  if (!user.discord) throw fail(400, 'Link your Discord account first, so the bot knows which servers you are in.')
+  return user
+}
+
+app.get('/api/discord/channels', rateLimit({ name: 'channels', windowMs: 60_000, max: 12 }), async (c) => {
+  const user = discordLead(c)
+  return c.json({ servers: await postableChannels(user.discord.id), inviteUrl: botInviteUrl() })
+})
+
+app.post('/api/raids/:id/post', rateLimit({ name: 'post', windowMs: 60_000, max: 6 }), async (c) => {
+  const body = await c.req.json().catch(() => ({}))
+  const user = discordLead(c)
+  const raid = getRaid(read(), raidIdParam(c))
+  if (!canManage(user, raid)) throw fail(403, 'Only the raid lead can do that.')
+  const channel = await postRaidFromSite(raid.id, user.discord.id, String(body.channelId || ''))
+  return c.json({ ok: true, channel: channel.name })
 })
 
 app.post('/api/raids/:id/lock', async (c) => {

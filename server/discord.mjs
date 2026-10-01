@@ -636,6 +636,82 @@ async function postRaid(raidId, channelId) {
   void syncRaidPosts()
 }
 
+const PERMISSION = { admin: 1n << 3n, view: 1n << 10n, send: 1n << 11n, embed: 1n << 14n, events: 1n << 33n }
+const EVERY_PERMISSION = (1n << 64n) - 1n
+// The same bar as the /raid command: someone who could not run it in Discord cannot post from the site.
+const LEAD_NEEDS = PERMISSION.view | PERMISSION.send | PERMISSION.events
+const BOT_NEEDS = PERMISSION.view | PERMISSION.send | PERMISSION.embed
+
+async function discordJson(path) {
+  const res = await discord('GET', path)
+  return res.ok ? res.json() : null
+}
+
+// Discord's permission rules: roles add up, then the channel's overwrites apply for everyone, roles, and the member.
+function channelPermissions(guild, channel, memberId, memberRoles) {
+  if (guild.owner_id === memberId) return EVERY_PERMISSION
+  const byRole = new Map((guild.roles || []).map((role) => [role.id, BigInt(role.permissions)]))
+  let allowed = byRole.get(guild.id) || 0n
+  for (const id of memberRoles) allowed |= byRole.get(id) || 0n
+  if (allowed & PERMISSION.admin) return EVERY_PERMISSION
+  const overwrites = channel.permission_overwrites || []
+  const apply = (rows) => {
+    let allow = 0n
+    let deny = 0n
+    for (const row of rows) {
+      allow |= BigInt(row.allow)
+      deny |= BigInt(row.deny)
+    }
+    allowed = (allowed & ~deny) | allow
+  }
+  apply(overwrites.filter((row) => row.id === guild.id))
+  apply(overwrites.filter((row) => row.id !== guild.id && memberRoles.includes(row.id)))
+  apply(overwrites.filter((row) => row.id === memberId))
+  return allowed
+}
+
+const channelLists = new Map()
+
+// Servers the bot shares with this Discord user, with the channels where both of them may post.
+export async function postableChannels(discordId) {
+  if (!botConfigured() || !/^\d{5,25}$/.test(String(discordId || ''))) return []
+  const cached = channelLists.get(discordId)
+  if (cached && Date.now() - cached.at < 30_000) return cached.servers
+  const botId = process.env.DISCORD_CLIENT_ID
+  const servers = []
+  for (const row of ((await discordJson('/users/@me/guilds')) || []).slice(0, 50)) {
+    const [member, bot] = await Promise.all([
+      discordJson(`/guilds/${row.id}/members/${discordId}`),
+      discordJson(`/guilds/${row.id}/members/${botId}`),
+    ])
+    if (!member || !bot) continue
+    const [guild, channels] = await Promise.all([
+      discordJson(`/guilds/${row.id}`),
+      discordJson(`/guilds/${row.id}/channels`),
+    ])
+    if (!guild || !Array.isArray(channels)) continue
+    const categories = new Map(channels.filter((ch) => ch.type === 4).map((ch) => [ch.id, ch.name]))
+    const can = (channel, id, roles, needs) => (channelPermissions(guild, channel, id, roles || []) & needs) === needs
+    const open = channels
+      .filter((ch) => ch.type === 0 || ch.type === 5)
+      .filter((ch) => can(ch, discordId, member.roles, LEAD_NEEDS) && can(ch, botId, bot.roles, BOT_NEEDS))
+      .sort((x, y) => (x.position || 0) - (y.position || 0))
+      .map((ch) => ({ id: ch.id, name: ch.name, category: categories.get(ch.parent_id) || '' }))
+    if (open.length) servers.push({ id: row.id, name: row.name, channels: open })
+  }
+  if (channelLists.size > 500) channelLists.clear()
+  channelLists.set(discordId, { at: Date.now(), servers })
+  return servers
+}
+
+export async function postRaidFromSite(raidId, discordId, channelId) {
+  const servers = await postableChannels(discordId)
+  const server = servers.find((row) => row.channels.some((ch) => ch.id === channelId))
+  if (!server) throw fail(403, 'You cannot post in that channel. Pick one from the list.')
+  await postRaid(raidId, channelId)
+  return server.channels.find((ch) => ch.id === channelId)
+}
+
 function option(options, name) {
   return options?.find((row) => row.name === name)?.value
 }

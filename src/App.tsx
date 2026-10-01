@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from 'react'
 import {
   api,
+  type DiscordServer,
   type Providers,
   type PublicUser,
   type RaidInstance,
@@ -543,6 +544,7 @@ export default function App() {
         {view === 'donate' && <Donate onBack={backMeta} />}
         {view === 'lead' && (
           <Lead
+            raidId={raidId}
             raid={raidInfo}
             roster={roster}
             locked={locked}
@@ -1016,6 +1018,98 @@ function CreateRaid({
         Post raid
       </button>
     </section>
+  )
+}
+
+function PostToDiscord({ raidId }: { raidId: string }) {
+  const [servers, setServers] = useState<DiscordServer[] | null>(null)
+  const [inviteUrl, setInviteUrl] = useState('')
+  const [serverId, setServerId] = useState('')
+  const [channelId, setChannelId] = useState('')
+  const [busy, setBusy] = useState(false)
+  const [note, setNote] = useState('')
+
+  const server = servers?.find((row) => row.id === serverId)
+
+  async function load() {
+    setBusy(true)
+    setNote('')
+    try {
+      const found = await api.discordChannels()
+      setServers(found.servers)
+      setInviteUrl(found.inviteUrl)
+      setServerId(found.servers[0]?.id || '')
+      setChannelId(found.servers[0]?.channels[0]?.id || '')
+    } catch (err) {
+      setNote(err instanceof Error ? err.message : 'Could not load your Discord servers.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  async function post() {
+    setBusy(true)
+    setNote('')
+    try {
+      const posted = await api.postToDiscord(raidId, channelId)
+      setNote(`Posted in #${posted.channel}. The post updates itself as people sign up.`)
+    } catch (err) {
+      setNote(err instanceof Error ? err.message : 'Could not post the raid.')
+    } finally {
+      setBusy(false)
+    }
+  }
+
+  return (
+    <div className="card discord-admin">
+      <strong>Post this raid in Discord</strong>
+      {servers === null ? (
+        <button type="button" className="secondary" disabled={busy} onClick={() => void load()}>
+          {busy ? 'Loading servers…' : 'Choose a server and channel'}
+        </button>
+      ) : servers.length === 0 ? (
+        <p className="hint">
+          No channels to post in yet. The Raid Night bot has to be in the server, and you need the Manage Events
+          permission there.{' '}
+          <a href={inviteUrl} target="_blank" rel="noopener noreferrer">
+            Add the bot to a server
+          </a>
+        </p>
+      ) : (
+        <>
+          <label className="field">
+            <span>Server</span>
+            <select
+              value={serverId}
+              onChange={(event) => {
+                setServerId(event.target.value)
+                setChannelId(servers.find((row) => row.id === event.target.value)?.channels[0]?.id || '')
+              }}
+            >
+              {servers.map((row) => (
+                <option key={row.id} value={row.id}>
+                  {row.name}
+                </option>
+              ))}
+            </select>
+          </label>
+          <label className="field">
+            <span>Channel</span>
+            <select value={channelId} onChange={(event) => setChannelId(event.target.value)}>
+              {server?.channels.map((row) => (
+                <option key={row.id} value={row.id}>
+                  {row.category ? `${row.category} / #${row.name}` : `#${row.name}`}
+                </option>
+              ))}
+            </select>
+          </label>
+          <button type="button" className="primary" disabled={busy || !channelId} onClick={() => void post()}>
+            {busy ? 'Posting…' : 'Post raid'}
+          </button>
+        </>
+      )}
+      {note && <p className="hint">{note}</p>}
+    </div>
   )
 }
 
@@ -1731,7 +1825,9 @@ function Lead({
   onAddRoster,
   onRemoveRoster,
   exportBox,
+  raidId,
 }: {
+  raidId: string
   raid: typeof raidFallback & { discordUrl?: string }
   roster: Raider[]
   locked: boolean
@@ -1842,6 +1938,8 @@ function Lead({
           Save Discord link
         </button>
       </div>
+
+      <PostToDiscord raidId={raidId} />
 
       <div className="lead-actions">
         {locked ? (
