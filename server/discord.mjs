@@ -159,33 +159,75 @@ export async function registerCommands() {
   return true
 }
 
-// className -> { id, name } of an emoji owned by the Discord application
-const classEmoji = {}
+const SPEC_ICONS = {
+  Warrior: { Arms: 'ability_warrior_savageblow', Fury: 'ability_warrior_innerrage', Protection: 'ability_warrior_defensivestance' },
+  Paladin: { Holy: 'spell_holy_holybolt', Protection: 'spell_holy_devotionaura', Retribution: 'spell_holy_auraoflight' },
+  Hunter: { 'Beast Mastery': 'ability_hunter_beasttaming', Marksmanship: 'ability_marksmanship', Survival: 'ability_hunter_swiftstrike' },
+  Rogue: { Assassination: 'ability_rogue_eviscerate', Combat: 'ability_backstab', Subtlety: 'ability_stealth' },
+  Priest: { Discipline: 'spell_holy_wordfortitude', Holy: 'spell_holy_guardianspirit', Shadow: 'spell_shadow_shadowwordpain' },
+  Shaman: { Elemental: 'spell_nature_lightning', Enhancement: 'spell_nature_lightningshield', Restoration: 'spell_nature_magicimmunity' },
+  Mage: { Arcane: 'spell_holy_magicalsentry', Fire: 'spell_fire_firebolt02', Frost: 'spell_frost_frostbolt02' },
+  Warlock: { Affliction: 'spell_shadow_deathcoil', Demonology: 'spell_shadow_metamorphosis', Destruction: 'spell_shadow_rainoffire' },
+  Druid: { Balance: 'spell_nature_starfall', Feral: 'ability_druid_catform', Bear: 'ability_racial_bearform', Restoration: 'spell_nature_healingtouch' },
+}
+const SPEC_ALIASES = { bm: 'Beast Mastery', mm: 'Marksmanship', cat: 'Feral', boomkin: 'Balance', moonkin: 'Balance' }
 
-function classIcon(className) {
-  const emoji = classEmoji[className]
+function emojiName(className, tree) {
+  const base = `rn_${className.toLowerCase()}`
+  return tree ? `${base}_${tree.toLowerCase().replace(/[^a-z]/g, '')}` : base
+}
+
+// emoji name -> { id, name } of an emoji owned by the Discord application
+const emojis = {}
+
+function mention(emoji) {
   return emoji ? `<:${emoji.name}:${emoji.id}>` : ''
 }
 
-// Uploads any missing class icons to the application once; after that this only reads their ids.
-export async function loadClassEmojis() {
+function classEmoji(className) {
+  return emojis[emojiName(className)]
+}
+
+// Spec is free text on the site ("Resto", "prot"), so match on how the tree name starts.
+function specEmoji(raider) {
+  const trees = Object.keys(SPEC_ICONS[raider.className] || {})
+  const typed = String(raider.spec || '').trim().toLowerCase()
+  if (!typed) return null
+  let tree =
+    SPEC_ALIASES[typed] ||
+    trees.find((name) => name.toLowerCase() === typed) ||
+    trees.find((name) => name.toLowerCase().startsWith(typed.slice(0, 3)))
+  if (raider.className === 'Druid' && (/bear/.test(typed) || (tree === 'Feral' && raider.role === 'tank'))) tree = 'Bear'
+  return trees.includes(tree) ? emojis[emojiName(raider.className, tree)] : null
+}
+
+// Uploads any missing class and spec icons to the application once; after that this only reads their ids.
+export async function loadEmojis() {
   if (!botConfigured()) return false
   const path = `/applications/${process.env.DISCORD_CLIENT_ID}/emojis`
   const res = await discord('GET', path)
   if (!res.ok) throw new Error(`Discord would not list the class icons (${res.status}).`)
   const have = (await res.json()).items || []
-  for (const className of WOW_CLASSES) {
-    const name = `rn_${className.toLowerCase()}`
+  const wanted = WOW_CLASSES.flatMap((className) => [
+    [emojiName(className), `classicon_${className.toLowerCase()}`],
+    ...Object.entries(SPEC_ICONS[className]).map(([tree, icon]) => [emojiName(className, tree), icon]),
+  ])
+  for (const [name, icon] of wanted) {
     let emoji = have.find((row) => row.name === name)
     if (!emoji) {
-      const art = await fetch(`https://wow.zamimg.com/images/wow/icons/large/classicon_${className.toLowerCase()}.jpg`)
+      const art = await fetch(`https://wow.zamimg.com/images/wow/icons/large/${icon}.jpg`)
       if (!art.ok) continue
       const image = `data:image/jpeg;base64,${Buffer.from(await art.arrayBuffer()).toString('base64')}`
-      const made = await discord('POST', path, { name, image })
+      let made = await discord('POST', path, { name, image })
+      if (made.status === 429) {
+        const wait = Number((await made.json().catch(() => ({}))).retry_after) || 2
+        await new Promise((resolve) => setTimeout(resolve, Math.min(wait, 30) * 1000))
+        made = await discord('POST', path, { name, image })
+      }
       if (!made.ok) continue
       emoji = await made.json()
     }
-    if (emoji?.id) classEmoji[className] = { id: emoji.id, name }
+    if (emoji?.id) emojis[name] = { id: emoji.id, name }
   }
   return true
 }
@@ -215,23 +257,26 @@ function raidUrl(raid) {
   return `${publicUrl()}/r/${raid.id}`
 }
 
-function roleField(label, raiders, pickLimit) {
+// One section of the roster. Icon markup is long, so a big section spills into continuation fields.
+function roleFields(label, raiders, pickLimit) {
   const lines = [...raiders]
     .sort((a, b) => WOW_CLASSES.indexOf(a.className) - WOW_CLASSES.indexOf(b.className) || a.name.localeCompare(b.name))
     .map((r) => {
-      const icon = classIcon(r.className)
-      const who = icon ? `${icon} **${esc(r.name)}** · ${esc(r.spec)}` : `${r.className} (${esc(r.spec)}) · **${esc(r.name)}**`
+      const icons = mention(classEmoji(r.className)) + mention(specEmoji(r))
+      const who = icons ? `${icons} **${esc(r.name)}** · ${esc(r.spec)}` : `${r.className} (${esc(r.spec)}) · **${esc(r.name)}**`
       return `${who} · ${r.picks.length}/${pickLimit}`
     })
-  let value = ''
-  let shown = 0
+  const chunks = ['']
   for (const line of lines) {
-    if (value.length + line.length > 950) break
-    value += `${line}\n`
-    shown += 1
+    if (chunks.at(-1).length + line.length > 1000) chunks.push('')
+    chunks[chunks.length - 1] += `${line}
+`
   }
-  if (shown < lines.length) value += `…and ${lines.length - shown} more`
-  return { name: `${label} (${raiders.length})`, value: value.trim() || '—', inline: true }
+  return chunks.map((value, i) => ({
+    name: i ? `${label} (cont.)` : `${label} (${raiders.length})`,
+    value: value.trim() || '—',
+    inline: true,
+  }))
 }
 
 function rsvpField(data, raid, status, label) {
@@ -248,15 +293,15 @@ export function raidMessage(data, raid) {
   const roster = buildRoster(data, raid)
   const locked = Boolean(raid.locked)
   const when = [raid.dateLabel, raid.when].filter(Boolean).join(' · ')
-  const fields = SECTIONS.map(([key, label]) =>
-    roleField(
+  const fields = SECTIONS.flatMap(([key, label]) =>
+    roleFields(
       label,
       roster.filter((r) => section(r) === key),
       raid.pickLimit,
     ),
   )
-  // Discord fits three inline fields per row; a blank one fills out the second row.
-  fields.push(BLANK_FIELD)
+  // Discord fits three inline fields per row; blanks fill out the last one.
+  while (fields.length % 3) fields.push(BLANK_FIELD)
   for (const [status, label] of [
     ['tentative', '❔ Tentative'],
     ['absent', '🚫 Not attending'],
@@ -380,7 +425,7 @@ function classSelect(raidId) {
     WOW_CLASSES.map((name, i) => ({
       label: name,
       value: String(i),
-      ...(classEmoji[name] ? { emoji: classEmoji[name] } : {}),
+      ...(classEmoji(name) ? { emoji: classEmoji(name) } : {}),
     })),
   )
 }
@@ -394,7 +439,7 @@ function joinPrompt(data, raid, user) {
     description: `${ch.spec} ${ch.className} · ${ROLE_NAME[ch.role]}`.slice(0, 100),
     value: ch.id,
     default: ch.id === current,
-    ...(classEmoji[ch.className] ? { emoji: classEmoji[ch.className] } : {}),
+    ...(specEmoji(ch) || classEmoji(ch.className) ? { emoji: specEmoji(ch) || classEmoji(ch.className) } : {}),
   }))
   options.push({ label: 'New character', value: 'new', emoji: { name: '➕' } })
   return ['Who are you bringing?', [select(`rn:char:${raid.id}`, 'Pick a character', options)]]
@@ -478,6 +523,7 @@ async function component(interaction, who) {
         `rn:spec:${raidId}:${Number(value)}`,
         'Pick a spec',
         SPECS[className].map(([spec, role, label], i) => ({
+          ...(specEmoji({ className, spec, role }) ? { emoji: specEmoji({ className, spec, role }) } : {}),
           label: label || spec,
           description: ROLE_NAME[role],
           value: String(i),

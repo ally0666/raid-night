@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { app } from './app.mjs'
-import { botInviteUrl, loadClassEmojis, registerCommands, syncRaidPosts } from './discord.mjs'
+import { botInviteUrl, loadEmojis, registerCommands, syncRaidPosts } from './discord.mjs'
 import { loadEnv, rootDir } from './env.mjs'
 
 loadEnv()
@@ -35,6 +35,6 @@ registerCommands()
   .then((ok) => ok && console.log(`Discord bot ready. Invite it: ${botInviteUrl()}`))
   .catch((err) => console.error(err.message))
 
-loadClassEmojis()
+loadEmojis()
   .then((ok) => ok && syncRaidPosts())
   .catch((err) => console.error(err.message))
