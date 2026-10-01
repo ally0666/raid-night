@@ -17,6 +17,12 @@ if (!existsSync(indexPath)) {
 
 const indexHtml = readFileSync(indexPath, 'utf8')
 
+// The page itself must be re-checked on every visit, or browsers keep showing the build from before a deploy.
+app.use('/*', async (c, next) => {
+  await next()
+  if (!c.req.path.startsWith('/assets/')) c.header('Cache-Control', 'no-cache')
+})
+
 app.use('/*', async (c, next) => {
   if (c.req.path.startsWith('/api')) return next()
   return serveStatic({ root: './dist' })(c, next)
