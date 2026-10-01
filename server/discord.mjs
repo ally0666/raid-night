@@ -159,7 +159,38 @@ export async function registerCommands() {
   return true
 }
 
-const SPKI_ED25519 = Buffer.from('302a300506032b6570032100', 'hex')
+// className -> { id, name } of an emoji owned by the Discord application
+const classEmoji = {}
+
+function classIcon(className) {
+  const emoji = classEmoji[className]
+  return emoji ? `<:${emoji.name}:${emoji.id}>` : ''
+}
+
+// Uploads any missing class icons to the application once; after that this only reads their ids.
+export async function loadClassEmojis() {
+  if (!botConfigured()) return false
+  const path = `/applications/${process.env.DISCORD_CLIENT_ID}/emojis`
+  const res = await discord('GET', path)
+  if (!res.ok) throw new Error(`Discord would not list the class icons (${res.status}).`)
+  const have = (await res.json()).items || []
+  for (const className of WOW_CLASSES) {
+    const name = `rn_${className.toLowerCase()}`
+    let emoji = have.find((row) => row.name === name)
+    if (!emoji) {
+      const art = await fetch(`https://wow.zamimg.com/images/wow/icons/large/classicon_${className.toLowerCase()}.jpg`)
+      if (!art.ok) continue
+      const image = `data:image/jpeg;base64,${Buffer.from(await art.arrayBuffer()).toString('base64')}`
+      const made = await discord('POST', path, { name, image })
+      if (!made.ok) continue
+      emoji = await made.json()
+    }
+    if (emoji?.id) classEmoji[className] = { id: emoji.id, name }
+  }
+  return true
+}
+
+const SPKI_ED25519 =Buffer.from('302a300506032b6570032100', 'hex')
 
 export function validSignature(body, signature, timestamp) {
   const hex = process.env.DISCORD_PUBLIC_KEY || ''
@@ -187,7 +218,11 @@ function raidUrl(raid) {
 function roleField(label, raiders, pickLimit) {
   const lines = [...raiders]
     .sort((a, b) => WOW_CLASSES.indexOf(a.className) - WOW_CLASSES.indexOf(b.className) || a.name.localeCompare(b.name))
-    .map((r) => `${r.className} (${esc(r.spec)}) · **${esc(r.name)}** · ${r.picks.length}/${pickLimit}`)
+    .map((r) => {
+      const icon = classIcon(r.className)
+      const who = icon ? `${icon} **${esc(r.name)}** · ${esc(r.spec)}` : `${r.className} (${esc(r.spec)}) · **${esc(r.name)}**`
+      return `${who} · ${r.picks.length}/${pickLimit}`
+    })
   let value = ''
   let shown = 0
   for (const line of lines) {
@@ -342,7 +377,11 @@ function classSelect(raidId) {
   return select(
     `rn:class:${raidId}`,
     'Pick a class',
-    WOW_CLASSES.map((name, i) => ({ label: name, value: String(i) })),
+    WOW_CLASSES.map((name, i) => ({
+      label: name,
+      value: String(i),
+      ...(classEmoji[name] ? { emoji: classEmoji[name] } : {}),
+    })),
   )
 }
 
@@ -355,6 +394,7 @@ function joinPrompt(data, raid, user) {
     description: `${ch.spec} ${ch.className} · ${ROLE_NAME[ch.role]}`.slice(0, 100),
     value: ch.id,
     default: ch.id === current,
+    ...(classEmoji[ch.className] ? { emoji: classEmoji[ch.className] } : {}),
   }))
   options.push({ label: 'New character', value: 'new', emoji: { name: '➕' } })
   return ['Who are you bringing?', [select(`rn:char:${raid.id}`, 'Pick a character', options)]]

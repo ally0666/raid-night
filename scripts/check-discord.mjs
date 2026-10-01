@@ -22,7 +22,7 @@ globalThis.fetch = async (url, init = {}) => {
 }
 
 const { app } = await import('../server/app.mjs')
-const { registerCommands, syncRaidPosts } = await import('../server/discord.mjs')
+const { loadClassEmojis, registerCommands, syncRaidPosts } = await import('../server/discord.mjs')
 const { read } = await import('../server/store.mjs')
 
 function assert(cond, msg) {
@@ -136,6 +136,13 @@ try {
   const back = await click(raider, `rn:char:${raid.id}`, [options[0].value])
   assert(back.json.data.content.includes('Signed up as'), 'sign back up')
   assert(!read().raids[raid.id].rsvp[Object.keys(read().raids[raid.id].signups)[0]], 'rsvp cleared')
+
+  assert(await loadClassEmojis(), 'class icons load')
+  const uploads = calls.filter((call) => call.url.endsWith('/emojis') && call.method === 'POST')
+  assert(uploads.length === 9 && uploads[0].body.image.startsWith('data:image/jpeg;base64,'), 'nine icons uploaded')
+  await syncRaidPosts()
+  const withIcons = calls.filter((call) => call.method === 'PATCH').at(-1).body.embeds[0].fields[0].value
+  assert(/^<:rn_druid:\d+> \*\*Thistlepaw\*\* · Feral · 0\/2$/.test(withIcons), `icon line: ${withIcons}`)
 
   console.log('discord checks ok')
 } finally {
