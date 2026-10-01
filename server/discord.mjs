@@ -72,11 +72,23 @@ const SPECS = {
   ],
 }
 
-const ROLE_FIELDS = [
+const SECTIONS = [
   ['tank', '🛡️ Tanks'],
   ['healer', '💚 Healers'],
-  ['dps', '⚔️ Damage'],
+  ['melee', '⚔️ Melee'],
+  ['caster', '🔮 Casters & Ranged'],
 ]
+const BLANK_FIELD = { name: '​', value: '​', inline: true }
+
+// Spec is free text on the site, so melee is decided by class first.
+function section(raider) {
+  if (raider.role !== 'dps') return raider.role
+  const spec = String(raider.spec || '')
+  if (['Warrior', 'Rogue', 'Paladin'].includes(raider.className)) return 'melee'
+  if (raider.className === 'Shaman' && /enh/i.test(spec)) return 'melee'
+  if (raider.className === 'Druid' && /feral|cat/i.test(spec)) return 'melee'
+  return 'caster'
+}
 const ROLE_NAME = { tank: 'Tank', healer: 'Healer', dps: 'Damage' }
 
 const COMMANDS = [
@@ -171,7 +183,9 @@ function raidUrl(raid) {
 }
 
 function roleField(label, raiders, pickLimit) {
-  const lines = raiders.map((r) => `**${esc(r.name)}** · ${esc(r.spec)} ${r.className} · ${r.picks.length}/${pickLimit}`)
+  const lines = [...raiders]
+    .sort((a, b) => WOW_CLASSES.indexOf(a.className) - WOW_CLASSES.indexOf(b.className) || a.name.localeCompare(b.name))
+    .map((r) => `${r.className} (${esc(r.spec)}) · **${esc(r.name)}** · ${r.picks.length}/${pickLimit}`)
   let value = ''
   let shown = 0
   for (const line of lines) {
@@ -197,16 +211,19 @@ export function raidMessage(data, raid) {
   const roster = buildRoster(data, raid)
   const locked = Boolean(raid.locked)
   const when = [raid.dateLabel, raid.when].filter(Boolean).join(' · ')
-  const fields = ROLE_FIELDS.map(([role, label]) =>
+  const fields = SECTIONS.map(([key, label]) =>
     roleField(
       label,
-      roster.filter((r) => r.role === role),
+      roster.filter((r) => section(r) === key),
       raid.pickLimit,
     ),
   )
+  // Discord fits three inline fields per row; a blank third keeps the sections two by two.
+  fields.splice(2, 0, BLANK_FIELD)
+  fields.push(BLANK_FIELD)
   for (const [status, label] of [
     ['tentative', '❔ Tentative'],
-    ['absent', '🚫 Absent'],
+    ['absent', '🚫 Not attending'],
   ]) {
     const field = rsvpField(data, raid, status, label)
     if (field) fields.push(field)
@@ -230,9 +247,9 @@ export function raidMessage(data, raid) {
       {
         type: 1,
         components: [
-          { type: 2, style: 3, label: 'Sign up', custom_id: `rn:join:${raid.id}`, disabled: locked },
+          { type: 2, style: 3, label: 'Attending', custom_id: `rn:join:${raid.id}`, disabled: locked },
           { type: 2, style: 2, label: 'Tentative', custom_id: `rn:tentative:${raid.id}`, disabled: locked },
-          { type: 2, style: 2, label: 'Absent', custom_id: `rn:absent:${raid.id}`, disabled: locked },
+          { type: 2, style: 4, label: 'Not attending', custom_id: `rn:absent:${raid.id}`, disabled: locked },
           { type: 2, style: 5, label: 'Pick reserves', url: raidUrl(raid) },
         ],
       },

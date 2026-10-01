@@ -129,7 +129,8 @@ try {
   const absent = await click(raider, `rn:absent:${raid.id}`, undefined, { message: { id: '9001' } })
   const fields = absent.json.data.embeds[0].fields
   assert(absent.json.type === 7 && fields[0].name === '🛡️ Tanks (0)', 'absent leaves roster')
-  assert(fields.at(-1).name === '🚫 Absent (1)' && fields.at(-1).value === `<@${raider.id}>`, 'absent listed')
+  assert(fields[3].name === '⚔️ Melee (0)' && fields[4].name === '🔮 Casters & Ranged (0)', 'damage split')
+  assert(fields.at(-1).name === '🚫 Not attending (1)' &&fields.at(-1).value === `<@${raider.id}>`, 'absent listed')
 
   const back = await click(raider, `rn:char:${raid.id}`, [options[0].value])
   assert(back.json.data.content.includes('Signed up as'), 'sign back up')
