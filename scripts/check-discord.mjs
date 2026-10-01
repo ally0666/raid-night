@@ -69,13 +69,14 @@ try {
   for (const [key, value] of [
     ['instance', 'karazhan'],
     ['date', day.value],
+    ['time', '21:30'],
   ]) {
     menus = (await click(lead, `rn:new:${key}`, [value], { message: { id: '5', components: menus } })).json.data.components
   }
   const created = await click(lead, 'rn:new:go', undefined, { message: { id: '5', components: menus } })
   assert(created.json.data.content.startsWith('Scheduled and posted'), `create: ${created.json.data.content}`)
   const raid = Object.values(read().raids)[0]
-  assert(raid.instanceId === 'karazhan' && raid.when.endsWith(', 8:00 PM') && raid.lockLabel === '7:45 PM', 'labels')
+  assert(raid.instanceId === 'karazhan' && raid.when.endsWith(', 9:30 PM') && raid.lockLabel === '9:15 PM', 'labels')
   assert(day.label.startsWith(raid.when.split(',')[0]), 'picked day is the raid day')
   assert(raid.discordPosts?.[0]?.messageId === '9001', 'post saved')
   const posted = calls.find((call) => call.method === 'POST')
@@ -154,6 +155,19 @@ try {
   assert(sheet.status === 200 && page.includes('<b>Thistlepaw</b>') && page.includes('ability_racial_bearform'), 'sheet page')
   assert(page.includes('1/10 signed') && !page.includes(raider.id), 'sheet shows counts, not Discord ids')
   assert((await app.request('/sheet/r_missing')).status === 404, 'unknown sheet')
+
+  const strangerDelete = await click(raider, `rn:delete:${raid.id}`)
+  assert(strangerDelete.json.data.content.startsWith('Pick one of your raids') && read().raids[raid.id], 'raiders cannot delete')
+  const confirm = await send({
+    type: 2,
+    ...base,
+    member: { user: lead },
+    data: { name: 'raid', options: [{ name: 'delete', options: [{ name: 'raid', value: raid.id }] }] },
+  })
+  assert(confirm.json.data.components[0].components[0].custom_id === `rn:delete:${raid.id}` && read().raids[raid.id], 'delete asks first')
+  const deleted = await click(lead, `rn:delete:${raid.id}`, undefined, { message: { id: '6' } })
+  assert(deleted.json.data.content.startsWith('Deleted') && !read().raids[raid.id], 'lead deletes raid')
+  assert(calls.at(-1).method === 'PATCH' && calls.at(-1).body.embeds[0].description === 'This raid was cancelled.', 'post marked cancelled')
 
   console.log('discord checks ok')
 } finally {

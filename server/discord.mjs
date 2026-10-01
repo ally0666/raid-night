@@ -113,6 +113,12 @@ const COMMANDS = [
         name: 'create',
         description: 'Schedule a raid and post it in this channel',
       },
+      {
+        type: 1,
+        name: 'delete',
+        description: 'Cancel one of your raids and remove its signups',
+        options: [{ type: 3, name: 'raid', description: 'Which raid', required: true, autocomplete: true }],
+      },
     ],
   },
 ]
@@ -477,6 +483,16 @@ async function component(interaction, who) {
 
   if (action === 'new') return newRaid(interaction, who, raidId, value)
 
+  if (action === 'delete') {
+    const removed = await update((data) => {
+      const raid = ownRaid(data, siteUser(data, who), raidId)
+      delete data.raids[raid.id]
+      return raid
+    })
+    await cancelRaidPosts(removed)
+    return swap(`Deleted **${esc(removed.name)}**.`)
+  }
+
   if (action === 'join') {
     const [content, components] = await update((data) => {
       const raid = getRaid(data, raidId)
@@ -624,21 +640,28 @@ function option(options, name) {
   return options?.find((row) => row.name === name)?.value
 }
 
+function ownRaid(data, user, raidId) {
+  const found = /^[A-Za-z0-9_-]{3,80}$/.test(raidId) ? data.raids[raidId] : null
+  if (!found || !canManage(user, found)) {
+    throw fail(404, `Pick one of your raids from the list. No raids yet? Use /raid create, or schedule one at ${publicUrl()}`)
+  }
+  return found
+}
+
 async function command(interaction, who) {
   const sub = interaction.data.options?.[0]
   if (interaction.data.name !== 'raid' || !sub) throw fail(400, 'Unknown command.')
   if (!interaction.guild_id) throw fail(400, 'Use this in a server channel.')
 
-  if (sub.name === 'post') {
+  if (sub.name === 'post' || sub.name === 'delete') {
     const raidId = String(option(sub.options, 'raid') || '')
-    const raid = await update((data) => {
-      const user = siteUser(data, who)
-      const found = /^[A-Za-z0-9_-]{3,80}$/.test(raidId) ? data.raids[raidId] : null
-      if (!found || !canManage(user, found)) {
-        throw fail(404, `Pick one of your raids from the list. No raids yet? Use /raid create, or schedule one at ${publicUrl()}`)
-      }
-      return found
-    })
+    const raid = await update((data) => ownRaid(data, siteUser(data, who), raidId))
+    if (sub.name === 'delete') {
+      const signed = Object.keys(raid.signups || {}).length
+      return ephemeral(`Delete **${esc(raid.name)}** (${esc(raid.dateLabel)})? Its ${signed} signups go with it and its posts are marked cancelled. This cannot be undone.`, [
+        { type: 1, components: [{ type: 2, style: 4, label: 'Delete raid', custom_id: `rn:delete:${raid.id}` }] },
+      ])
+    }
     await postRaid(raid.id, interaction.channel_id)
     return ephemeral(`Posted **${esc(raid.name)}**. The post updates itself as people sign up here or on the site.`)
   }
