@@ -3,7 +3,7 @@ import { join } from 'node:path'
 import { serve } from '@hono/node-server'
 import { serveStatic } from '@hono/node-server/serve-static'
 import { app } from './app.mjs'
-import { botInviteUrl, loadEmojis, registerCommands, syncRaidPosts } from './discord.mjs'
+import { announceAddonRelease, botInviteUrl, loadEmojis, registerCommands, syncRaidPosts } from './discord.mjs'
 import { loadEnv, rootDir } from './env.mjs'
 
 loadEnv()
@@ -40,6 +40,8 @@ console.log(`raid-night on http://0.0.0.0:${port}`)
 registerCommands()
   .then((ok) => ok && console.log(`Discord bot ready. Invite it: ${botInviteUrl()}`))
   .catch((err) => console.error(err.message))
+
+announceAddonRelease().catch((err) => console.error(err.message))
 
 loadEmojis()
   .then((ok) => ok && syncRaidPosts())

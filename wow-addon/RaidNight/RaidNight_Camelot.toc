@@ -1,10 +1,9 @@
-## Interface: 16001, 20506
+## Interface: 16001
 ## Title: Raid Night
 ## Notes: Soft reserves for raids in WoW Forever and TBC Anniversary.
 ## Author: Squirt
 ## Version: 1.6.10
 ## SavedVariables: RaidNightDB
-## X-Curse-Project-ID: 0
 ## X-Website: https://raid-night.onrender.com
 ## X-Category: Raid
 

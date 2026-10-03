@@ -174,7 +174,7 @@ function classLine(text) {
 }
 
 function detectSlot(text, name) {
-  if (/Mount|summons a/i.test(text) || /reins of/i.test(name)) return 'Mount'
+  if (/Mount|summons a/i.test(text) || /reins of/i.test(name)) return 'Mount'
   if (/\bToken\b|Vanquished|Fallen (?:Champion|Defender|Hero)|Forgotten (?:Conqueror|Protector|Vanquisher)/i.test(name)) {
     return 'Token'
   }
@@ -265,6 +265,38 @@ function isStr(text) {
   return /\+\d+ Strength/i.test(text)
 }
 
+// What each class can equip in TBC. Cloth is everyone (and cloaks are cloth), so it is not listed.
+const CAN_WEAR = {
+  Leather: ['Warrior', 'Paladin', 'Hunter', 'Rogue', 'Shaman', 'Druid'],
+  Mail: ['Warrior', 'Paladin', 'Hunter', 'Shaman'],
+  Plate: ['Warrior', 'Paladin'],
+}
+const CAN_WIELD = {
+  Wand: ['Mage', 'Warlock', 'Priest'],
+  Thrown: ['Rogue', 'Warrior', 'Hunter'],
+  Fist: ['Rogue', 'Shaman', 'Druid', 'Hunter', 'Warrior'],
+  Bow: ['Hunter', 'Warrior', 'Rogue'],
+  Gun: ['Hunter', 'Warrior', 'Rogue'],
+  Crossbow: ['Hunter', 'Warrior', 'Rogue'],
+  Polearm: ['Warrior', 'Paladin', 'Hunter', 'Druid'],
+  Staff: ['Mage', 'Warlock', 'Priest', 'Druid', 'Shaman', 'Hunter', 'Warrior'],
+  Dagger: ['Rogue', 'Hunter', 'Warrior', 'Mage', 'Warlock', 'Priest', 'Druid', 'Shaman'],
+  Sword: ['Warrior', 'Paladin', 'Rogue', 'Hunter', 'Mage', 'Warlock'],
+  Sword2H: ['Warrior', 'Paladin', 'Hunter'],
+  Axe: ['Warrior', 'Paladin', 'Hunter', 'Shaman'],
+  Mace: ['Warrior', 'Paladin', 'Rogue', 'Priest', 'Shaman', 'Druid'],
+  Mace2H: ['Warrior', 'Paladin', 'Shaman', 'Druid'],
+  Shield: ['Warrior', 'Paladin', 'Shaman'],
+}
+// Who wants the stats. Hybrids (Paladin, Shaman, Druid) are in both, so they see everything they can equip.
+const WANTS_SPELL = ['Mage', 'Warlock', 'Priest', 'Paladin', 'Shaman', 'Druid']
+const WANTS_PHYSICAL = ['Warrior', 'Paladin', 'Hunter', 'Rogue', 'Shaman', 'Druid']
+const WANTS_HEALING = ['Priest', 'Paladin', 'Shaman', 'Druid']
+const WANTS_TANKING = ['Warrior', 'Paladin', 'Druid']
+
+// An item is listed for every class that can equip it and has a use for its stats. The old rule
+// guessed one "intended" group per item, which hid cloaks, rings, weapons and off-armor pieces
+// from classes that really do reserve them.
 function classesFor(name, text, slot) {
   const listed = classLine(text)
   if (listed) return listed
@@ -276,69 +308,51 @@ function classesFor(name, text, slot) {
   if (/Forgotten Protector/i.test(name)) return PROTECTOR
   if (/Forgotten Vanquisher/i.test(name)) return VANQUISHER
 
-  if (slot === 'Mount') return ALL
+  if (slot === 'Mount' || slot === 'Recipe' || slot === 'Gem' || slot === 'Quest' || slot === 'Other') return ALL
   if (slot === 'Relic') {
     if (/Idol/i.test(text) || /Idol/i.test(name)) return ['Druid']
     if (/Libram/i.test(text) || /Libram/i.test(name)) return ['Paladin']
     if (/Totem/i.test(text) || /Totem/i.test(name)) return ['Shaman']
   }
 
-  const armor = armorType(text)
+  let equip = ALL
+  const armor = slot === 'Back' ? null : armorType(text)
   const weapon = weaponType(text)
-  const heal = isHeal(text)
-  const spell = isSpell(text)
-  const tank = isTank(text)
-  const agi = isAgi(text)
-  const str = isStr(text)
+  if (armor && CAN_WEAR[armor]) equip = CAN_WEAR[armor]
+  else if (weapon === 'Shield' || slot === 'Shield') equip = CAN_WIELD.Shield
+  else if (weapon && slot === 'Two-Hand' && CAN_WIELD[`${weapon}2H`]) equip = CAN_WIELD[`${weapon}2H`]
+  else if (weapon && CAN_WIELD[weapon]) equip = CAN_WIELD[weapon]
 
-  if (armor === 'Cloth') return heal && !spell ? CLOTH_HEAL : CLOTH_CASTER
-  if (armor === 'Leather') return heal && !agi ? LEATHER_HEAL : LEATHER_AGI
-  if (armor === 'Mail') return heal && !agi ? MAIL_HEAL : MAIL_AGI
-  if (armor === 'Plate') {
-    if (heal && !str && !tank) return PLATE_HEAL
-    if (tank && !str) return PLATE_TANK
-    if (heal) return PLATE_HEAL
-    if (tank) return PLATE_TANK
-    return PLATE_DPS
-  }
+  const caster = isHeal(text) || isSpell(text)
+  const physical = isTank(text) || isAgi(text) || isStr(text)
+  // Dodge alone also shows up on rogue and feral gear, so it does not make an item tank-only.
+  const tankOnly = /defense rating|increased defense|parry rating|block rating|block value|shield block/i.test(text)
+  let wants = ALL
+  if (caster && !physical) wants = isHeal(text) ? WANTS_HEALING : WANTS_SPELL
+  else if (physical && !caster) wants = tankOnly ? WANTS_TANKING : WANTS_PHYSICAL
 
-  if (weapon === 'Wand') return WAND
-  if (weapon === 'Thrown') return THROWN
-  if (weapon === 'Fist') return FIST
-  if (weapon === 'Bow' || weapon === 'Gun') return BOW
-  if (weapon === 'Crossbow') return HUNTER_RANGED
-  if (weapon === 'Polearm') return POLEARM
-  if (weapon === 'Staff') return heal ? HEAL_STAFF : CASTER_STAFF
-  if (weapon === 'Dagger') {
-    if (spell || heal) return CASTER_DAGGER
-    return AGI_DAGGER
-  }
-  if (weapon === 'Sword') {
-    if (slot === 'Two-Hand') return SWORD_2H
-    if (spell) return ['Mage', 'Warlock']
-    return SWORD_1H
-  }
-  if (weapon === 'Axe') return slot === 'Two-Hand' ? AXE_2H : AXE_1H
-  if (weapon === 'Mace') return heal || spell ? MACE_HEAL : MACE_MELEE
-  if (weapon === 'Shield' || slot === 'Shield') return SHIELD
-
-  if (tank) return TANK
-  if (heal && !agi && !str) return HEALER
-  if (spell && !agi && !str) return CASTER
-  if (agi && !str) return AGI
-  if (str && !agi) return STR
-  return ALL
+  const both = ALL.filter((cls) => equip.includes(cls) && wants.includes(cls))
+  return both.length ? both : equip
 }
 
-function shouldSkip(data, name, text) {
+// Bosses keep the strict filter. Trash and recipe lists are exactly the small stuff people asked
+// to reserve, so they keep rares, recipes and gems.
+function shouldSkip(data, name, text, loose) {
   if (!data || !name) return true
+  if (/\b\d+\s+Slot Bag\b|\bBag\b/.test(text) && /Slot/.test(text)) return true
+  if (/Satchel|Sack of Gems|Black Sack/i.test(name)) return true
+  if (loose) return data.quality != null && data.quality < 3
   if (SKIP_NAME.test(name)) return true
   if (data.quality != null && data.quality < 4 && !/mount|reins/i.test(name)) return true
-  if (/Begins a Quest|This Item Begins a Quest/i.test(text)) return true
-  if (/\b\d+\s+Slot Bag\b|\bBag\b/.test(text) && /Slot/.test(text)) return true
   if (/Matches a .+ Socket/i.test(text)) return true
-  if (/Satchel|Sack of Gems|Black Sack/i.test(name)) return true
   return false
+}
+
+function looseSlot(text, name, slot) {
+  if (SKIP_NAME.test(name)) return 'Recipe'
+  if (/Matches a .+ Socket/i.test(text)) return 'Gem'
+  if (/Begins a Quest/i.test(text)) return 'Quest'
+  return slot
 }
 
 function loadCache() {
@@ -384,68 +398,125 @@ async function mapPool(items, limit, fn) {
   return out
 }
 
-function loadKara() {
+const CLASS_NAME = Object.fromEntries(ALL.map((name) => [name.toUpperCase(), name]))
+
+// The released addon's Data.lua can be ahead of items.ts, so both are read and merged.
+function loadExisting() {
   const src = readFileSync(new URL('../src/data/items.ts', import.meta.url), 'utf8')
   const start = src.indexOf('= [')
   if (start < 0) throw new Error('could not find items array')
-  const items = JSON.parse(src.slice(start + 2))
-  return items.map((item) => ({ ...item, raidId: item.raidId || 'karazhan' }))
+  const items = JSON.parse(src.slice(start + 2)).map((item) => ({ ...item, raidId: item.raidId || 'karazhan' }))
+  const luaPath = new URL('../wow-addon/RaidNight/Data.lua', import.meta.url)
+  if (!existsSync(luaPath)) return items
+  const have = new Set(items.map((item) => `${item.raidId}:${item.id}`))
+  const unquote = (text) => text.replace(/\\(.)/g, '$1')
+  const field = '"((?:[^"\\\\]|\\\\.)*)"'
+  const row = new RegExp(
+    `\\{ id = (\\d+), name = ${field}, icon = ${field}, slot = ${field}, boss = ${field}, raid = ${field}, classes = ${field} \\}`,
+    'g',
+  )
+  for (const m of readFileSync(luaPath, 'utf8').matchAll(row)) {
+    const item = {
+      id: Number(m[1]),
+      name: unquote(m[2]),
+      icon: unquote(m[3]),
+      slot: unquote(m[4]),
+      boss: unquote(m[5]),
+      classes: m[7].split(',').map((cls) => CLASS_NAME[cls]).filter(Boolean),
+      raidId: unquote(m[6]),
+    }
+    if (have.has(`${item.raidId}:${item.id}`)) continue
+    have.add(`${item.raidId}:${item.id}`)
+    // Keep it next to the rest of its boss.
+    let at = -1
+    items.forEach((other, i) => {
+      if (other.raidId === item.raidId && other.boss === item.boss) at = i
+    })
+    if (at < 0) items.forEach((other, i) => (other.raidId === item.raidId ? (at = i) : null))
+    items.splice(at + 1, 0, item)
+  }
+  return items
 }
 
 const lua = await (await fetch(ATLAS_URL)).text()
 const cache = loadCache()
-const extra = []
+const existing = loadExisting()
+const seen = new Set(existing.map((item) => `${item.raidId}:${item.id}`))
+const added = []
 
-for (const [atlasKey, raidId] of Object.entries(RAIDS)) {
-  const block = extractDataBlock(lua, atlasKey)
-  const bosses = parseBosses(block)
+const EXTRA_LISTS = { Trash: 'Trash', Patterns: 'Recipes' }
+
+for (const [atlasKey, raidId] of Object.entries({ Karazhan: 'karazhan', ...RAIDS })) {
+  const bosses = parseBosses(extractDataBlock(lua, atlasKey))
   for (const boss of bosses) {
-    if (SKIP_BOSSES.has(boss.name)) continue
-    if (boss.extra && boss.name !== 'Timed Chest') continue
-    const short = BOSS_SHORT[boss.name] || boss.name.replace(/^(The|High Warlord|High King|Shade of)\s+/i, '')
-    const unique = [...new Set(boss.ids.filter((id) => !SKIP_IDS.has(id)))]
-    console.log(raidId, short, unique.length)
+    const loose = Boolean(EXTRA_LISTS[boss.name])
+    if (!loose) {
+      // Karazhan's boss loot is a hand-checked list; only its trash and recipes come from here.
+      if (raidId === 'karazhan') continue
+      if (SKIP_BOSSES.has(boss.name)) continue
+      if (boss.extra && boss.name !== 'Timed Chest') continue
+    }
+    const short =
+      EXTRA_LISTS[boss.name] || BOSS_SHORT[boss.name] || boss.name.replace(/^(The|High Warlord|High King|Shade of)\s+/i, '')
+    const unique = [...new Set(boss.ids.filter((id) => !SKIP_IDS.has(id) && !seen.has(`${raidId}:${id}`)))]
     const rows = await mapPool(unique, 8, async (id) => {
       try {
         const data = await tooltip(id, cache)
         const text = stripHtml(data.tooltip)
-        if (shouldSkip(data, data.name, text)) return null
-        const slot = detectSlot(text, data.name)
-        if (slot === 'Other' && /quest/i.test(text)) return null
-        return {
-          id,
-          name: data.name,
-          icon: data.icon,
-          slot,
-          boss: short,
-          classes: classesFor(data.name, text, slot),
-          raidId,
-        }
+        if (shouldSkip(data, data.name, text, loose)) return null
+        const slot = looseSlot(text, data.name, detectSlot(text, data.name))
+        // A boss's quest starters turn in for loot (Magtheridon's Head, Verdant Sphere), so they stay.
+        if (!loose && slot === 'Other') return null
+        return { id, name: data.name, icon: data.icon, slot, boss: short, classes: ALL, raidId }
       } catch (err) {
         console.warn('skip', id, err.message)
         return null
       }
     })
-    extra.push(...rows.filter(Boolean))
+    for (const row of rows.filter(Boolean)) {
+      if (seen.has(`${raidId}:${row.id}`)) continue
+      seen.add(`${raidId}:${row.id}`)
+      added.push(row)
+    }
+    console.log(raidId, short, `+${rows.filter(Boolean).length}`)
   }
   saveCache(cache)
 }
 
-const kara = loadKara().filter((item) => (item.raidId || 'karazhan') === 'karazhan')
-const seen = new Set(kara.map((item) => `${item.raidId}:${item.id}`))
-const merged = [...kara]
-for (const item of extra) {
-  const key = `${item.raidId}:${item.id}`
-  if (seen.has(key)) continue
-  seen.add(key)
-  merged.push(item)
+// Per raid: the existing rows in their order, then anything new grouped after its boss.
+const RAID_ORDER = ['karazhan', 'gruul', 'magtheridon', 'ssc', 'tk', 'hyjal', 'bt', 'za', 'swp']
+const merged = []
+for (const raidId of RAID_ORDER) {
+  const rows = existing.filter((item) => item.raidId === raidId)
+  for (const item of added.filter((row) => row.raidId === raidId)) {
+    let at = -1
+    rows.forEach((other, i) => (other.boss === item.boss ? (at = i) : null))
+    rows.splice(at < 0 ? rows.length : at + 1, 0, item)
+  }
+  merged.push(...rows)
 }
+
+// Every item gets its class list from the same rule, including the ones already on the list.
+let changed = 0
+await mapPool(merged, 8, async (item) => {
+  try {
+    const data = await tooltip(item.id, cache)
+    const text = stripHtml(data.tooltip)
+    // An older build read "Mounting" in an item's name as a mount.
+    if (item.slot === 'Mount' && item.raidId !== 'karazhan') item.slot = detectSlot(text, item.name)
+    const classes = classesFor(item.name, text, item.slot)
+    if (classes.join() !== item.classes.join()) changed += 1
+    item.classes = classes
+  } catch (err) {
+    console.warn('kept old classes for', item.id, err.message)
+  }
+})
+saveCache(cache)
 
 const file = `import type { Item } from '../types'
 
 export const items: Item[] = ${JSON.stringify(merged, null, 2)}
 `
 writeFileSync(new URL('../src/data/items.ts', import.meta.url), file)
-console.log('wrote', merged.length, 'items', `(kara ${kara.length}, extra ${extra.length})`)
+console.log('wrote', merged.length, 'items:', added.length, 'new,', changed, 'class lists changed')
 mkdirSync(dirname(CACHE_PATH), { recursive: true })
-saveCache(cache)

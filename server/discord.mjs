@@ -1,5 +1,7 @@
 import { createPublicKey, randomUUID, verify } from 'node:crypto'
-import { publicUrl } from './env.mjs'
+import { readFileSync } from 'node:fs'
+import { join } from 'node:path'
+import { publicUrl, rootDir } from './env.mjs'
 import { INSTANCES, WOW_CLASSES } from './seed.mjs'
 import {
   addCharacter,
@@ -112,6 +114,19 @@ const COMMANDS = [
         type: 1,
         name: 'create',
         description: 'Schedule a raid and post it in this channel',
+      },
+      {
+        type: 1,
+        name: 'updates',
+        description: 'Post Raid Night addon updates in a channel, starting with the newest one',
+        options: [
+          {
+            type: 7,
+            name: 'channel',
+            description: 'Where updates go (default: this channel)',
+            channel_types: [0, 5],
+          },
+        ],
       },
       {
         type: 1,
@@ -712,6 +727,50 @@ export async function postRaidFromSite(raidId, discordId, channelId) {
   return server.channels.find((ch) => ch.id === channelId)
 }
 
+// The addon ships with the site, so the deployed copy's version and changelog are the release.
+const ADDON_DIR = join(rootDir, 'wow-addon', 'RaidNight')
+
+export function latestAddonRelease() {
+  try {
+    const version = readFileSync(join(ADDON_DIR, 'RaidNight.toc'), 'utf8').match(/^## Version:\s*(\S+)/m)?.[1]
+    const changelog = readFileSync(join(ADDON_DIR, 'CHANGELOG.md'), 'utf8').replace(/\r\n/g, '\n')
+    const section = changelog.split(/^## /m).find((part) => part.startsWith(`${version}\n`))
+    if (!version || !section) return null
+    return { version, notes: section.slice(version.length).trim() }
+  } catch {
+    return null
+  }
+}
+
+function postRelease(channelId, release) {
+  return discord('POST', `/channels/${channelId}/messages`, {
+    embeds: [
+      {
+        title: `Raid Night addon ${release.version} is out`,
+        url: ADDON_URL,
+        color: 0xc79c6e,
+        description: `${release.notes.slice(0, 3500)}\n\n**[Download on CurseForge](${ADDON_URL})** or update in the CurseForge app.`,
+      },
+    ],
+    allowed_mentions: { parse: [] },
+  })
+}
+
+// Runs at startup: a deploy that carries a new addon version posts it once to every updates channel.
+export async function announceAddonRelease() {
+  if (!botConfigured()) return
+  const release = latestAddonRelease()
+  const settings = read().addonUpdates
+  if (!release || !settings?.channels?.length || settings.announced === release.version) return
+  await update((data) => {
+    data.addonUpdates.announced = release.version
+  })
+  for (const row of settings.channels) {
+    const res = await postRelease(row.channelId, release).catch((err) => ({ ok: false, status: err.message }))
+    if (!res.ok) console.error(`Could not post addon ${release.version} in channel ${row.channelId} (${res.status})`)
+  }
+}
+
 function option(options, name) {
   return options?.find((row) => row.name === name)?.value
 }
@@ -743,6 +802,27 @@ async function command(interaction, who) {
   }
 
   if (sub.name === 'create') return ephemeral(NEW_RAID_PROMPT, newRaidForm({ time: '20:00' }))
+
+  if (sub.name === 'updates') {
+    const channelId = String(option(sub.options, 'channel') || interaction.channel_id || '')
+    if (!/^\d{5,25}$/.test(channelId)) throw fail(400, 'Pick a text channel.')
+    const release = latestAddonRelease()
+    if (!release) throw fail(500, 'The site has no addon changelog to post yet.')
+    const res = await postRelease(channelId, release)
+    if (res.status === 403 || res.status === 404) {
+      throw fail(403, 'I cannot post in that channel. Give me View Channel, Send Messages and Embed Links there, then try again.')
+    }
+    if (!res.ok) throw fail(502, 'Discord did not accept the post. Try again in a minute.')
+    await update((data) => {
+      const settings = data.addonUpdates || (data.addonUpdates = { channels: [] })
+      settings.channels = [
+        ...settings.channels.filter((row) => row.guildId !== interaction.guild_id),
+        { guildId: interaction.guild_id, channelId },
+      ].slice(-20)
+      settings.announced = release.version
+    })
+    return ephemeral(`Posted Raid Night ${esc(release.version)} in <#${channelId}>. Every new addon version will post there by itself.`)
+  }
 
   throw fail(400, 'Unknown command.')
 }

@@ -27,8 +27,8 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Attumen",
     "classes": [
-      "Hunter",
       "Warrior",
+      "Hunter",
       "Rogue"
     ],
     "raidId": "karazhan"
@@ -40,7 +40,10 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Attumen",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -51,9 +54,12 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Attumen",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -64,7 +70,12 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Attumen",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -75,6 +86,8 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Attumen",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -86,7 +99,11 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Attumen",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -98,6 +115,8 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Attumen",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -110,6 +129,7 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Attumen",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "karazhan"
@@ -144,9 +164,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Attumen",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -157,11 +180,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Attumen",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -174,6 +198,9 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -185,7 +212,12 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Moroes",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -196,7 +228,11 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Moroes",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -208,6 +244,7 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Moroes",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "karazhan"
@@ -243,7 +280,11 @@ export const items: Item[] = [
     "boss": "Moroes",
     "classes": [
       "Warrior",
-      "Paladin"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -254,11 +295,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Moroes",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
-      "Druid",
-      "Shaman"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -269,9 +311,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Moroes",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -282,8 +327,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Moroes",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -294,8 +342,8 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Moroes",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -319,7 +367,11 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Maiden",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -331,7 +383,10 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Maiden",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -342,9 +397,12 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Maiden",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -368,9 +426,12 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Maiden",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -392,6 +453,7 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Maiden",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "karazhan"
@@ -403,6 +465,8 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Maiden",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -427,6 +491,8 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Maiden",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -440,8 +506,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -463,8 +529,8 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Opera",
     "classes": [
-      "Hunter",
       "Warrior",
+      "Hunter",
       "Rogue"
     ],
     "raidId": "karazhan"
@@ -476,6 +542,7 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Opera",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "karazhan"
@@ -487,11 +554,11 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Opera",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
       "Shaman",
-      "Druid",
-      "Hunter",
-      "Warrior"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -502,8 +569,8 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Opera",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -516,9 +583,12 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Opera",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -529,6 +599,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Opera",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -564,8 +636,8 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Opera",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -578,6 +650,8 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Opera",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -589,9 +663,12 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Opera",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -602,9 +679,12 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Opera",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -615,8 +695,6 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Opera",
     "classes": [
-      "Mage",
-      "Warlock",
       "Priest"
     ],
     "raidId": "karazhan"
@@ -643,7 +721,8 @@ export const items: Item[] = [
     "boss": "Opera",
     "classes": [
       "Warrior",
-      "Paladin"
+      "Paladin",
+      "Hunter"
     ],
     "raidId": "karazhan"
   },
@@ -654,7 +733,10 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Opera",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -665,8 +747,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Opera",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -677,11 +762,15 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Opera",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -731,6 +820,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Curator",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -742,7 +833,10 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Curator",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -753,6 +847,7 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Curator",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "karazhan"
@@ -764,11 +859,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Curator",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -779,9 +875,10 @@ export const items: Item[] = [
     "slot": "Two-Hand",
     "boss": "Curator",
     "classes": [
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -807,9 +904,9 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Druid",
+      "Rogue",
       "Shaman",
-      "Rogue"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -820,8 +917,8 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Illhoof",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -845,7 +942,10 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Illhoof",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -856,8 +956,9 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Illhoof",
     "classes": [
-      "Hunter",
-      "Shaman"
+      "Paladin",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -868,9 +969,12 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Illhoof",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -881,9 +985,14 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Illhoof",
     "classes": [
-      "Priest",
+      "Warrior",
       "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
       "Shaman",
+      "Mage",
+      "Warlock",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -895,9 +1004,10 @@ export const items: Item[] = [
     "slot": "Two-Hand",
     "boss": "Illhoof",
     "classes": [
-      "Priest",
-      "Druid",
-      "Shaman"
+      "Warrior",
+      "Hunter",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -908,9 +1018,15 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Illhoof",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -921,8 +1037,9 @@ export const items: Item[] = [
     "slot": "Thrown",
     "boss": "Illhoof",
     "classes": [
-      "Rogue",
-      "Warrior"
+      "Warrior",
+      "Hunter",
+      "Rogue"
     ],
     "raidId": "karazhan"
   },
@@ -933,8 +1050,8 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Aran",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -947,7 +1064,10 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Aran",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -958,9 +1078,12 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Aran",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -971,11 +1094,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Aran",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -986,9 +1110,12 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Aran",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1010,9 +1137,15 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Aran",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1023,7 +1156,11 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Aran",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -1035,11 +1172,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Aran",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1063,6 +1201,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Aran",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -1075,9 +1215,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Aran",
     "classes": [
+      "Priest",
       "Mage",
-      "Warlock",
-      "Priest"
+      "Warlock"
     ],
     "raidId": "karazhan"
   },
@@ -1088,7 +1228,11 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Netherspite",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -1111,9 +1255,12 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Netherspite",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1126,6 +1273,9 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -1137,8 +1287,8 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Netherspite",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -1151,9 +1301,12 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Netherspite",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1164,6 +1317,7 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Netherspite",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "karazhan"
@@ -1187,7 +1341,10 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Netherspite",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1198,6 +1355,8 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Netherspite",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -1210,7 +1369,11 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Netherspite",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -1224,9 +1387,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Rogue",
       "Hunter",
-      "Mage"
+      "Rogue"
     ],
     "raidId": "karazhan"
   },
@@ -1237,6 +1399,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Chess",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -1249,6 +1413,7 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Chess",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "karazhan"
@@ -1261,10 +1426,7 @@ export const items: Item[] = [
     "boss": "Chess",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Rogue",
-      "Hunter",
-      "Mage"
+      "Paladin"
     ],
     "raidId": "karazhan"
   },
@@ -1286,11 +1448,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Chess",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1301,7 +1464,6 @@ export const items: Item[] = [
     "slot": "Shield",
     "boss": "Chess",
     "classes": [
-      "Warrior",
       "Paladin",
       "Shaman"
     ],
@@ -1326,7 +1488,11 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Chess",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -1338,6 +1504,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Chess",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -1349,7 +1517,11 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Chess",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -1361,7 +1533,10 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Chess",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1372,9 +1547,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Chess",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1424,11 +1602,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Prince",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1439,9 +1618,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Prince",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1466,8 +1648,8 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Prince",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -1482,8 +1664,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1494,8 +1676,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Prince",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1506,11 +1691,11 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Prince",
     "classes": [
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
-      "Druid",
-      "Shaman"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1521,11 +1706,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Prince",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1536,11 +1722,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Prince",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
-      "Druid",
-      "Shaman"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1551,8 +1738,8 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Prince",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -1579,8 +1766,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Prince",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
     ],
     "raidId": "karazhan"
   },
@@ -1591,7 +1779,6 @@ export const items: Item[] = [
     "slot": "Shield",
     "boss": "Nightbane",
     "classes": [
-      "Warrior",
       "Paladin",
       "Shaman"
     ],
@@ -1604,6 +1791,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Nightbane",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -1615,7 +1804,11 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Nightbane",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "karazhan"
@@ -1627,8 +1820,8 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Nightbane",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -1641,6 +1834,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Nightbane",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -1666,8 +1861,8 @@ export const items: Item[] = [
     "boss": "Nightbane",
     "classes": [
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1690,9 +1885,12 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Nightbane",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1703,6 +1901,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Nightbane",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -1715,9 +1915,12 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Nightbane",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1729,8 +1932,198 @@ export const items: Item[] = [
     "boss": "Nightbane",
     "classes": [
       "Warrior",
+      "Paladin"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 30642,
+    "name": "Drape of the Righteous",
+    "icon": "inv_misc_cape_18",
+    "slot": "Back",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
       "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 30668,
+    "name": "Grasp of the Dead",
+    "icon": "inv_gauntlets_17",
+    "slot": "Hands",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 30673,
+    "name": "Inferno Waist Cord",
+    "icon": "inv_belt_03",
+    "slot": "Waist",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 30644,
+    "name": "Grips of Deftness",
+    "icon": "inv_gauntlets_28",
+    "slot": "Hands",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 30674,
+    "name": "Zierhut's Lost Treads",
+    "icon": "inv_boots_plate_06",
+    "slot": "Feet",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 30643,
+    "name": "Belt of the Tracker",
+    "icon": "inv_belt_22",
+    "slot": "Waist",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Shaman"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 30641,
+    "name": "Boots of Elusion",
+    "icon": "inv_boots_plate_04",
+    "slot": "Feet",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 30666,
+    "name": "Ritssyn's Lost Pendant",
+    "icon": "inv_jewelry_necklace_30naxxramas",
+    "slot": "Neck",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 30667,
+    "name": "Ring of Unrelenting Storms",
+    "icon": "inv_jewelry_ring_51naxxramas",
+    "slot": "Finger",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 21903,
+    "name": "Pattern: Soulcloth Shoulders",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "karazhan"
+  },
+  {
+    "id": 21904,
+    "name": "Pattern: Soulcloth Vest",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
     ],
     "raidId": "karazhan"
   },
@@ -1741,9 +2134,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Maulgar",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "gruul"
   },
@@ -1754,9 +2150,12 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Maulgar",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "gruul"
   },
@@ -1767,7 +2166,11 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Maulgar",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "gruul"
@@ -1779,6 +2182,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Maulgar",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -1805,9 +2210,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Druid",
       "Shaman",
-      "Rogue"
+      "Druid"
     ],
     "raidId": "gruul"
   },
@@ -1857,9 +2261,12 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Gruul",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "gruul"
   },
@@ -1870,6 +2277,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Gruul",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "gruul"
@@ -1881,7 +2290,11 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Gruul",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "gruul"
@@ -1893,6 +2306,8 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Gruul",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -1905,7 +2320,7 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Gruul",
     "classes": [
-      "Hunter",
+      "Paladin",
       "Shaman"
     ],
     "raidId": "gruul"
@@ -1929,8 +2344,8 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Gruul",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -1943,8 +2358,8 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Gruul",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -1957,11 +2372,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Gruul",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "gruul"
   },
@@ -2011,6 +2427,7 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Gruul",
     "classes": [
+      "Paladin",
       "Mage",
       "Warlock"
     ],
@@ -2038,8 +2455,7 @@ export const items: Item[] = [
     "boss": "Gruul",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Shaman"
+      "Paladin"
     ],
     "raidId": "gruul"
   },
@@ -2050,8 +2466,9 @@ export const items: Item[] = [
     "slot": "Thrown",
     "boss": "Gruul",
     "classes": [
-      "Rogue",
-      "Warrior"
+      "Warrior",
+      "Hunter",
+      "Rogue"
     ],
     "raidId": "gruul"
   },
@@ -2062,11 +2479,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Magtheridon",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "magtheridon"
   },
@@ -2077,9 +2495,12 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Magtheridon",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "magtheridon"
   },
@@ -2090,7 +2511,11 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Magtheridon",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "magtheridon"
@@ -2102,6 +2527,8 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Magtheridon",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -2138,9 +2565,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Magtheridon",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "magtheridon"
   },
@@ -2151,9 +2581,12 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Magtheridon",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "magtheridon"
   },
@@ -2179,8 +2612,8 @@ export const items: Item[] = [
     "boss": "Magtheridon",
     "classes": [
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "magtheridon"
   },
@@ -2191,7 +2624,6 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Magtheridon",
     "classes": [
-      "Warrior",
       "Paladin",
       "Shaman"
     ],
@@ -2204,9 +2636,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Magtheridon",
     "classes": [
+      "Priest",
       "Mage",
-      "Warlock",
-      "Priest"
+      "Warlock"
     ],
     "raidId": "magtheridon"
   },
@@ -2250,15 +2682,37 @@ export const items: Item[] = [
     "raidId": "magtheridon"
   },
   {
+    "id": 32385,
+    "name": "Magtheridon's Head",
+    "icon": "inv_misc_head_tauren_01",
+    "slot": "Quest",
+    "boss": "Magtheridon",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "magtheridon"
+  },
+  {
     "id": 30056,
     "name": "Robe of Hateful Echoes",
     "icon": "inv_chest_cloth_43",
     "slot": "Chest",
     "boss": "Hydross",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2269,7 +2723,10 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Hydross",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2280,9 +2737,15 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Hydross",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2293,7 +2756,11 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Hydross",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "ssc"
@@ -2305,6 +2772,7 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Hydross",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "ssc"
@@ -2316,6 +2784,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Hydross",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -2351,11 +2821,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Hydross",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2366,11 +2837,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Hydross",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2405,9 +2877,12 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Hydross",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2429,9 +2904,12 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Lurker",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2442,9 +2920,12 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Lurker",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2455,6 +2936,8 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Lurker",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "ssc"
@@ -2466,7 +2949,11 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Lurker",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "ssc"
@@ -2478,6 +2965,7 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Lurker",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "ssc"
@@ -2512,11 +3000,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Lurker",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2531,10 +3020,7 @@ export const items: Item[] = [
       "Paladin",
       "Hunter",
       "Rogue",
-      "Priest",
       "Shaman",
-      "Mage",
-      "Warlock",
       "Druid"
     ],
     "raidId": "ssc"
@@ -2546,9 +3032,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Lurker",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2583,9 +3072,7 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Druid",
-      "Shaman",
-      "Rogue"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2596,6 +3083,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Leotheras",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "ssc"
@@ -2607,6 +3096,7 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Leotheras",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "ssc"
@@ -2618,6 +3108,8 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Leotheras",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -2642,11 +3134,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Leotheras",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2657,6 +3150,7 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Leotheras",
     "classes": [
+      "Paladin",
       "Mage",
       "Warlock"
     ],
@@ -2708,9 +3202,10 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Karathress",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2721,7 +3216,11 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Karathress",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "ssc"
@@ -2757,9 +3256,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Karathress",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2772,9 +3274,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Druid",
       "Shaman",
-      "Rogue"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2828,10 +3329,7 @@ export const items: Item[] = [
       "Paladin",
       "Hunter",
       "Rogue",
-      "Priest",
       "Shaman",
-      "Mage",
-      "Warlock",
       "Druid"
     ],
     "raidId": "ssc"
@@ -2843,9 +3341,12 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Morogrim",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2856,6 +3357,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Morogrim",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "ssc"
@@ -2867,6 +3370,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Morogrim",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -2879,6 +3384,8 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Morogrim",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -2914,9 +3421,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Morogrim",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -2940,8 +3450,8 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Morogrim",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -2967,9 +3477,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Rogue",
       "Hunter",
-      "Mage"
+      "Rogue"
     ],
     "raidId": "ssc"
   },
@@ -2980,8 +3489,6 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Morogrim",
     "classes": [
-      "Mage",
-      "Warlock",
       "Priest"
     ],
     "raidId": "ssc"
@@ -2993,9 +3500,12 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Vashj",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -3006,6 +3516,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Vashj",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "ssc"
@@ -3017,7 +3529,11 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Vashj",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "ssc"
@@ -3029,6 +3545,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Vashj",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -3064,9 +3582,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Vashj",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -3077,8 +3598,8 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Vashj",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -3110,8 +3631,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Vashj",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -3124,8 +3648,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "ssc"
   },
@@ -3136,8 +3660,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Vashj",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
     ],
     "raidId": "ssc"
   },
@@ -3181,6 +3706,413 @@ export const items: Item[] = [
     "raidId": "ssc"
   },
   {
+    "id": 30027,
+    "name": "Boots of Courage Unending",
+    "icon": "inv_boots_chain_08",
+    "slot": "Feet",
+    "boss": "Trash",
+    "classes": [
+      "Paladin"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30022,
+    "name": "Pendant of the Perilous",
+    "icon": "inv_jewelry_necklace_ahnqiraj_01",
+    "slot": "Neck",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30620,
+    "name": "Spyglass of the Hidden Fleet",
+    "icon": "inv_misc_spyglass_02",
+    "slot": "Trinket",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30023,
+    "name": "Totem of the Maelstrom",
+    "icon": "spell_nature_earthbind",
+    "slot": "Relic",
+    "boss": "Trash",
+    "classes": [
+      "Shaman"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30021,
+    "name": "Wildfury Greatstaff",
+    "icon": "inv_staff_50",
+    "slot": "Two-Hand",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Hunter",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30025,
+    "name": "Serpentshrine Shuriken",
+    "icon": "inv_throwingknife_06",
+    "slot": "Thrown",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Hunter",
+      "Rogue"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30324,
+    "name": "Plans: Red Havoc Boots",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30322,
+    "name": "Plans: Red Belt of Battle",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30323,
+    "name": "Plans: Boots of the Protector",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30321,
+    "name": "Plans: Belt of the Guardian",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30280,
+    "name": "Pattern: Belt of Blasting",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30282,
+    "name": "Pattern: Boots of Blasting",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30283,
+    "name": "Pattern: Boots of the Long Road",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30281,
+    "name": "Pattern: Belt of the Long Road",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30308,
+    "name": "Pattern: Hurricane Boots",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30304,
+    "name": "Pattern: Monsoon Belt",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30305,
+    "name": "Pattern: Boots of Natural Grace",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30307,
+    "name": "Pattern: Boots of the Crimson Hawk",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30306,
+    "name": "Pattern: Boots of Utter Darkness",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30301,
+    "name": "Pattern: Belt of Natural Power",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30303,
+    "name": "Pattern: Belt of the Black Eagle",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30302,
+    "name": "Pattern: Belt of Deep Shadow",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
+    "id": 30183,
+    "name": "Nether Vortex",
+    "icon": "inv_elemental_mote_nether",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "ssc"
+  },
+  {
     "id": 29925,
     "name": "Phoenix-Wing Cloak",
     "icon": "inv_misc_cape_08",
@@ -3200,9 +4132,12 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Al'ar",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3213,7 +4148,11 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Al'ar",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "tk"
@@ -3225,6 +4164,7 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Al'ar",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "tk"
@@ -3236,9 +4176,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Al'ar",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3249,8 +4192,8 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Al'ar",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -3285,8 +4228,8 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Al'ar",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -3299,11 +4242,11 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Al'ar",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
       "Shaman",
-      "Druid",
-      "Hunter",
-      "Warrior"
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3314,11 +4257,11 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Al'ar",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
       "Shaman",
-      "Druid",
-      "Hunter",
-      "Warrior"
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3343,8 +4286,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Al'ar",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
     ],
     "raidId": "tk"
   },
@@ -3355,9 +4299,12 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Void Reaver",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3368,6 +4315,8 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Void Reaver",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "tk"
@@ -3379,6 +4328,8 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Void Reaver",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -3484,7 +4435,10 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Solarian",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3495,9 +4449,12 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Solarian",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3508,7 +4465,11 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Solarian",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "tk"
@@ -3520,6 +4481,7 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Solarian",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "tk"
@@ -3531,6 +4493,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Solarian",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -3600,8 +4564,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Solarian",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3613,8 +4580,8 @@ export const items: Item[] = [
     "boss": "Solarian",
     "classes": [
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3625,9 +4592,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Solarian",
     "classes": [
+      "Priest",
       "Mage",
-      "Warlock",
-      "Priest"
+      "Warlock"
     ],
     "raidId": "tk"
   },
@@ -3638,9 +4605,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Kael'thas",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3651,8 +4621,8 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Kael'thas",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -3665,11 +4635,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Kael'thas",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3680,7 +4651,10 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kael'thas",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3691,9 +4665,12 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Kael'thas",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3704,7 +4681,11 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Kael'thas",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "tk"
@@ -3716,6 +4697,7 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Kael'thas",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "tk"
@@ -3739,11 +4721,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Kael'thas",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3755,7 +4738,8 @@ export const items: Item[] = [
     "boss": "Kael'thas",
     "classes": [
       "Warrior",
-      "Paladin"
+      "Paladin",
+      "Hunter"
     ],
     "raidId": "tk"
   },
@@ -3768,9 +4752,9 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Druid",
+      "Rogue",
       "Shaman",
-      "Rogue"
+      "Druid"
     ],
     "raidId": "tk"
   },
@@ -3781,9 +4765,10 @@ export const items: Item[] = [
     "slot": "Two-Hand",
     "boss": "Kael'thas",
     "classes": [
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
       "Druid"
     ],
     "raidId": "tk"
@@ -3847,15 +4832,444 @@ export const items: Item[] = [
     "raidId": "tk"
   },
   {
+    "id": 32405,
+    "name": "Verdant Sphere",
+    "icon": "inv_misc_gem_pearl_06",
+    "slot": "Quest",
+    "boss": "Kael'thas",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30024,
+    "name": "Mantle of the Elven Kings",
+    "icon": "inv_shoulder_25",
+    "slot": "Shoulder",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30020,
+    "name": "Fire-Cord of the Magus",
+    "icon": "inv_belt_03",
+    "slot": "Waist",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30029,
+    "name": "Bark-Gloves of Ancient Wisdom",
+    "icon": "inv_gauntlets_25",
+    "slot": "Hands",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30026,
+    "name": "Bands of the Celestial Archer",
+    "icon": "inv_bracer_17",
+    "slot": "Wrist",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Shaman"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30030,
+    "name": "Girdle of Fallen Stars",
+    "icon": "inv_belt_22",
+    "slot": "Waist",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Shaman"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30028,
+    "name": "Seventh Ring of the Tirisfalen",
+    "icon": "inv_jewelry_ring_24",
+    "slot": "Shield",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30324,
+    "name": "Plans: Red Havoc Boots",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30322,
+    "name": "Plans: Red Belt of Battle",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30323,
+    "name": "Plans: Boots of the Protector",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30321,
+    "name": "Plans: Belt of the Guardian",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30280,
+    "name": "Pattern: Belt of Blasting",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30282,
+    "name": "Pattern: Boots of Blasting",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30283,
+    "name": "Pattern: Boots of the Long Road",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30281,
+    "name": "Pattern: Belt of the Long Road",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30308,
+    "name": "Pattern: Hurricane Boots",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30304,
+    "name": "Pattern: Monsoon Belt",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30305,
+    "name": "Pattern: Boots of Natural Grace",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30307,
+    "name": "Pattern: Boots of the Crimson Hawk",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30306,
+    "name": "Pattern: Boots of Utter Darkness",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30301,
+    "name": "Pattern: Belt of Natural Power",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30303,
+    "name": "Pattern: Belt of the Black Eagle",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30302,
+    "name": "Pattern: Belt of Deep Shadow",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
+    "id": 30183,
+    "name": "Nether Vortex",
+    "icon": "inv_elemental_mote_nether",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "tk"
+  },
+  {
     "id": 30871,
     "name": "Bracers of Martyrdom",
     "icon": "inv_bracer_13",
     "slot": "Wrist",
     "boss": "Winterchill",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -3866,9 +5280,12 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Winterchill",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -3879,7 +5296,11 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Winterchill",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -3891,6 +5312,8 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Winterchill",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -3902,6 +5325,8 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Winterchill",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -3914,6 +5339,7 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Winterchill",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "hyjal"
@@ -3925,6 +5351,7 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Winterchill",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "hyjal"
@@ -3971,8 +5398,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Winterchill",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -3983,9 +5413,12 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Winterchill",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -3996,9 +5429,12 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Anetheron",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4009,9 +5445,12 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Anetheron",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4022,7 +5461,10 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Anetheron",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4033,7 +5475,11 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Anetheron",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -4045,6 +5491,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Anetheron",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -4056,6 +5504,7 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Anetheron",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "hyjal"
@@ -4067,6 +5516,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Anetheron",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -4091,10 +5542,7 @@ export const items: Item[] = [
     "boss": "Anetheron",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Rogue",
-      "Hunter",
-      "Mage"
+      "Paladin"
     ],
     "raidId": "hyjal"
   },
@@ -4107,9 +5555,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Rogue",
       "Hunter",
-      "Mage"
+      "Rogue"
     ],
     "raidId": "hyjal"
   },
@@ -4120,9 +5567,9 @@ export const items: Item[] = [
     "slot": "Two-Hand",
     "boss": "Anetheron",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest",
+      "Warrior",
+      "Hunter",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -4134,7 +5581,6 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Anetheron",
     "classes": [
-      "Warrior",
       "Paladin",
       "Shaman"
     ],
@@ -4147,7 +5593,10 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Kaz'rogal",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4158,9 +5607,12 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Kaz'rogal",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4171,9 +5623,12 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Kaz'rogal",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4184,7 +5639,11 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Kaz'rogal",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -4196,7 +5655,8 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Kaz'rogal",
     "classes": [
-      "Rogue",
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -4208,7 +5668,11 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Kaz'rogal",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -4220,6 +5684,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Kaz'rogal",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -4232,6 +5698,8 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Kaz'rogal",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -4244,6 +5712,7 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Kaz'rogal",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "hyjal"
@@ -4269,8 +5738,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4282,8 +5751,7 @@ export const items: Item[] = [
     "boss": "Kaz'rogal",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Shaman"
+      "Paladin"
     ],
     "raidId": "hyjal"
   },
@@ -4294,6 +5762,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Azgalor",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -4305,7 +5775,11 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Azgalor",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -4317,6 +5791,8 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Azgalor",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -4352,8 +5828,14 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Azgalor",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4403,9 +5885,12 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Archimonde",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4416,9 +5901,10 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Archimonde",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4429,7 +5915,11 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Archimonde",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "hyjal"
@@ -4441,6 +5931,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Archimonde",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -4476,8 +5968,8 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Archimonde",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -4490,6 +5982,7 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Archimonde",
     "classes": [
+      "Paladin",
       "Mage",
       "Warlock"
     ],
@@ -4503,7 +5996,8 @@ export const items: Item[] = [
     "boss": "Archimonde",
     "classes": [
       "Warrior",
-      "Paladin"
+      "Paladin",
+      "Hunter"
     ],
     "raidId": "hyjal"
   },
@@ -4515,8 +6009,8 @@ export const items: Item[] = [
     "boss": "Archimonde",
     "classes": [
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "hyjal"
   },
@@ -4527,7 +6021,6 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Archimonde",
     "classes": [
-      "Warrior",
       "Paladin",
       "Shaman"
     ],
@@ -4540,8 +6033,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Archimonde",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
     ],
     "raidId": "hyjal"
   },
@@ -4585,15 +6079,329 @@ export const items: Item[] = [
     "raidId": "hyjal"
   },
   {
+    "id": 32590,
+    "name": "Nethervoid Cloak",
+    "icon": "inv_misc_cape_10",
+    "slot": "Back",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 34010,
+    "name": "Pepe's Shroud of Pacification",
+    "icon": "inv_misc_cape_16",
+    "slot": "Back",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32609,
+    "name": "Boots of the Divine Light",
+    "icon": "inv_boots_cloth_08",
+    "slot": "Feet",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32592,
+    "name": "Chestguard of Relentless Storms",
+    "icon": "inv_chest_chain_11",
+    "slot": "Chest",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Shaman"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32591,
+    "name": "Choker of Serrated Blades",
+    "icon": "inv_jewelry_necklace_34",
+    "slot": "Neck",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32589,
+    "name": "Hellfire-Encased Pendant",
+    "icon": "inv_jewelry_necklace_17",
+    "slot": "Neck",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 34009,
+    "name": "Hammer of Judgement",
+    "icon": "inv_mace_57",
+    "slot": "Main Hand",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32946,
+    "name": "Claw of Molten Fury",
+    "icon": "inv_weapon_hand_14",
+    "slot": "Main Hand",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32945,
+    "name": "Fist of Molten Fury",
+    "icon": "inv_weapon_hand_14",
+    "slot": "Off-hand",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32428,
+    "name": "Heart of Darkness",
+    "icon": "spell_shadow_demonictactics",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32285,
+    "name": "Design: Flashing Crimson Spinel",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32296,
+    "name": "Design: Great Lionseye",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32303,
+    "name": "Design: Inscribed Pyrestone",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32295,
+    "name": "Design: Mystic Lionseye",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32298,
+    "name": "Design: Shifting Shadowsong Amethyst",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32297,
+    "name": "Design: Sovereign Shadowsong Amethyst",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32289,
+    "name": "Design: Stormy Empyrean Sapphire",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
+    "id": 32307,
+    "name": "Design: Veiled Pyrestone",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "hyjal"
+  },
+  {
     "id": 32239,
     "name": "Slippers of the Seacaller",
     "icon": "inv_boots_cloth_16",
     "slot": "Feet",
     "boss": "Naj'entus",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -4604,6 +6412,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Naj'entus",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -4615,7 +6425,11 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Naj'entus",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -4627,6 +6441,7 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Naj'entus",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "bt"
@@ -4638,6 +6453,8 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Naj'entus",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -4650,7 +6467,7 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Naj'entus",
     "classes": [
-      "Hunter",
+      "Paladin",
       "Shaman"
     ],
     "raidId": "bt"
@@ -4697,8 +6514,8 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Naj'entus",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -4711,9 +6528,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Naj'entus",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -4724,11 +6544,11 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Naj'entus",
     "classes": [
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
-      "Druid",
-      "Shaman"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -4767,9 +6587,12 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Supremus",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -4780,7 +6603,11 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Supremus",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -4792,7 +6619,7 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Supremus",
     "classes": [
-      "Hunter",
+      "Paladin",
       "Shaman"
     ],
     "raidId": "bt"
@@ -4804,6 +6631,8 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Supremus",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -4816,6 +6645,7 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Supremus",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "bt"
@@ -4839,11 +6669,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Supremus",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -4879,9 +6710,7 @@ export const items: Item[] = [
     "boss": "Supremus",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Hunter",
-      "Shaman"
+      "Paladin"
     ],
     "raidId": "bt"
   },
@@ -4894,9 +6723,9 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Druid",
+      "Rogue",
       "Shaman",
-      "Rogue"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -4907,7 +6736,6 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Supremus",
     "classes": [
-      "Warrior",
       "Paladin",
       "Shaman"
     ],
@@ -4920,8 +6748,8 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Supremus",
     "classes": [
-      "Hunter",
       "Warrior",
+      "Hunter",
       "Rogue"
     ],
     "raidId": "bt"
@@ -4933,7 +6761,10 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Akama",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -4944,9 +6775,12 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Akama",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -4957,7 +6791,10 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Akama",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -4968,7 +6805,11 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Akama",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -4980,6 +6821,8 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Akama",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -4991,6 +6834,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Akama",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -5003,6 +6848,7 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Akama",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "bt"
@@ -5014,7 +6860,7 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Akama",
     "classes": [
-      "Hunter",
+      "Paladin",
       "Shaman"
     ],
     "raidId": "bt"
@@ -5074,11 +6920,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Akama",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5089,9 +6936,12 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Akama",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5102,8 +6952,8 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Gurtogg",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -5116,9 +6966,12 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Gurtogg",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5129,7 +6982,10 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Gurtogg",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5140,6 +6996,8 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Gurtogg",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -5148,18 +7006,13 @@ export const items: Item[] = [
     "id": 32334,
     "name": "Vest of Mounting Assault",
     "icon": "inv_chest_samurai",
-    "slot": "Mount",
+    "slot": "Chest",
     "boss": "Gurtogg",
     "classes": [
       "Warrior",
       "Paladin",
       "Hunter",
-      "Rogue",
-      "Priest",
-      "Shaman",
-      "Mage",
-      "Warlock",
-      "Druid"
+      "Shaman"
     ],
     "raidId": "bt"
   },
@@ -5207,7 +7060,11 @@ export const items: Item[] = [
     "boss": "Gurtogg",
     "classes": [
       "Warrior",
-      "Paladin"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5231,8 +7088,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Gurtogg",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5244,8 +7104,8 @@ export const items: Item[] = [
     "boss": "Gurtogg",
     "classes": [
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5256,9 +7116,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Gurtogg",
     "classes": [
+      "Priest",
       "Mage",
-      "Warlock",
-      "Priest"
+      "Warlock"
     ],
     "raidId": "bt"
   },
@@ -5269,7 +7129,10 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Reliquary",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5280,7 +7143,8 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Reliquary",
     "classes": [
-      "Rogue",
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -5292,7 +7156,11 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Reliquary",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -5304,7 +7172,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Reliquary",
     "classes": [
-      "Rogue",
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -5316,6 +7185,7 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Reliquary",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "bt"
@@ -5327,6 +7197,8 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Reliquary",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -5362,9 +7234,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Reliquary",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5388,8 +7263,8 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Reliquary",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -5404,9 +7279,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Druid",
       "Shaman",
-      "Rogue"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5417,8 +7291,6 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Reliquary",
     "classes": [
-      "Mage",
-      "Warlock",
       "Priest"
     ],
     "raidId": "bt"
@@ -5430,11 +7302,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Teron",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5445,9 +7318,10 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Teron",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5458,9 +7332,12 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Teron",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5471,7 +7348,11 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Teron",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -5483,6 +7364,8 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Teron",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -5494,6 +7377,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Teron",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -5554,8 +7439,9 @@ export const items: Item[] = [
     "slot": "Thrown",
     "boss": "Teron",
     "classes": [
-      "Rogue",
-      "Warrior"
+      "Warrior",
+      "Hunter",
+      "Rogue"
     ],
     "raidId": "bt"
   },
@@ -5566,8 +7452,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Teron",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
     ],
     "raidId": "bt"
   },
@@ -5578,9 +7465,12 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Shahraz",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5591,7 +7481,11 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Shahraz",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -5615,8 +7509,8 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Shahraz",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -5642,9 +7536,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Rogue",
       "Hunter",
-      "Mage"
+      "Rogue"
     ],
     "raidId": "bt"
   },
@@ -5694,9 +7587,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Council",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5707,9 +7603,10 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Council",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5720,6 +7617,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Council",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -5731,6 +7630,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Council",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -5755,11 +7656,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Council",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5809,8 +7711,8 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Illidan",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -5823,9 +7725,12 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Illidan",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5836,7 +7741,11 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Illidan",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "bt"
@@ -5860,11 +7769,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Illidan",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5875,9 +7785,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Illidan",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5888,8 +7801,8 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Illidan",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -5965,8 +7878,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Illidan",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5979,8 +7895,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -5991,9 +7907,10 @@ export const items: Item[] = [
     "slot": "Two-Hand",
     "boss": "Illidan",
     "classes": [
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
       "Druid"
     ],
     "raidId": "bt"
@@ -6006,8 +7923,7 @@ export const items: Item[] = [
     "boss": "Illidan",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Shaman"
+      "Paladin"
     ],
     "raidId": "bt"
   },
@@ -6018,8 +7934,667 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Illidan",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32590,
+    "name": "Nethervoid Cloak",
+    "icon": "inv_misc_cape_10",
+    "slot": "Back",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 34012,
+    "name": "Shroud of the Final Stand",
+    "icon": "inv_misc_cape_16",
+    "slot": "Back",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32609,
+    "name": "Boots of the Divine Light",
+    "icon": "inv_boots_cloth_08",
+    "slot": "Feet",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32593,
+    "name": "Treads of the Den Mother",
+    "icon": "inv_boots_wolf",
+    "slot": "Feet",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32592,
+    "name": "Chestguard of Relentless Storms",
+    "icon": "inv_chest_chain_11",
+    "slot": "Chest",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Shaman"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32608,
+    "name": "Pillager's Gauntlets",
+    "icon": "inv_gauntlets_62",
+    "slot": "Hands",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32606,
+    "name": "Girdle of the Lightbearer",
+    "icon": "inv_belt_28",
+    "slot": "Waist",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32591,
+    "name": "Choker of Serrated Blades",
+    "icon": "inv_jewelry_necklace_34",
+    "slot": "Neck",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32589,
+    "name": "Hellfire-Encased Pendant",
+    "icon": "inv_jewelry_necklace_17",
+    "slot": "Neck",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32526,
+    "name": "Band of Devastation",
+    "icon": "inv_jewelry_ring_35",
+    "slot": "Finger",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32528,
+    "name": "Blessed Band of Karabor",
+    "icon": "inv_jewelry_ring_35",
+    "slot": "Finger",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32527,
+    "name": "Ring of Ancient Knowledge",
+    "icon": "inv_jewelry_ring_35",
+    "slot": "Finger",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 34009,
+    "name": "Hammer of Judgement",
+    "icon": "inv_mace_57",
+    "slot": "Main Hand",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32943,
+    "name": "Swiftsteel Bludgeon",
+    "icon": "inv_mace_44",
+    "slot": "One-Hand",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 34011,
+    "name": "Illidari Runeshield",
+    "icon": "inv_shield_01",
+    "slot": "Off-hand",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Shaman"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32228,
+    "name": "Empyrean Sapphire",
+    "icon": "inv_jewelcrafting_empyreansapphire_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32231,
+    "name": "Pyrestone",
+    "icon": "inv_jewelcrafting_pyrestone_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32229,
+    "name": "Lionseye",
+    "icon": "inv_jewelcrafting_lionseye_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32249,
+    "name": "Seaspray Emerald",
+    "icon": "inv_jewelcrafting_seasprayemerald_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32230,
+    "name": "Shadowsong Amethyst",
+    "icon": "inv_jewelcrafting_shadowsongamethyst_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32227,
+    "name": "Crimson Spinel",
+    "icon": "inv_jewelcrafting_crimsonspinel_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32428,
+    "name": "Heart of Darkness",
+    "icon": "spell_shadow_demonictactics",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32738,
+    "name": "Plans: Dawnsteel Bracers",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32739,
+    "name": "Plans: Dawnsteel Shoulders",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32736,
+    "name": "Plans: Swiftsteel Bracers",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32737,
+    "name": "Plans: Swiftsteel Shoulders",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32748,
+    "name": "Pattern: Bindings of Lightning Reflexes",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32744,
+    "name": "Pattern: Bracers of Renewed Life",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32750,
+    "name": "Pattern: Living Earth Bindings",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32751,
+    "name": "Pattern: Living Earth Shoulders",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32749,
+    "name": "Pattern: Shoulders of Lightning Reflexes",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32745,
+    "name": "Pattern: Shoulderpads of Renewed Life",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32746,
+    "name": "Pattern: Swiftstrike Bracers",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32747,
+    "name": "Pattern: Swiftstrike Shoulders",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32754,
+    "name": "Pattern: Bracers of Nimble Thought",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32755,
+    "name": "Pattern: Mantle of Nimble Thought",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32753,
+    "name": "Pattern: Swiftheal Mantle",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "bt"
+  },
+  {
+    "id": 32752,
+    "name": "Pattern: Swiftheal Wraps",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
     ],
     "raidId": "bt"
   },
@@ -6030,6 +8605,7 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Akil'zon",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "za"
@@ -6064,8 +8640,8 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Akil'zon",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -6078,9 +8654,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Akil'zon",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6093,9 +8672,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Rogue",
       "Hunter",
-      "Mage"
+      "Rogue"
     ],
     "raidId": "za"
   },
@@ -6108,8 +8686,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6120,9 +8698,10 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Nalorakk",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6133,9 +8712,12 @@ export const items: Item[] = [
     "slot": "Wrist",
     "boss": "Nalorakk",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6146,7 +8728,11 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Nalorakk",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "za"
@@ -6158,6 +8744,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Nalorakk",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -6193,11 +8781,11 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Nalorakk",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
       "Shaman",
-      "Druid",
-      "Hunter",
-      "Warrior"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6208,9 +8796,12 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Jan'alai",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6221,6 +8812,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Jan'alai",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "za"
@@ -6232,7 +8825,11 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Jan'alai",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "za"
@@ -6244,6 +8841,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Jan'alai",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -6256,11 +8855,11 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Jan'alai",
     "classes": [
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
-      "Druid",
-      "Shaman"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6272,8 +8871,7 @@ export const items: Item[] = [
     "boss": "Jan'alai",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Shaman"
+      "Paladin"
     ],
     "raidId": "za"
   },
@@ -6284,7 +8882,6 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Jan'alai",
     "classes": [
-      "Warrior",
       "Paladin",
       "Shaman"
     ],
@@ -6297,9 +8894,12 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Halazzi",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6310,7 +8910,11 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Halazzi",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "za"
@@ -6322,6 +8926,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Halazzi",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "za"
@@ -6333,7 +8939,7 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Halazzi",
     "classes": [
-      "Hunter",
+      "Paladin",
       "Shaman"
     ],
     "raidId": "za"
@@ -6368,11 +8974,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Halazzi",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6383,8 +8990,8 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Hex Lord",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -6397,9 +9004,12 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Hex Lord",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6410,7 +9020,10 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Hex Lord",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6421,6 +9034,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Hex Lord",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -6433,6 +9048,7 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Hex Lord",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "za"
@@ -6467,9 +9083,12 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Hex Lord",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6518,8 +9137,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Hex Lord",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6530,8 +9152,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Hex Lord",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6544,9 +9169,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Rogue",
       "Hunter",
-      "Mage"
+      "Rogue"
     ],
     "raidId": "za"
   },
@@ -6557,9 +9181,9 @@ export const items: Item[] = [
     "slot": "Two-Hand",
     "boss": "Hex Lord",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest",
+      "Warrior",
+      "Hunter",
+      "Shaman",
       "Druid"
     ],
     "raidId": "za"
@@ -6571,9 +9195,10 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Zul'jin",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6584,7 +9209,11 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Zul'jin",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "za"
@@ -6596,6 +9225,7 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "Zul'jin",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "za"
@@ -6619,9 +9249,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Zul'jin",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6645,11 +9278,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "Zul'jin",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6660,6 +9294,7 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Zul'jin",
     "classes": [
+      "Paladin",
       "Mage",
       "Warlock"
     ],
@@ -6673,7 +9308,8 @@ export const items: Item[] = [
     "boss": "Zul'jin",
     "classes": [
       "Warrior",
-      "Paladin"
+      "Paladin",
+      "Hunter"
     ],
     "raidId": "za"
   },
@@ -6685,9 +9321,7 @@ export const items: Item[] = [
     "boss": "Zul'jin",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Hunter",
-      "Shaman"
+      "Paladin"
     ],
     "raidId": "za"
   },
@@ -6700,8 +9334,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6712,8 +9346,28 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Zul'jin",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
+    ],
+    "raidId": "za"
+  },
+  {
+    "id": 33102,
+    "name": "Blood of Zul'jin",
+    "icon": "inv_potion_20",
+    "slot": "Quest",
+    "boss": "Zul'jin",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6724,11 +9378,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Timed Chest",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6739,9 +9394,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Timed Chest",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6752,9 +9410,12 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Timed Chest",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6765,7 +9426,10 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Timed Chest",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6776,6 +9440,8 @@ export const items: Item[] = [
     "slot": "Waist",
     "boss": "Timed Chest",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "za"
@@ -6787,7 +9453,8 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Timed Chest",
     "classes": [
-      "Rogue",
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "za"
@@ -6799,6 +9466,8 @@ export const items: Item[] = [
     "slot": "Feet",
     "boss": "Timed Chest",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -6823,9 +9492,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Timed Chest",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6855,11 +9527,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Timed Chest",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6871,8 +9544,7 @@ export const items: Item[] = [
     "boss": "Timed Chest",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Shaman"
+      "Paladin"
     ],
     "raidId": "za"
   },
@@ -6883,8 +9555,8 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Timed Chest",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -6897,11 +9569,11 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Timed Chest",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
       "Shaman",
-      "Druid",
-      "Hunter",
-      "Warrior"
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6912,8 +9584,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Timed Chest",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6939,8 +9614,8 @@ export const items: Item[] = [
     "boss": "Timed Chest",
     "classes": [
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "za"
   },
@@ -6951,9 +9626,10 @@ export const items: Item[] = [
     "slot": "Two-Hand",
     "boss": "Timed Chest",
     "classes": [
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
       "Druid"
     ],
     "raidId": "za"
@@ -6965,8 +9641,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Timed Chest",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
     ],
     "raidId": "za"
   },
@@ -6990,13 +9667,35 @@ export const items: Item[] = [
     "raidId": "za"
   },
   {
+    "id": 33993,
+    "name": "Mojo",
+    "icon": "inv_misc_toy_02",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "za"
+  },
+  {
     "id": 34170,
     "name": "Pantaloons of Calming Strife",
     "icon": "inv_pants_cloth_07",
     "slot": "Legs",
     "boss": "Kalecgos",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7007,9 +9706,12 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Kalecgos",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7020,7 +9722,8 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Kalecgos",
     "classes": [
-      "Rogue",
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7032,6 +9735,8 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Kalecgos",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7043,6 +9748,8 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Kalecgos",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -7078,8 +9785,8 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Kalecgos",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -7131,8 +9838,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Kalecgos",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7145,9 +9855,8 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Rogue",
       "Hunter",
-      "Mage"
+      "Rogue"
     ],
     "raidId": "swp"
   },
@@ -7158,9 +9867,12 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Brutallus",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7208,11 +9920,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Brutallus",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7264,8 +9977,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7276,9 +9989,12 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Brutallus",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7301,7 +10017,11 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Felmyst",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7313,7 +10033,11 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Felmyst",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7325,7 +10049,7 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Felmyst",
     "classes": [
-      "Hunter",
+      "Paladin",
       "Shaman"
     ],
     "raidId": "swp"
@@ -7337,6 +10061,7 @@ export const items: Item[] = [
     "slot": "Legs",
     "boss": "Felmyst",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "swp"
@@ -7348,8 +10073,8 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Felmyst",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -7401,9 +10126,10 @@ export const items: Item[] = [
     "slot": "Two-Hand",
     "boss": "Felmyst",
     "classes": [
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
       "Druid"
     ],
     "raidId": "swp"
@@ -7416,10 +10142,7 @@ export const items: Item[] = [
     "boss": "Felmyst",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Rogue",
-      "Hunter",
-      "Mage"
+      "Paladin"
     ],
     "raidId": "swp"
   },
@@ -7430,8 +10153,8 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Twins",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -7446,6 +10169,9 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7457,9 +10183,12 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7470,7 +10199,10 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7481,9 +10213,12 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7494,6 +10229,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7505,7 +10242,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
-      "Rogue",
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7517,7 +10255,11 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7529,7 +10271,11 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7541,6 +10287,8 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -7553,6 +10301,7 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "swp"
@@ -7564,7 +10313,7 @@ export const items: Item[] = [
     "slot": "Shoulder",
     "boss": "Twins",
     "classes": [
-      "Hunter",
+      "Paladin",
       "Shaman"
     ],
     "raidId": "swp"
@@ -7623,9 +10372,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Twins",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7636,8 +10388,8 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Twins",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -7650,11 +10402,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Twins",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7665,9 +10418,12 @@ export const items: Item[] = [
     "slot": "Neck",
     "boss": "Twins",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7678,11 +10434,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "Twins",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7693,8 +10450,8 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Twins",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -7707,8 +10464,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Twins",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7721,8 +10481,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7733,11 +10493,11 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "Twins",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
       "Shaman",
-      "Druid",
-      "Hunter",
-      "Warrior"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7748,9 +10508,9 @@ export const items: Item[] = [
     "slot": "Two-Hand",
     "boss": "Twins",
     "classes": [
-      "Mage",
-      "Warlock",
-      "Priest",
+      "Warrior",
+      "Hunter",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7762,8 +10522,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Twins",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
     ],
     "raidId": "swp"
   },
@@ -7774,9 +10535,12 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7787,7 +10551,10 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7798,9 +10565,12 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -7811,6 +10581,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7822,7 +10594,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
-      "Rogue",
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7834,7 +10607,11 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7846,7 +10623,11 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7858,7 +10639,11 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "M'uru",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7870,7 +10655,11 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "M'uru",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -7882,6 +10671,7 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "swp"
@@ -7893,7 +10683,7 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
-      "Hunter",
+      "Paladin",
       "Shaman"
     ],
     "raidId": "swp"
@@ -7905,6 +10695,8 @@ export const items: Item[] = [
     "slot": "Chest",
     "boss": "M'uru",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -7976,8 +10768,7 @@ export const items: Item[] = [
     "boss": "M'uru",
     "classes": [
       "Warrior",
-      "Paladin",
-      "Shaman"
+      "Paladin"
     ],
     "raidId": "swp"
   },
@@ -7988,9 +10779,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "M'uru",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8001,9 +10795,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "M'uru",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8014,8 +10811,8 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "M'uru",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -8028,11 +10825,12 @@ export const items: Item[] = [
     "slot": "Finger",
     "boss": "M'uru",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8043,11 +10841,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "M'uru",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8058,8 +10857,8 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "M'uru",
     "classes": [
-      "Priest",
       "Paladin",
+      "Priest",
       "Shaman",
       "Druid"
     ],
@@ -8072,9 +10871,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "M'uru",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8085,11 +10887,12 @@ export const items: Item[] = [
     "slot": "Trinket",
     "boss": "M'uru",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8102,9 +10905,10 @@ export const items: Item[] = [
     "classes": [
       "Warrior",
       "Paladin",
-      "Rogue",
       "Hunter",
-      "Mage"
+      "Rogue",
+      "Mage",
+      "Warlock"
     ],
     "raidId": "swp"
   },
@@ -8115,7 +10919,6 @@ export const items: Item[] = [
     "slot": "Off-hand",
     "boss": "M'uru",
     "classes": [
-      "Warrior",
       "Paladin",
       "Shaman"
     ],
@@ -8128,11 +10931,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Kil'jaeden",
     "classes": [
-      "Rogue",
-      "Hunter",
       "Warrior",
-      "Druid",
-      "Shaman"
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8143,9 +10947,12 @@ export const items: Item[] = [
     "slot": "Back",
     "boss": "Kil'jaeden",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8156,7 +10963,10 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8167,9 +10977,12 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8180,9 +10993,12 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8193,7 +11009,10 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Kil'jaeden",
     "classes": [
-      "Priest"
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8204,9 +11023,12 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Kil'jaeden",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8217,9 +11039,12 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Kil'jaeden",
     "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8230,7 +11055,11 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -8242,7 +11071,11 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
       "Rogue",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -8254,6 +11087,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -8265,7 +11100,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
-      "Rogue",
+      "Paladin",
+      "Shaman",
       "Druid"
     ],
     "raidId": "swp"
@@ -8277,6 +11113,8 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -8289,7 +11127,7 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
-      "Hunter",
+      "Paladin",
       "Shaman"
     ],
     "raidId": "swp"
@@ -8301,6 +11139,7 @@ export const items: Item[] = [
     "slot": "Head",
     "boss": "Kil'jaeden",
     "classes": [
+      "Paladin",
       "Shaman"
     ],
     "raidId": "swp"
@@ -8312,6 +11151,8 @@ export const items: Item[] = [
     "slot": "Hands",
     "boss": "Kil'jaeden",
     "classes": [
+      "Warrior",
+      "Paladin",
       "Hunter",
       "Shaman"
     ],
@@ -8383,8 +11224,9 @@ export const items: Item[] = [
     "slot": "Ranged",
     "boss": "Kil'jaeden",
     "classes": [
+      "Warrior",
       "Hunter",
-      "Warrior"
+      "Rogue"
     ],
     "raidId": "swp"
   },
@@ -8395,8 +11237,11 @@ export const items: Item[] = [
     "slot": "One-Hand",
     "boss": "Kil'jaeden",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
-      "Hunter"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8408,7 +11253,8 @@ export const items: Item[] = [
     "boss": "Kil'jaeden",
     "classes": [
       "Warrior",
-      "Paladin"
+      "Paladin",
+      "Hunter"
     ],
     "raidId": "swp"
   },
@@ -8421,8 +11267,8 @@ export const items: Item[] = [
     "classes": [
       "Paladin",
       "Priest",
-      "Druid",
-      "Shaman"
+      "Shaman",
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8433,11 +11279,11 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Kil'jaeden",
     "classes": [
+      "Warrior",
+      "Hunter",
       "Rogue",
       "Shaman",
-      "Druid",
-      "Hunter",
-      "Warrior"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8448,11 +11294,11 @@ export const items: Item[] = [
     "slot": "Main Hand",
     "boss": "Kil'jaeden",
     "classes": [
+      "Priest",
+      "Shaman",
       "Mage",
       "Warlock",
-      "Priest",
-      "Druid",
-      "Shaman"
+      "Druid"
     ],
     "raidId": "swp"
   },
@@ -8464,8 +11310,835 @@ export const items: Item[] = [
     "boss": "Kil'jaeden",
     "classes": [
       "Priest",
-      "Druid",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35212,
+    "name": "Pattern: Leather Gauntlets of the Sun",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35216,
+    "name": "Pattern: Leather Chestguard of the Sun",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35213,
+    "name": "Pattern: Fletcher's Gloves of the Phoenix",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35217,
+    "name": "Pattern: Embrace of the Phoenix",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35214,
+    "name": "Pattern: Gloves of Immortal Dusk",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35218,
+    "name": "Pattern: Carapace of Sun and Shadow",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35215,
+    "name": "Pattern: Sun-Drenched Scale Gloves",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35219,
+    "name": "Pattern: Sun-Drenched Scale Chestguard",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35204,
+    "name": "Pattern: Sunfire Handwraps",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35206,
+    "name": "Pattern: Sunfire Robe",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35205,
+    "name": "Pattern: Hands of Eternal Light",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35207,
+    "name": "Pattern: Robe of Eternal Light",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35198,
+    "name": "Design: Loop of Forged Power",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35201,
+    "name": "Design: Pendant of Sunfire",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35199,
+    "name": "Design: Ring of Flowing Life",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35202,
+    "name": "Design: Amulet of Flowing Life",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35200,
+    "name": "Design: Hard Khorium Band",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35203,
+    "name": "Design: Hard Khorium Choker",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35186,
+    "name": "Schematic: Annihilator Holo-Gogs",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Priest",
+      "Mage",
+      "Warlock"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35187,
+    "name": "Schematic: Justicebringer 3000 Specs",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Paladin"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35189,
+    "name": "Schematic: Powerheal 9000 Lens",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Priest"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35190,
+    "name": "Schematic: Hyper-Magnified Moon Specs",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35191,
+    "name": "Schematic: Wonderheal XT68 Shades",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35192,
+    "name": "Schematic: Primal-Attuned Goggles",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
       "Shaman"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35193,
+    "name": "Schematic: Lightning Etched Specs",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Shaman"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35194,
+    "name": "Schematic: Surestrike Goggles v3.0",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Hunter",
+      "Shaman"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35195,
+    "name": "Schematic: Mayhem Projection Goggles",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35196,
+    "name": "Schematic: Hard Khorium Goggles",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Warrior",
+      "Paladin"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35197,
+    "name": "Schematic: Quad Deathblow X44 Goggles",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Recipes",
+    "classes": [
+      "Rogue",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34351,
+    "name": "Tranquil Majesty Wraps",
+    "icon": "inv_gauntlets_48",
+    "slot": "Hands",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34407,
+    "name": "Tranquil Moonlight Wraps",
+    "icon": "inv_gauntlets_51",
+    "slot": "Hands",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34350,
+    "name": "Gauntlets of the Ancient Shadowmoon",
+    "icon": "inv_gauntlets_41",
+    "slot": "Hands",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Shaman"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34409,
+    "name": "Gauntlets of the Ancient Frostwolf",
+    "icon": "inv_gauntlets_52",
+    "slot": "Hands",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Shaman"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35733,
+    "name": "Ring of Harmonic Beauty",
+    "icon": "inv_jewelry_ring_57",
+    "slot": "Finger",
+    "boss": "Trash",
+    "classes": [
+      "Paladin",
+      "Priest",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34183,
+    "name": "Shivering Felspine",
+    "icon": "inv_weapon_halberd_20",
+    "slot": "Two-Hand",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34346,
+    "name": "Mounting Vengeance",
+    "icon": "inv_weapon_hand_13",
+    "slot": "Off-hand",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Hunter",
+      "Rogue",
+      "Shaman",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34349,
+    "name": "Blade of Life's Inevitability",
+    "icon": "inv_throwingknife_07",
+    "slot": "Thrown",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Hunter",
+      "Rogue"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34348,
+    "name": "Wand of Cleansing Light",
+    "icon": "inv_wand_24",
+    "slot": "Ranged",
+    "boss": "Trash",
+    "classes": [
+      "Priest"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34347,
+    "name": "Wand of the Demonsoul",
+    "icon": "inv_wand_25",
+    "slot": "Ranged",
+    "boss": "Trash",
+    "classes": [
+      "Priest",
+      "Mage",
+      "Warlock"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35273,
+    "name": "Study of Advanced Smelting",
+    "icon": "inv_misc_book_08",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 34664,
+    "name": "Sunmote",
+    "icon": "spell_nature_elementalshields",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 32228,
+    "name": "Empyrean Sapphire",
+    "icon": "inv_jewelcrafting_empyreansapphire_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 32231,
+    "name": "Pyrestone",
+    "icon": "inv_jewelcrafting_pyrestone_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 32229,
+    "name": "Lionseye",
+    "icon": "inv_jewelcrafting_lionseye_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 32249,
+    "name": "Seaspray Emerald",
+    "icon": "inv_jewelcrafting_seasprayemerald_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 32230,
+    "name": "Shadowsong Amethyst",
+    "icon": "inv_jewelcrafting_shadowsongamethyst_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 32227,
+    "name": "Crimson Spinel",
+    "icon": "inv_jewelcrafting_crimsonspinel_01",
+    "slot": "Other",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35208,
+    "name": "Plans: Sunblessed Gauntlets",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35210,
+    "name": "Plans: Sunblessed Breastplate",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35209,
+    "name": "Plans: Hard Khorium Battlefists",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
+    ],
+    "raidId": "swp"
+  },
+  {
+    "id": 35211,
+    "name": "Plans: Hard Khorium Battleplate",
+    "icon": "inv_scroll_04",
+    "slot": "Recipe",
+    "boss": "Trash",
+    "classes": [
+      "Warrior",
+      "Paladin",
+      "Hunter",
+      "Rogue",
+      "Priest",
+      "Shaman",
+      "Mage",
+      "Warlock",
+      "Druid"
     ],
     "raidId": "swp"
   }

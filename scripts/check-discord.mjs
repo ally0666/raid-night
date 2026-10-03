@@ -52,7 +52,7 @@ globalThis.fetch = async (url, init = {}) => {
 }
 
 const { app } = await import('../server/app.mjs')
-const { loadEmojis, registerCommands, syncRaidPosts } = await import('../server/discord.mjs')
+const { announceAddonRelease, latestAddonRelease, loadEmojis, registerCommands, syncRaidPosts } = await import('../server/discord.mjs')
 const { read, update } = await import('../server/store.mjs')
 
 function assert(cond, msg) {
@@ -220,6 +220,26 @@ try {
   const deleted = await click(lead, `rn:delete:${raid.id}`, undefined, { message: { id: '6' } })
   assert(deleted.json.data.content.startsWith('Deleted') && !read().raids[raid.id], 'lead deletes raid')
   assert(calls.at(-1).method === 'PATCH' && calls.at(-1).body.embeds[0].description === 'This raid was cancelled.', 'post marked cancelled')
+
+  const release = latestAddonRelease()
+  assert(release?.version && release.notes.startsWith('- '), 'addon release read from the changelog')
+  const updates = await send({
+    type: 2,
+    ...base,
+    member: { user: lead },
+    data: { name: 'raid', options: [{ name: 'updates' }] },
+  })
+  const releasePost = calls.at(-1)
+  assert(updates.json.data.content.startsWith('Posted Raid Night'), `updates: ${updates.json.data.content}`)
+  assert(releasePost.method === 'POST' && releasePost.body.embeds[0].title.includes(release.version), 'release posted')
+  const before = calls.length
+  await announceAddonRelease()
+  assert(calls.length === before, 'same version is not posted twice')
+  await update((data) => {
+    data.addonUpdates.announced = '0.0.1'
+  })
+  await announceAddonRelease()
+  assert(calls.length === before + 1 && read().addonUpdates.announced === release.version, 'new version posts on start')
 
   console.log('discord checks ok')
 } finally {
